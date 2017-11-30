@@ -15,15 +15,15 @@ Printable version on A4 page: [cheatsheet-kubernetes-A4.pdf](cheatsheet-kubernet
 
 | Name                                        | Summary               |
 | :------------------------------------------ | --------------------- |
-| kubectl cluster-info                        |                       |
-| kubectl config view                         |                       |
-| kubectl get nodes                           | docker ps             |
-| kubectl describe pod nginx-app-413181-cnt1i | docker inspect        |
-| kubectl logs                                | docker logs           |
-| kubectl exec                                | docker exec           |
-| kubectl get events                          | View cluster events   |
 | kubectl get pods                            |                       |
 | kubectl delete pod hello-node-95913-n63qs   |                       |
+| kubectl get nodes                           | like docker ps        |
+| kubectl cluster-info                        |                       |
+| kubectl config view                         | Get configuration     |
+| kubectl describe pod nginx-app-413181-cnt1i | like docker inspect   |
+| kubectl logs                                | like docker logs      |
+| kubectl exec                                | like docker exec      |
+| kubectl get events                          | View cluster events   |
 | kubectl get deploy                          |                       |
 
 - Scale
