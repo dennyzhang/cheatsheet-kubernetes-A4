@@ -17,18 +17,26 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 
 - Commands
 
-| Name                                        | Summary               |
-| :------------------------------------------ | --------------------- |
-| `kubectl get pods`                          |                       |
-| `kubectl delete pod hello-node-95913-n63qs` |                       |
-| `kubectl get nodes`                         | like `docker ps`      |
-| `kubectl cluster-info`                      |                       |
-| `kubectl config view`                       | Get configuration     |
-| `kubectl describe pod nginx-app-413181-cn`  | like `docker inspect` |
-| `kubectl logs`                              | like `docker logs`    |
-| `kubectl exec`                              | like `docker exec`    |
-| `kubectl get events`                        | View cluster events   |
-| `kubectl get deploy`                        |                       |
+| Name                                        | Summary                    |
+| :------------------------------------------ | ---------------------      |
+| `kubectl get services`                      | List all services          |
+| `kubectl get pods`                          | List all pods              |
+| `kubectl get pods -o wide`                  | List all pods with details |
+| `kubectl delete pod hello-node-95913-n63qs` |                            |
+| `kubectl get nodes`                         | like `docker ps`           |
+| `kubectl describe pod nginx-app-413181-cn`  | like `docker inspect`      |
+| `kubectl logs`                              | like `docker logs`         |
+| `kubectl exec`                              | like `docker exec`         |
+| `kubectl get events`                        | View cluster events        |
+| `kubectl get deploy`                        |                            |
+
+- System
+
+| Name                   | Summary             |
+| :--------------------- | ---------           |
+| `kubectl version`      | Get kubectl version |
+| `kubectl cluster-info` |                     |
+| `kubectl config view`  | Get configuration   |
 
 - Scale
 
@@ -44,6 +52,9 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 | `kubectl rolling-update app-v1 app-v2 --rollback`     |                        |
 | `kubectl rollout status deployment/nginx-app`         |                        |
 | `kubectl rollout history deployment/nginx-app`        |                        |
+
+# Related Resources
+- https://github.com/alex1x/kubernetes-cheatsheet
 
 <a href="https://www.dennyzhang.com"><img align="right" width="201" height="268" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/denny_201706.png"></a>
 
