@@ -10,6 +10,7 @@ File me [tickets](https://github.com/DennyZhang/cheatsheet-kubernetes-A4/issues)
 Printable version on A4 page: [cheatsheet-kubernetes-A4.pdf](cheatsheet-kubernetes-A4.pdf)
 
 - Commands
+
 | Name                                        | Summary               |
 | :------------------------------------------ | --------------------- |
 | kubectl cluster-info                        |                       |
@@ -26,11 +27,13 @@ Printable version on A4 page: [cheatsheet-kubernetes-A4.pdf](cheatsheet-kubernet
 | kubectl get deploy                          |                       |
 
 - Scale
+
 | Name                                             | Summary   |
 | :----------------------------------------------- | --------- |
 | kubectl scale --replicas=3 deployment/nginx-app  |           |
 
 - Upgrade  
+
 | Name                                                            | Summary                |
 | :-------------------------------------------------------------- | ---------------------- |
 | kubectl rolling-update frontend-v1 frontend-v2 --image=image:v2 | online rolling upgrade |
