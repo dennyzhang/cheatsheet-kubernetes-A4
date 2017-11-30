@@ -17,29 +17,29 @@ Printable version on A4 page: [cheatsheet-kubernetes-A4.pdf](cheatsheet-kubernet
 | :------------------------------------------ | --------------------- |
 | `kubectl get pods`                          |                       |
 | `kubectl delete pod hello-node-95913-n63qs` |                       |
-| kubectl get nodes                           | like docker ps        |
-| kubectl cluster-info                        |                       |
-| kubectl config view                         | Get configuration     |
-| kubectl describe pod nginx-app-413181-cnt1i | like docker inspect   |
-| kubectl logs                                | like docker logs      |
-| kubectl exec                                | like docker exec      |
-| kubectl get events                          | View cluster events   |
-| kubectl get deploy                          |                       |
+| `kubectl get nodes`                         | like `docker ps`      |
+| `kubectl cluster-info`                      |                       |
+| `kubectl config view`                       | Get configuration     |
+| `kubectl describe pod nginx-app-413181-cn`  | like `docker inspect` |
+| `kubectl logs`                              | like `docker logs`    |
+| `kubectl exec`                              | like `docker exec`    |
+| `kubectl get events`                        | View cluster events   |
+| `kubectl get deploy`                        |                       |
 
 - Scale
 
-| Name                                             | Summary   |
-| :----------------------------------------------- | --------- |
-| kubectl scale --replicas=3 deployment/nginx-app  |           |
+| Name                                              | Summary   |
+| :-----------------------------------------------  | --------- |
+| `kubectl scale --replicas=3 deployment/nginx-app` |           |
 
 - Upgrade  
 
-| Name                                                            | Summary                |
-| :-------------------------------------------------------------- | ---------------------- |
-| kubectl rolling-update frontend-v1 frontend-v2 --image=image:v2 | online rolling upgrade |
-| kubectl rolling-update frontend-v1 frontend-v2 --rollback       |                        |
-| kubectl rollout status deployment/nginx-app                     |                        |
-| kubectl rollout history deployment/nginx-app                    |                        |
+| Name                                                  | Summary                |
+| :---------------------------------------------------- | ---------------------- |
+| `kubectl rolling-update app-v1 app-v2 --image=img:v2` | online rolling upgrade |
+| `kubectl rolling-update app-v1 app-v2 --rollback`     |                        |
+| `kubectl rollout status deployment/nginx-app`         |                        |
+| `kubectl rollout history deployment/nginx-app`        |                        |
 
 <a href="https://www.dennyzhang.com"><img align="right" width="201" height="268" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/denny_201706.png"></a>
 
