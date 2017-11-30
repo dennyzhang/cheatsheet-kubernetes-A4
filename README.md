@@ -15,8 +15,8 @@ Printable version on A4 page: [cheatsheet-kubernetes-A4.pdf](cheatsheet-kubernet
 
 | Name                                        | Summary               |
 | :------------------------------------------ | --------------------- |
-| kubectl get pods                            |                       |
-| kubectl delete pod hello-node-95913-n63qs   |                       |
+| `kubectl get pods`                          |                       |
+| `kubectl delete pod hello-node-95913-n63qs` |                       |
 | kubectl get nodes                           | like docker ps        |
 | kubectl cluster-info                        |                       |
 | kubectl config view                         | Get configuration     |
