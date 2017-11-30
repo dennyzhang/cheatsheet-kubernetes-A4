@@ -9,25 +9,36 @@ File me [tickets](https://github.com/DennyZhang/cheatsheet-kubernetes-A4/issues)
 
 Printable version on A4 page: [cheatsheet-kubernetes-A4.pdf](cheatsheet-kubernetes-A4.pdf)
 
+- Commands
+| Name                                        | Summary               |
+| :------------------------------------------ | --------------------- |
+| kubectl cluster-info                        |                       |
+| kubectl config view                         |                       |
+| kubectl get nodes                           | docker ps             |
+| kubectl describe pod nginx-app-413181-cnt1i | docker inspect        |
+| kubectl logs                                | docker logs           |
+| kubectl exec                                | docker exec           |
+| kubectl get events                          | View cluster events   |
+| :------------------------------------------ | --------------------- |
+| kubectl get pods                            |                       |
+| kubectl delete pod hello-node-95913-n63qs   |                       |
+| :------------------------------------------ | --------------------- |
+| kubectl get deploy                          |                       |
+
+- Scale
+| Name                                             | Summary   |
+| :----------------------------------------------- | --------- |
+| kubectl scale --replicas=3 deployment/nginx-app  |           |
+
+- Upgrade  
+| Name                                                            | Summary                |
+| :-------------------------------------------------------------- | ---------------------- |
+| kubectl rolling-update frontend-v1 frontend-v2 --image=image:v2 | online rolling upgrade |
+| kubectl rolling-update frontend-v1 frontend-v2 --rollback       |                        |
+| kubectl rollout status deployment/nginx-app                     |                        |
+| kubectl rollout history deployment/nginx-app                    |                        |
+
 <a href="https://www.dennyzhang.com"><img align="right" width="201" height="268" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/denny_201706.png"></a>
-
-- List
-
-| Name                    | Comment                                             |
-| :---------------------- | --------------------------------------------------  |
-| map                     | map(lambda x: str(x), [1, 2, 3])                    |
-| create fixed size array | l = [None] * 5                                      |
-| insert elements to head | array.insert(0,var)                                 |
-| delete a given element  | del a[1]                                            |
-| list as stack           | item = l.pop()                                      |
-| sort in descending      | sorted([8, 2, 5], reverse=True)                     |
-| sort by attribute       | sorted([('ebb',12),('abc',14)], key=lambda x: x[1]) |
-| generate a-z            | map(chr, range(ord('a'), ord('z')+1))               |
-| map/reduce              | reduce((lambda x, y: "%s %s" % (x, y)), l)          |
-| return all but last     | list[:-1]                                           |
-| replace ith to jth      | list[i:j] = otherlist                               |
-| combine two list        | list1 + list2                                       |
-| get sum                 | sum(list)                                           |
 
 # License
 - Code is licensed under [MIT License](https://www.dennyzhang.com/wp-content/mit_license.txt).
