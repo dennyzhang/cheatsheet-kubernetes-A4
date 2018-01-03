@@ -43,6 +43,8 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 | /etc/systemd/system/kubelet.service.d/10-kubeadm.conf | env                   |
 | curl -L http://127.0.0.1:10250/healthz                |                       |
 
+<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+
 - Commands
 
 | Name                              | Command                                      |
