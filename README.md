@@ -18,7 +18,7 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 - Key Concepts
 
 | Name          | Summary                           |
-| : ------------| ---------------------             |
+| :------------| ---------------------             |
 | CRI           | Container Runtime Interface       |
 | CNI           | Container Network Interface       |
 | CSI           | Container Storage Interface       |
@@ -27,7 +27,7 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 - Kubernets Critical Files
 
 | Name                                                  | Summary               |
-| : --------------------------------------------------- | --------------------- |
+| :--------------------------------------------------- | --------------------- |
 | /etc/kubernetes/                                      | config folder         |
 | /etc/kubernetes/admin.conf                            |                       |
 | /etc/kubernetes/kubelet.conf                          |                       |
@@ -46,7 +46,7 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 - Commands
 
 | Name                              | Command                                      |
-| : ------------------------------- | ------------------------------------------   |
+| :------------------------------- | ------------------------------------------   |
 | List all services                 | `kubectl get services`                       |
 | List all pods                     | `kubectl get pods`                           |
 | List all pods with details        | `kubectl get pods -o wide`                   |
@@ -66,13 +66,13 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 - Volume
 
 | Name                        | Command                         |
-| : ------------------------- | -----------------------------   |
+| :------------------------- | -----------------------------   |
 | Check the mounted volumes   | `kubectl exec storage ls /data` |
 
 - System
 
 | Name                | Command                |
-| : ----------------- | ---------------------  |
+| :----------------- | ---------------------  |
 | Get kubectl version | `kubectl version`      |
 | Get cluster info    | `kubectl cluster-info` |
 | Get configuration   | `kubectl config view`  |
@@ -80,26 +80,26 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 - Scale
 
 | Summary     | Command                                           |
-| : --------- | :-----------------------------------------------  |
+| :--------- | :-----------------------------------------------  |
 | Scale out   | `kubectl scale --replicas=3 deployment/nginx-app` |
 
 - Volume
 
 | Summary              | Command                      |
-| : ------------------ | :--------------------------- |
+| :------------------ | :--------------------------- |
 | Check persist volume | `kubectl describe pv pv0001` |
 
 - Deletion
 
 | Summary                       | Command                                |
-| : --------------------------  | :------------------------------------- |
+| :--------------------------  | :------------------------------------- |
 | Delete service                | `kubectl delete service nginxservice`  |
 | Delete replication controller | `kubectl delete rc nginx`              |
 
 - Upgrade  
 
 | Name                     | Command                                               |
-| : ---------------------- | :---------------------------------------------------- |
+| :---------------------- | :---------------------------------------------------- |
 | online rolling upgrade   | `kubectl rolling-update app-v1 app-v2 --image=img:v2` |
 | Roll backup              | `kubectl rolling-update app-v1 app-v2 --rollback`     |
 | Check update status      | `kubectl rollout status deployment/nginx-app`         |
