@@ -27,7 +27,7 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 - Kubernets Critical Files
 
 | Name                                                  | Summary               |
-| :--------------------------------------------------- | --------------------- |
+| :---------------------------------------------------  | --------------------- |
 | /etc/kubernetes/                                      | config folder         |
 | /etc/kubernetes/admin.conf                            |                       |
 | /etc/kubernetes/kubelet.conf                          |                       |
@@ -37,10 +37,11 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 | /etc/cni/net.d                                        | network cni           |
 | /var/log/containers                                   |                       |
 | /var/log/pods                                         | log files             |
-| kubelet logs                                          | logs                  |
-| kubectl describe node $node_name                      |                       |
 | export KUBECONFIG=/etc/kubernetes/admin.conf          | env                   |
 | /etc/systemd/system/kubelet.service.d/10-kubeadm.conf | env                   |
+| kubelet logs                                          | logs                  |
+| kubectl describe node $node_name                      |                       |
+| kubectl -n kube-system get cm kubeadm-config -oyaml   | system conf           |
 | curl -L http://127.0.0.1:10250/healthz                |                       |
 
 <a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
