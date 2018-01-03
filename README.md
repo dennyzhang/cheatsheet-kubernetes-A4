@@ -15,9 +15,19 @@ Printable version on A4 page: [cheatsheet-kubernetes-A4.pdf](cheatsheet-kubernet
 
 See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatsheets)
 
+- Key Concepts
+
+| Name          | Summary                           |
+| : ------------| ---------------------             |
+| CRI           | Container Runtime Interface       |
+| CNI           | Container Network Interface       |
+| CSI           | Container Storage Interface       |
+| CNCF          | Cloud Native Computing Foundation |
+
 - Kubernets Critical Files
+
 | Name                                                  | Summary               |
-|-------------------------------------------------------+-----------------------|
+| : --------------------------------------------------- | --------------------- |
 | /etc/kubernetes/                                      | config folder         |
 | /etc/kubernetes/admin.conf                            |                       |
 | /etc/kubernetes/kubelet.conf                          |                       |
@@ -25,16 +35,12 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 | /var/lib/docker                                       | docker working dir    |
 | /var/lib/etcd                                         |                       |
 | /etc/cni/net.d                                        | network cni           |
-|-------------------------------------------------------+-----------------------|
 | /var/log/containers                                   |                       |
 | /var/log/pods                                         | log files             |
-|-------------------------------------------------------+-----------------------|
 | kubelet logs                                          | logs                  |
 | kubectl describe node $node_name                      |                       |
-|-------------------------------------------------------+-----------------------|
 | export KUBECONFIG=/etc/kubernetes/admin.conf          | env                   |
 | /etc/systemd/system/kubelet.service.d/10-kubeadm.conf | env                   |
-|-------------------------------------------------------+-----------------------|
 | curl -L http://127.0.0.1:10250/healthz                |                       |
 
 - Commands
@@ -58,9 +64,11 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 | Get replication controller        | `kubectl get rc`                             |
 
 - Volume
+
 | Name                        | Command                         |
 | : ------------------------- | -----------------------------   |
 | Check the mounted volumes   | `kubectl exec storage ls /data` |
+
 - System
 
 | Name                | Command                |
@@ -82,6 +90,7 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 | Check persist volume | `kubectl describe pv pv0001` |
 
 - Deletion
+
 | Summary                       | Command                                |
 | : --------------------------  | :------------------------------------- |
 | Delete service                | `kubectl delete service nginxservice`  |
