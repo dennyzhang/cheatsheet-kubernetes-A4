@@ -29,6 +29,7 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 | Name                                                  | Summary                   |
 | :---------------------------------------------------  | ------------------------- |
 | /etc/kubernetes/                                      | config folder             |
+| /etc/kubernetes/pki/                                  | certificate files         |
 | /etc/kubernetes/kubelet.conf                          | credentials to API server |
 | /etc/kubernetes/admin.conf                            | superuser credentials     |
 | /var/lib/kubelet/                                     | kubernets working dir     |
@@ -39,8 +40,10 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 | /var/log/pods                                         | log files                 |
 | export KUBECONFIG=/etc/kubernetes/admin.conf          | env                       |
 | /etc/systemd/system/kubelet.service.d/10-kubeadm.conf | env                       |
+| kubectl get --namespace kube-system pods -a           | list all critical pods    |
 | kubelet logs                                          | logs                      |
 | kubectl describe node $node_name                      |                           |
+| kubectl get svc                                       |                           |
 | kubectl -n kube-system get cm kubeadm-config -oyaml   | system conf               |
 | curl -L http://127.0.0.1:10250/healthz                |                           |
 
@@ -48,23 +51,24 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 
 - Common Commands
 
-| Name                              | Command                                      |
+| Name                             | Command                                      |
 | :------------------------------- | ------------------------------------------   |
-| List all services                 | `kubectl get services`                       |
-| List all pods                     | `kubectl get pods`                           |
-| List all pods with details        | `kubectl get pods -o wide`                   |
-| Get pod info                      | `kubectl describe pod srv-mysql-server`      |
-| Open a bash terminal in a pod     | `kubectl exec -ti storage -- bash`           |
-| Check pod environment variables   | `kubectl exec redis-master-ft9ex env`        |
-| Delete pod                        | `kubectl delete pod hello-node-95913-n63qs`  |
-| Start a service                   | `kubectl run hello --image=my_img --port=80` |
-| Similar to `docker ps`            | `kubectl get nodes`                          |
-| Similar to `docker inspect`       | `kubectl describe pod nginx-app-413181-cn`   |
-| Similar to `docker logs`          | `kubectl logs`                               |
-| Similar to `docker exec`          | `kubectl exec`                               |
-| View cluster events               | `kubectl get events`                         |
-| Get deployment info               | `kubectl get deploy`                         |
-| Get replication controller        | `kubectl get rc`                             |
+| List all services                | `kubectl get services`                       |
+| List all pods                    | `kubectl get pods`                           |
+| List all pods                    | `kubectl get pods –all-namespaces`           |
+| List all pods with details       | `kubectl get pods -o wide`                   |
+| Get pod info                     | `kubectl describe pod srv-mysql-server`      |
+| Open a bash terminal in a pod    | `kubectl exec -ti storage -- bash`           |
+| Check pod environment variables  | `kubectl exec redis-master-ft9ex env`        |
+| Delete pod                       | `kubectl delete pod hello-node-95913-n63qs`  |
+| Start a service                  | `kubectl run hello --image=my_img --port=80` |
+| Similar to `docker ps`           | `kubectl get nodes`                          |
+| Similar to `docker inspect`      | `kubectl describe pod nginx-app-413181-cn`   |
+| Similar to `docker logs`         | `kubectl logs`                               |
+| Similar to `docker exec`         | `kubectl exec`                               |
+| View cluster events              | `kubectl get events`                         |
+| Get deployment info              | `kubectl get deploy`                         |
+| Get replication controller       | `kubectl get rc`                             |
 
 - Volume
 
@@ -107,6 +111,8 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 | Roll backup              | `kubectl rolling-update app-v1 app-v2 --rollback`     |
 | Check update status      | `kubectl rollout status deployment/nginx-app`         |
 | Check update history     | `kubectl rollout history deployment/nginx-app`        |
+
+<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
 
 TODO: rolling-update command is imperative, better use Deployments rollout. It's declarative.
 
@@ -151,6 +157,7 @@ Available Commands:
 # Related Resources
 - https://github.com/kubecamp/kubernetes_in_2_days
 - https://marc.xn--wckerlin-0za.ch/computer/kubernetes-on-ubuntu-16-04
+- https://codefresh.io/kubernetes-guides/kubernetes-cheat-sheet/
 
 <a href="https://www.dennyzhang.com"><img align="right" width="201" height="268" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/denny_201706.png"></a>
 
