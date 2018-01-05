@@ -15,7 +15,22 @@ Printable version on A4 page: [cheatsheet-kubernetes-A4.pdf](cheatsheet-kubernet
 
 See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatsheets)
 
-- Key Concepts
+Table of Contents
+=================
+
+   * [Key Concepts](#key-concepts)
+   * [Minikube](#minikube)
+   * [Kubernets Critical Files](#kubernets-critical-files)
+   * [Check status](#check-status)
+   * [Common Commands](#common-commands)
+   * [Volume](#volume)
+   * [Scale &amp; Deployment](#scale--deployment)
+   * [Related Resources](#related-resources)
+   * [License](#license)
+
+<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+
+# Key Concepts
 
 | Name          | Summary                           |
 | :------------| ---------------------             |
@@ -24,7 +39,17 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 | CSI           | Container Storage Interface       |
 | CNCF          | Cloud Native Computing Foundation |
 
-- Kubernets Critical Files
+# Minikube
+
+minikube in GitHub: [link](https://github.com/kubernetes/minikube)
+
+| Name               | Summary               |
+| :------------      | --------------------- |
+| minikube start     | start minikube env    |
+| minikube dashboard | Get dashboard         |
+| minikube ssh       | login                 |
+
+# Kubernets Critical Files
 
 | Name                                                  | Summary                   |
 | :---------------------------------------------------  | ------------------------- |
@@ -42,14 +67,22 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 | /etc/systemd/system/kubelet.service.d/10-kubeadm.conf | env                       |
 | kubectl get --namespace kube-system pods -a           | list all critical pods    |
 | kubelet logs                                          | logs                      |
+
+<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+
+# Check status
+
+| Name                | Command                |
+| :----------------- | ---------------------  |
+| Get kubectl version | `kubectl version`      |
+| Get cluster info    | `kubectl cluster-info` |
+| Get configuration   | `kubectl config view`  |
 | kubectl describe node $node_name                      |                           |
 | kubectl get svc                                       |                           |
 | kubectl -n kube-system get cm kubeadm-config -oyaml   | system conf               |
 | curl -L http://127.0.0.1:10250/healthz                |                           |
 
-<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
-
-- Common Commands
+# Common Commands
 
 | Name                             | Command                                      |
 | :------------------------------- | ------------------------------------------   |
@@ -69,48 +102,25 @@ See more CheatSheets from Denny: [here](https://github.com/topics/denny-cheatshe
 | View cluster events              | `kubectl get events`                         |
 | Get deployment info              | `kubectl get deploy`                         |
 | Get replication controller       | `kubectl get rc`                             |
+| Delete service                | `kubectl delete service nginxservice`  |
+| Delete replication controller | `kubectl delete rc nginx`              |
 
-- Volume
+# Volume
 
 | Name                        | Command                         |
 | :------------------------- | -----------------------------   |
 | Check the mounted volumes   | `kubectl exec storage ls /data` |
-
-- System
-
-| Name                | Command                |
-| :----------------- | ---------------------  |
-| Get kubectl version | `kubectl version`      |
-| Get cluster info    | `kubectl cluster-info` |
-| Get configuration   | `kubectl config view`  |
-
-- Scale
-
-| Summary     | Command                                           |
-| :--------- | :-----------------------------------------------  |
-| Scale out   | `kubectl scale --replicas=3 deployment/nginx-app` |
-
-- Volume
-
-| Summary              | Command                      |
-| :------------------ | :--------------------------- |
 | Check persist volume | `kubectl describe pv pv0001` |
 
-- Deletion
+# Scale & Deployment
 
-| Summary                       | Command                                |
-| :--------------------------  | :------------------------------------- |
-| Delete service                | `kubectl delete service nginxservice`  |
-| Delete replication controller | `kubectl delete rc nginx`              |
-
-- Upgrade  
-
-| Name                     | Command                                               |
-| :---------------------- | :---------------------------------------------------- |
-| online rolling upgrade   | `kubectl rolling-update app-v1 app-v2 --image=img:v2` |
-| Roll backup              | `kubectl rolling-update app-v1 app-v2 --rollback`     |
-| Check update status      | `kubectl rollout status deployment/nginx-app`         |
-| Check update history     | `kubectl rollout history deployment/nginx-app`        |
+| Summary                | Command                                               |
+| :--------------------- | :-----------------------------------------------      |
+| Scale out              | `kubectl scale --replicas=3 deployment/nginx-app`     |
+| online rolling upgrade | `kubectl rolling-update app-v1 app-v2 --image=img:v2` |
+| Roll backup            | `kubectl rolling-update app-v1 app-v2 --rollback`     |
+| Check update status    | `kubectl rollout status deployment/nginx-app`         |
+| Check update history   | `kubectl rollout history deployment/nginx-app`        |
 
 <a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
 
