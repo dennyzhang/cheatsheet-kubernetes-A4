@@ -37,11 +37,14 @@ Table of Contents
 
 minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 
-| Name               | Summary               |
-| :------------      | --------------------- |
-| minikube start     | start minikube env    |
-| minikube dashboard | Get dashboard         |
-| minikube ssh       | login                 |
+| Name                 | Summary               |
+| :------------------- | --------------------- |
+| minikube start       | start minikube env    |
+| minikube dashboard   | Get dashboard         |
+| minikube ssh         | ssh to minikube vm    |
+| minikube ip          | get ip                |
+| kubectl cluster-info | get cluster info      |
+| minikube addons list | list addons           |
 
 # Kubernets Critical Files
 
@@ -66,15 +69,15 @@ minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 
 # Check status
 
-| Name                | Command                |
-| :----------------- | ---------------------  |
-| Get kubectl version | `kubectl version`      |
-| Get cluster info    | `kubectl cluster-info` |
-| Get configuration   | `kubectl config view`  |
-| kubectl describe node $node_name                      |                           |
-| kubectl get svc                                       |                           |
-| kubectl -n kube-system get cm kubeadm-config -oyaml   | system conf               |
-| curl -L http://127.0.0.1:10250/healthz                |                           |
+| Name                                                | Command                |
+| :-------------------------------------------------- | ---------------------  |
+| Get kubectl version                                 | `kubectl version`      |
+| Get cluster info                                    | `kubectl cluster-info` |
+| Get configuration                                   | `kubectl config view`  |
+| kubectl describe node $node_name                    |                        |
+| kubectl get svc                                     |                        |
+| kubectl -n kube-system get cm kubeadm-config -oyaml | system conf            |
+| curl -L http://127.0.0.1:10250/healthz              |                        |
 
 # Common Commands
 
