@@ -88,6 +88,7 @@ minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 | List all pods                    | `kubectl get pods`                           |
 | List all pods                    | `kubectl get pods –all-namespaces`           |
 | List all pods with details       | `kubectl get pods -o wide`                   |
+| List all pods with labels        | `kubectl get pods --show-labels`             |
 | Get pod info                     | `kubectl describe pod srv-mysql-server`      |
 | Open a bash terminal in a pod    | `kubectl exec -ti storage -- bash`           |
 | Check pod environment variables  | `kubectl exec redis-master-ft9ex env`        |
@@ -100,8 +101,8 @@ minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 | View cluster events              | `kubectl get events`                         |
 | Get deployment info              | `kubectl get deploy`                         |
 | Get replication controller       | `kubectl get rc`                             |
-| Delete service                | `kubectl delete service nginxservice`  |
-| Delete replication controller | `kubectl delete rc nginx`              |
+| Delete service                   | `kubectl delete service nginxservice`        |
+| Delete replication controller    | `kubectl delete rc nginx`                    |
 
 # Volume
 
