@@ -74,6 +74,7 @@ minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 | Get kubectl version                                 | `kubectl version`      |
 | Get cluster info                                    | `kubectl cluster-info` |
 | Get configuration                                   | `kubectl config view`  |
+| kubectl get service --all-namespaces                |                        |
 | kubectl describe node $node_name                    |                        |
 | kubectl get svc                                     |                        |
 | kubectl -n kube-system get cm kubeadm-config -oyaml | system conf            |
