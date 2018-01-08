@@ -37,14 +37,15 @@ Table of Contents
 
 minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 
-| Name                 | Summary               |
-| :------------------- | --------------------- |
-| minikube start       | start minikube env    |
-| minikube dashboard   | Get dashboard         |
-| minikube ssh         | ssh to minikube vm    |
-| minikube ip          | get ip                |
-| kubectl cluster-info | get cluster info      |
-| minikube addons list | list addons           |
+| Name                       | Summary               |
+| :-------------------       | --------------------- |
+| minikube start             | Start minikube env    |
+| minikube dashboard         | Get dashboard         |
+| minikube ssh               | ssh to minikube vm    |
+| minikube ip                | Get ip                |
+| kubectl cluster-info       | Get cluster info      |
+| minikube addons list       | List addons           |
+| minikube service $srv_name | Get service info      |
 
 # Kubernets Critical Files
 
@@ -88,7 +89,6 @@ minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 | List all pods                    | `kubectl get pods`                           |
 | List all pods                    | `kubectl get pods –all-namespaces`           |
 | List all pods with details       | `kubectl get pods -o wide`                   |
-| List all pods with labels        | `kubectl get pods --show-labels`             |
 | Get pod info                     | `kubectl describe pod srv-mysql-server`      |
 | Open a bash terminal in a pod    | `kubectl exec -ti storage -- bash`           |
 | Check pod environment variables  | `kubectl exec redis-master-ft9ex env`        |
@@ -103,6 +103,14 @@ minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 | Get replication controller       | `kubectl get rc`                             |
 | Delete service                   | `kubectl delete service nginxservice`        |
 | Delete replication controller    | `kubectl delete rc nginx`                    |
+
+# Pod
+
+| Name                       | Command                                    |
+| :------------------------- | -----------------------------              |
+| Add label to pod           | `kubectl label pods labelex owner=denny`   |
+| List all pods with labels  | `kubectl get pods --show-labels`           |
+| Filter pod by label        | `kubectl get pods --selector owner=michael |
 
 # Volume
 
