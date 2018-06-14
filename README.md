@@ -37,15 +37,15 @@ Table of Contents
 
 minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 
-| Name                       | Summary               |
-| :-------------------       | --------------------- |
-| minikube start             | Start minikube env    |
-| minikube dashboard         | Get dashboard         |
-| minikube ssh               | ssh to minikube vm    |
-| minikube ip                | Get ip                |
-| kubectl cluster-info       | Get cluster info      |
-| minikube addons list       | List addons           |
-| minikube service $srv_name | Get service info      |
+| Name                   | Command                      |
+| :--------------------- | --------------------------   |
+| Start minikube env     | `minikube start`             |
+| Get dashboard          | `minikube dashboard`         |
+| ssh to minikube vm     | `minikube ssh`               |
+| Get ip                 | `minikube ip`                |
+| Get cluster info       | `kubectl cluster-info`       |
+| List addons            | `minikube addons list`       |
+| Get service info       | `minikube service $srv_name` |
 
 # Kubernets Critical Files
 
