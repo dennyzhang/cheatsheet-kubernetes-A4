@@ -122,7 +122,7 @@ minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 
 # Scale & Deployment
 
-| Summary                | Command                                               |
+| Name                   | Command                                               |
 | :--------------------- | :-----------------------------------------------      |
 | Scale out              | `kubectl scale --replicas=3 deployment/nginx-app`     |
 | online rolling upgrade | `kubectl rolling-update app-v1 app-v2 --image=img:v2` |
