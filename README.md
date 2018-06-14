@@ -173,6 +173,7 @@ Available Commands:
 ```
 
 # Related Resources
+- https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 - https://github.com/kubecamp/kubernetes_in_2_days
 - https://marc.xn--wckerlin-0za.ch/computer/kubernetes-on-ubuntu-16-04
 - https://codefresh.io/kubernetes-guides/kubernetes-cheat-sheet/
