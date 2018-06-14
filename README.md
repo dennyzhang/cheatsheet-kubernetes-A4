@@ -3,7 +3,7 @@ Kubernetes CheatSheets In A4
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-[![LinkedIn](https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/linkedin.png)](https://www.linkedin.com/in/dennyzhang001) <a href="https://www.dennyzhang.com/slack" target="_blank" rel="nofollow"><img src="http://slack.dennyzhang.com/badge.svg" alt="slack"/></a> [![Github](https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/github.png)](https://github.com/DennyZhang)
+[![LinkedIn](https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/linkedin_icon.png)](https://www.linkedin.com/in/dennyzhang001) <a href="https://www.dennyzhang.com/slack" target="_blank" rel="nofollow"><img src="http://slack.dennyzhang.com/badge.svg" alt="slack"/></a> [![Github](https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/github.png)](https://github.com/DennyZhang)
 
 Printable version on A4 page: [cheatsheet-kubernetes-A4.pdf](cheatsheet-kubernetes-A4.pdf). See more CheatSheets [here](https://github.com/topics/denny-cheatsheets)
 
@@ -26,12 +26,12 @@ Table of Contents
 
 # Key Concepts
 
-| Name          | Summary                           |
-| :------------| ---------------------             |
-| CRI           | Container Runtime Interface       |
-| CNI           | Container Network Interface       |
-| CSI           | Container Storage Interface       |
-| CNCF          | Cloud Native Computing Foundation |
+| Name   | Summary                           |
+| :----- | ---------------------             |
+| CRI    | Container Runtime Interface       |
+| CNI    | Container Network Interface       |
+| CSI    | Container Storage Interface       |
+| CNCF   | Cloud Native Computing Foundation |
 
 # Minikube
 
@@ -70,16 +70,17 @@ minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 
 # Check status
 
-| Name                                                | Command                |
-| :-------------------------------------------------- | ---------------------  |
-| Get kubectl version                                 | `kubectl version`      |
-| Get cluster info                                    | `kubectl cluster-info` |
-| Get configuration                                   | `kubectl config view`  |
-| kubectl get service --all-namespaces                |                        |
-| kubectl describe node $node_name                    |                        |
-| kubectl get svc                                     |                        |
-| kubectl -n kube-system get cm kubeadm-config -oyaml | system conf            |
-| curl -L http://127.0.0.1:10250/healthz              |                        |
+| Name                                                | Command                                               |
+| :-------------------------------------------------- | ----------------------------------------------------- |
+| Get kubectl version                                 | `kubectl version`                                     |
+| Get cluster info                                    | `kubectl cluster-info`                                |
+| Get configuration                                   | `kubectl config view`                                 |
+| Get component status                                | `kubectl get componentstatus`                         |
+| Get node status                                     | `kubectl describe node $node_name`                    |
+| Get services for current namespace                  | `kubectl get svc`                                     |
+| Get all services for all namespace                  | `kubectl get service --all-namespaces`                |
+| Get system conf                                     | `kubectl -n kube-system get cm kubeadm-config -oyaml` |
+| Query healthcheck endpoint                          | `curl -L http://127.0.0.1:10250/healthz`              |
 
 # Common Commands
 
@@ -106,18 +107,18 @@ minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 
 # Pod
 
-| Name                       | Command                                    |
-| :------------------------- | -----------------------------              |
-| Add label to pod           | `kubectl label pods labelex owner=denny`   |
-| List all pods with labels  | `kubectl get pods --show-labels`           |
-| Filter pod by label        | `kubectl get pods --selector owner=michael |
+| Name                       | Command                                     |
+| :------------------------- | ------------------------------------------- |
+| Add label to pod           | `kubectl label pods labelex owner=denny`    |
+| List all pods with labels  | `kubectl get pods --show-labels`            |
+| Filter pod by label        | `kubectl get pods --selector owner=michael  |
 
 # Volume
 
-| Name                        | Command                         |
-| :------------------------- | -----------------------------   |
-| Check the mounted volumes   | `kubectl exec storage ls /data` |
-| Check persist volume | `kubectl describe pv pv0001` |
+| Name                       | Command                         |
+| :------------------------- | ------------------------------- |
+| Check the mounted volumes  | `kubectl exec storage ls /data` |
+| Check persist volume       | `kubectl describe pv pv0001`    |
 
 # Scale & Deployment
 
