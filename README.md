@@ -17,6 +17,8 @@ Table of Contents
    * [Kubernets Critical Files](#kubernets-critical-files)
    * [Check status](#check-status)
    * [Common Commands](#common-commands)
+   * [Namespace &amp; Security](#namespace--security)
+   * [Pod](#pod)
    * [Volume](#volume)
    * [Scale &amp; Deployment](#scale--deployment)
    * [Related Resources](#related-resources)
@@ -76,6 +78,7 @@ minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 | Get cluster info                                    | `kubectl cluster-info`                                |
 | Get configuration                                   | `kubectl config view`                                 |
 | Get component status                                | `kubectl get componentstatus`                         |
+| List pods with node info associated                 | `kubectl get pod -o wide`                             |
 | Get node status                                     | `kubectl describe node $node_name`                    |
 | Get services for current namespace                  | `kubectl get svc`                                     |
 | Get all services for all namespace                  | `kubectl get service --all-namespaces`                |
@@ -104,6 +107,14 @@ minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 | Get replication controller       | `kubectl get rc`                             |
 | Delete service                   | `kubectl delete service nginxservice`        |
 | Delete replication controller    | `kubectl delete rc nginx`                    |
+
+# Namespace & Security
+
+| Name                             | Command                                    |
+| :------------------------------- | ------------------------------------------ |
+| list authenticated contexts      | `kubectl config get-contexts`              |
+| set the context to interact with | `kubectl config use-context $context_name` |
+| list all namespaces defined      | `kubectl get namespaces`                   |
 
 # Pod
 
