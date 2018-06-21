@@ -51,7 +51,6 @@ Table of Contents
 | /var/log/pods                                         | log files                 |
 | export KUBECONFIG=/etc/kubernetes/admin.conf          | env                       |
 | /etc/systemd/system/kubelet.service.d/10-kubeadm.conf | env                       |
-| kubectl get --namespace kube-system pods -a           | list all critical pods    |
 | kubelet logs                                          | logs                      |
 
 <a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
@@ -80,6 +79,7 @@ Table of Contents
 | List pods with docker images attached | `kubectl get pods -n $NAMESPACE -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'` |
 | List all pods with labels             | `kubectl get pods --show-labels`                                                                                                                        |
 | List all services                     | `kubectl get services`                                                                                                                                  |
+| List all critical pods                | `kubectl get -n kube-system pods -a`                                                                                                                    |
 | Get pod info                          | `kubectl describe pod srv-mysql-server`                                                                                                                 |
 | Add label to pod                      | `kubectl label pods labelex owner=denny`                                                                                                                |
 | Filter pod by label                   | `kubectl get pods --selector owner=michael`                                                                                                             |
