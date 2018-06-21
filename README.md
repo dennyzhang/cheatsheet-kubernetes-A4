@@ -88,7 +88,7 @@ Table of Contents
 
 | Name                             | Command                                       |
 | :------------------------------- | --------------------------------------------- |
-| Open a bash terminal in a pod    | `kubectl exec -ti storage -- bash`            |
+| Open a bash terminal in a pod    | `kubectl exec -it storage -- bash`            |
 | Check pod environment variables  | `kubectl exec redis-master-ft9ex env`         |
 | Delete pod                       | `kubectl delete pod hello-node-95913-n63qs`   |
 | Start a service                  | `kubectl run hello --image=my_img --port=80`  |
