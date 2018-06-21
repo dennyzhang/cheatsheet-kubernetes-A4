@@ -79,7 +79,7 @@ minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 | Get configuration                                   | `kubectl config view`                                                                                                                               |
 | Get component status                                | `kubectl get componentstatus`                                                                                                                       |
 | List pods with node info attached                   | `kubectl get pod -o wide`                                                                                                                           |
-| List pods with docker images attached               | `kubectl get pods -n $namespace -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'` |
+| List pods with docker images attached               | `kubectl get pods -n $NAMESPACE -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'` |
 | Get node status                                     | `kubectl describe node $node_name`                                                                                                                  |
 | Get services for current namespace                  | `kubectl get svc`                                                                                                                                   |
 | Get all services for all namespace                  | `kubectl get service --all-namespaces`                                                                                                              |
