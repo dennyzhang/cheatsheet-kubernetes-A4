@@ -78,11 +78,11 @@ Table of Contents
 | List all pods                         | `kubectl get pods –all-namespaces`                                                                                                                      |
 | List pods with node info attached     | `kubectl get pod -o wide`                                                                                                                               |
 | List pods with docker images attached | `kubectl get pods -n $NAMESPACE -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'` |
+| List all pods with labels             | `kubectl get pods --show-labels`                                                                                                                        |
 | List all services                     | `kubectl get services`                                                                                                                                  |
 | Get pod info                          | `kubectl describe pod srv-mysql-server`                                                                                                                 |
 | Add label to pod                      | `kubectl label pods labelex owner=denny`                                                                                                                |
-| List all pods with labels             | `kubectl get pods --show-labels`                                                                                                                        |
-| Filter pod by label                   | `kubectl get pods --selector owner=michael                                                                                                              |
+| Filter pod by label                   | `kubectl get pods --selector owner=michael`                                                                                                             |
 
 # Common Commands
 
