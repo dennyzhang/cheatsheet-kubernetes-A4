@@ -13,14 +13,14 @@ Table of Contents
 =================
 
    * [Key Concepts](#key-concepts)
-   * [Minikube](#minikube)
    * [Kubernets Critical Files](#kubernets-critical-files)
    * [Check status](#check-status)
+   * [Pod](#pod)
    * [Common Commands](#common-commands)
    * [Namespace &amp; Security](#namespace--security)
-   * [Pod](#pod)
    * [Volume](#volume)
    * [Scale &amp; Deployment](#scale--deployment)
+   * [Minikube](#minikube)
    * [Related Resources](#related-resources)
    * [License](#license)
 
@@ -34,20 +34,6 @@ Table of Contents
 | CNI    | Container Network Interface       |
 | CSI    | Container Storage Interface       |
 | CNCF   | Cloud Native Computing Foundation |
-
-# Minikube
-
-minikube in GitHub: [link](https://github.com/kubernetes/minikube)
-
-| Name                   | Command                      |
-| :--------------------- | --------------------------   |
-| Start minikube env     | `minikube start`             |
-| Get dashboard          | `minikube dashboard`         |
-| ssh to minikube vm     | `minikube ssh`               |
-| Get ip                 | `minikube ip`                |
-| Get cluster info       | `kubectl cluster-info`       |
-| List addons            | `minikube addons list`       |
-| Get service info       | `minikube service $srv_name` |
 
 # Kubernets Critical Files
 
@@ -72,42 +58,49 @@ minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 
 # Check status
 
-| Name                                                | Command                                                                                                                                             |
-| :-------------------------------------------------- | -----------------------------------------------------                                                                                               |
-| Get kubectl version                                 | `kubectl version`                                                                                                                                   |
-| Get cluster info                                    | `kubectl cluster-info`                                                                                                                              |
-| Get configuration                                   | `kubectl config view`                                                                                                                               |
-| Get component status                                | `kubectl get componentstatus`                                                                                                                       |
-| List pods with node info attached                   | `kubectl get pod -o wide`                                                                                                                           |
-| List pods with docker images attached               | `kubectl get pods -n $NAMESPACE -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'` |
-| Get node status                                     | `kubectl describe node $node_name`                                                                                                                  |
-| Get services for current namespace                  | `kubectl get svc`                                                                                                                                   |
-| Get all services for all namespace                  | `kubectl get service --all-namespaces`                                                                                                              |
-| Get system conf                                     | `kubectl -n kube-system get cm kubeadm-config -oyaml`                                                                                               |
-| Query healthcheck endpoint                          | `curl -L http://127.0.0.1:10250/healthz`                                                                                                            |
+| Name                                 | Command                                               |
+| :----------------------------------- | ----------------------------------------------------- |
+| Get kubectl version                  | `kubectl version`                                     |
+| Get cluster info                     | `kubectl cluster-info`                                |
+| Get configuration                    | `kubectl config view`                                 |
+| Get component status                 | `kubectl get componentstatus`                         |
+| Get node status                      | `kubectl describe node $node_name`                    |
+| Get services for current namespace   | `kubectl get svc`                                     |
+| Get all services for all namespace   | `kubectl get service --all-namespaces`                |
+| Get system conf                      | `kubectl -n kube-system get cm kubeadm-config -oyaml` |
+| Query healthcheck endpoint           | `curl -L http://127.0.0.1:10250/healthz`              |
+
+# Pod
+
+| Name                                  | Command                                                                                                                                                 |
+| :-----------------------------------  | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| List all pods                         | `kubectl get pods`                                                                                                                                      |
+| List all pods                         | `kubectl get pods –all-namespaces`                                                                                                                      |
+| List pods with node info attached     | `kubectl get pod -o wide`                                                                                                                               |
+| List pods with docker images attached | `kubectl get pods -n $NAMESPACE -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'` |
+| List all services                     | `kubectl get services`                                                                                                                                  |
+| Get pod info                          | `kubectl describe pod srv-mysql-server`                                                                                                                 |
+| Add label to pod                      | `kubectl label pods labelex owner=denny`                                                                                                                |
+| List all pods with labels             | `kubectl get pods --show-labels`                                                                                                                        |
+| Filter pod by label                   | `kubectl get pods --selector owner=michael                                                                                                              |
 
 # Common Commands
 
-| Name                             | Command                                      |
-| :------------------------------- | ------------------------------------------   |
-| List all services                | `kubectl get services`                       |
-| List all pods                    | `kubectl get pods`                           |
-| List all pods                    | `kubectl get pods –all-namespaces`           |
-| List all pods with details       | `kubectl get pods -o wide`                   |
-| Get pod info                     | `kubectl describe pod srv-mysql-server`      |
-| Open a bash terminal in a pod    | `kubectl exec -ti storage -- bash`           |
-| Check pod environment variables  | `kubectl exec redis-master-ft9ex env`        |
-| Delete pod                       | `kubectl delete pod hello-node-95913-n63qs`  |
-| Start a service                  | `kubectl run hello --image=my_img --port=80` |
-| Similar to `docker ps`           | `kubectl get nodes`                          |
-| Similar to `docker inspect`      | `kubectl describe pod nginx-app-413181-cn`   |
-| Similar to `docker logs`         | `kubectl logs`                               |
-| Similar to `docker exec`         | `kubectl exec`                               |
-| View cluster events              | `kubectl get events`                         |
-| Get deployment info              | `kubectl get deploy`                         |
-| Get replication controller       | `kubectl get rc`                             |
-| Delete service                   | `kubectl delete service nginxservice`        |
-| Delete replication controller    | `kubectl delete rc nginx`                    |
+| Name                             | Command                                       |
+| :------------------------------- | --------------------------------------------- |
+| Open a bash terminal in a pod    | `kubectl exec -ti storage -- bash`            |
+| Check pod environment variables  | `kubectl exec redis-master-ft9ex env`         |
+| Delete pod                       | `kubectl delete pod hello-node-95913-n63qs`   |
+| Start a service                  | `kubectl run hello --image=my_img --port=80`  |
+| Similar to `docker ps`           | `kubectl get nodes`                           |
+| Similar to `docker inspect`      | `kubectl describe pod nginx-app-413181-cn`    |
+| Similar to `docker logs`         | `kubectl logs`                                |
+| Similar to `docker exec`         | `kubectl exec`                                |
+| View cluster events              | `kubectl get events`                          |
+| Get deployment info              | `kubectl get deploy`                          |
+| Get replication controller       | `kubectl get rc`                              |
+| Delete service                   | `kubectl delete service nginxservice`         |
+| Delete replication controller    | `kubectl delete rc nginx`                     |
 
 # Namespace & Security
 
@@ -116,14 +109,6 @@ minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 | list authenticated contexts      | `kubectl config get-contexts`              |
 | set the context to interact with | `kubectl config use-context $context_name` |
 | list all namespaces defined      | `kubectl get namespaces`                   |
-
-# Pod
-
-| Name                       | Command                                     |
-| :------------------------- | ------------------------------------------- |
-| Add label to pod           | `kubectl label pods labelex owner=denny`    |
-| List all pods with labels  | `kubectl get pods --show-labels`            |
-| Filter pod by label        | `kubectl get pods --selector owner=michael  |
 
 # Volume
 
@@ -141,6 +126,20 @@ minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 | Roll backup            | `kubectl rolling-update app-v1 app-v2 --rollback`     |
 | Check update status    | `kubectl rollout status deployment/nginx-app`         |
 | Check update history   | `kubectl rollout history deployment/nginx-app`        |
+
+# Minikube
+
+minikube in GitHub: [link](https://github.com/kubernetes/minikube)
+
+| Name                   | Command                      |
+| :--------------------- | --------------------------   |
+| Start minikube env     | `minikube start`             |
+| Get dashboard          | `minikube dashboard`         |
+| ssh to minikube vm     | `minikube ssh`               |
+| Get ip                 | `minikube ip`                |
+| Get cluster info       | `kubectl cluster-info`       |
+| List addons            | `minikube addons list`       |
+| Get service info       | `minikube service $srv_name` |
 
 <a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
 
