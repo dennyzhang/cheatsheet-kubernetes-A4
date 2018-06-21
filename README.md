@@ -72,18 +72,19 @@ minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 
 # Check status
 
-| Name                                                | Command                                               |
-| :-------------------------------------------------- | ----------------------------------------------------- |
-| Get kubectl version                                 | `kubectl version`                                     |
-| Get cluster info                                    | `kubectl cluster-info`                                |
-| Get configuration                                   | `kubectl config view`                                 |
-| Get component status                                | `kubectl get componentstatus`                         |
-| List pods with node info associated                 | `kubectl get pod -o wide`                             |
-| Get node status                                     | `kubectl describe node $node_name`                    |
-| Get services for current namespace                  | `kubectl get svc`                                     |
-| Get all services for all namespace                  | `kubectl get service --all-namespaces`                |
-| Get system conf                                     | `kubectl -n kube-system get cm kubeadm-config -oyaml` |
-| Query healthcheck endpoint                          | `curl -L http://127.0.0.1:10250/healthz`              |
+| Name                                                | Command                                                                                                                                             |
+| :-------------------------------------------------- | -----------------------------------------------------                                                                                               |
+| Get kubectl version                                 | `kubectl version`                                                                                                                                   |
+| Get cluster info                                    | `kubectl cluster-info`                                                                                                                              |
+| Get configuration                                   | `kubectl config view`                                                                                                                               |
+| Get component status                                | `kubectl get componentstatus`                                                                                                                       |
+| List pods with node info attached                   | `kubectl get pod -o wide`                                                                                                                           |
+| List pods with docker images attached               | `kubectl get pods -n $namespace -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'` |
+| Get node status                                     | `kubectl describe node $node_name`                                                                                                                  |
+| Get services for current namespace                  | `kubectl get svc`                                                                                                                                   |
+| Get all services for all namespace                  | `kubectl get service --all-namespaces`                                                                                                              |
+| Get system conf                                     | `kubectl -n kube-system get cm kubeadm-config -oyaml`                                                                                               |
+| Query healthcheck endpoint                          | `curl -L http://127.0.0.1:10250/healthz`                                                                                                            |
 
 # Common Commands
 
