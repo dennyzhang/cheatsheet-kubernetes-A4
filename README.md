@@ -71,18 +71,20 @@ Table of Contents
 
 # Pod
 
-| Name                                  | Command                                                                                                                                                 |
-| :-----------------------------------  | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| List all pods                         | `kubectl get pods`                                                                                                                                      |
-| List all pods                         | `kubectl get pods –all-namespaces`                                                                                                                      |
-| List pods with node info attached     | `kubectl get pod -o wide`                                                                                                                               |
-| List pods with docker images attached | `kubectl get pods -n $NAMESPACE -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'` |
-| List all pods with labels             | `kubectl get pods --show-labels`                                                                                                                        |
-| List all services                     | `kubectl get services`                                                                                                                                  |
-| List all critical pods                | `kubectl get -n kube-system pods -a`                                                                                                                    |
-| Get pod info                          | `kubectl describe pod srv-mysql-server`                                                                                                                 |
-| Add label to pod                      | `kubectl label pods labelex owner=denny`                                                                                                                |
-| Filter pod by label                   | `kubectl get pods --selector owner=michael`                                                                                                             |
+| Name                         | Command                                                                                                                                   |
+| :----------------------      | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Get pod by selector          | `pod_name=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')`                              |
+| List pods with docker images | `kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'` |
+| kubectl run command          | `kubectl exec -it -n "$namespace" "$pod_name"  -- sh -c "echo $test_msg  >>/dev/termination-log"`                                         |
+| List all pods with labels    | `kubectl get pods --show-labels`                                                                                                          |
+| List all pods                | `kubectl get pods`                                                                                                                        |
+| List all pods                | `kubectl get pods –all-namespaces`                                                                                                        |
+| List pods with more info     | `kubectl get pod -o wide`                                                                                                                 |
+| List all services            | `kubectl get services`                                                                                                                    |
+| List all critical pods       | `kubectl get -n kube-system pods -a`                                                                                                      |
+| Get pod info                 | `kubectl describe pod srv-mysql-server`                                                                                                   |
+| Add label to pod             | `kubectl label pods labelex owner=denny`                                                                                                  |
+| Filter pod by label          | `kubectl get pods --selector owner=michael`                                                                                               |
 
 # Common Commands
 
@@ -119,13 +121,17 @@ Table of Contents
 
 # Scale & Deployment
 
-| Name                   | Command                                               |
-| :--------------------- | :-----------------------------------------------      |
-| Scale out              | `kubectl scale --replicas=3 deployment/nginx-app`     |
-| online rolling upgrade | `kubectl rolling-update app-v1 app-v2 --image=img:v2` |
-| Roll backup            | `kubectl rolling-update app-v1 app-v2 --rollback`     |
-| Check update status    | `kubectl rollout status deployment/nginx-app`         |
-| Check update history   | `kubectl rollout history deployment/nginx-app`        |
+[link](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment)
+
+| Name                   | Command                                                       |
+| :--------------------- | :-----------------------------------------------              |
+| Scale out              | `kubectl scale --replicas=3 deployment/nginx-app`             |
+| online rolling upgrade | `kubectl rolling-update app-v1 app-v2 --image=img:v2`         |
+| Roll backup            | `kubectl rolling-update app-v1 app-v2 --rollback`             |
+| List rollout           | `kubectl get rs`                                              |
+| Check update status    | `kubectl rollout status deployment/nginx-app`                 |
+| Check update history   | `kubectl rollout history deployment/nginx-app`                |
+| Pause/Resume           | `kubectl rollout pause deployment/nginx-deployment`, `resume` |
 
 # Minikube
 
