@@ -137,15 +137,16 @@ Table of Contents
 
 minikube in GitHub: [link](https://github.com/kubernetes/minikube)
 
-| Name                   | Command                      |
-| :--------------------- | --------------------------   |
-| Start minikube env     | `minikube start`             |
-| Get dashboard          | `minikube dashboard`         |
-| ssh to minikube vm     | `minikube ssh`               |
-| Get ip                 | `minikube ip`                |
-| Get cluster info       | `kubectl cluster-info`       |
-| List addons            | `minikube addons list`       |
-| Get service info       | `minikube service $srv_name` |
+| Name                   | Command                        |
+| :--------------------- | ------------------------------ |
+| Start minikube env     | `minikube start`               |
+| minikube docker-env    | `eval $(minikube docker-env)`  |
+| Get dashboard          | `minikube dashboard`           |
+| ssh to minikube vm     | `minikube ssh`                 |
+| Get ip                 | `minikube ip`                  |
+| Get cluster info       | `kubectl cluster-info`         |
+| List addons            | `minikube addons list`         |
+| Get service info       | `minikube service $srv_name`   |
 
 <a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
 
