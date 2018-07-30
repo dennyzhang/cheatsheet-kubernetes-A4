@@ -30,17 +30,17 @@ File me [[https://github.com/DennyZhang/cheatsheet-kubernetes-A4/issues][Issues]
 See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
 ** Key Concepts
 
-| Name   | Summary                           |
-| :----- | ---------------------             |
-| CRI    | Container Runtime Interface       |
-| CNI    | Container Network Interface       |
-| CSI    | Container Storage Interface       |
-| CNCF   | Cloud Native Computing Foundation |
+| Name | Summary                           |
+|------+-----------------------------------|
+| CRI  | Container Runtime Interface       |
+| CNI  | Container Network Interface       |
+| CSI  | Container Storage Interface       |
+| CNCF | Cloud Native Computing Foundation |
 
 ** Kubernets Critical Files
 
 | Name                                                  | Summary                   |
-| :---------------------------------------------------  | ------------------------- |
+|-------------------------------------------------------+---------------------------|
 | /etc/kubernetes/                                      | config folder             |
 | /etc/kubernetes/pki/                                  | certificate files         |
 | /etc/kubernetes/kubelet.conf                          | credentials to API server |
@@ -59,22 +59,22 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 
 ** Check status
 
-| Name                                 | Command                                               |
-| :----------------------------------- | ----------------------------------------------------- |
-| Get kubectl version                  | =kubectl version=                                     |
-| Get cluster info                     | =kubectl cluster-info=                                |
-| Get configuration                    | =kubectl config view=                                 |
-| Get component status                 | =kubectl get componentstatus=                         |
-| Get node status                      | =kubectl describe node $node_name=                    |
-| Get services for current namespace   | =kubectl get svc=                                     |
-| Get all services for all namespace   | =kubectl get service --all-namespaces=                |
-| Get system conf                      | =kubectl -n kube-system get cm kubeadm-config -oyaml= |
-| Query healthcheck endpoint           | =curl -L http://127.0.0.1:10250/healthz=              |
+| Name                               | Command                                               |
+|------------------------------------+-------------------------------------------------------|
+| Get kubectl version                | =kubectl version=                                     |
+| Get cluster info                   | =kubectl cluster-info=                                |
+| Get configuration                  | =kubectl config view=                                 |
+| Get component status               | =kubectl get componentstatus=                         |
+| Get node status                    | =kubectl describe node $node_name=                    |
+| Get services for current namespace | =kubectl get svc=                                     |
+| Get all services for all namespace | =kubectl get service --all-namespaces=                |
+| Get system conf                    | =kubectl -n kube-system get cm kubeadm-config -oyaml= |
+| Query healthcheck endpoint         | =curl -L http://127.0.0.1:10250/healthz=              |
 
 ** Pod
 
 | Name                         | Command                                                                                                                                   |
-| :----------------------      | ----------------------------------------------------------------------------------------------------------------------------------------- |
+|------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------|
 | Get pod by selector          | =pod_name=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')=                              |
 | List pods with docker images | =kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'= |
 | kubectl run command          | =kubectl exec -it -n "$namespace" "$pod_name"  -- sh -c "echo $test_msg  >>/dev/termination-log"=                                         |
@@ -90,43 +90,43 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 
 ** Common Commands
 
-| Name                             | Command                                       |
-| :------------------------------- | --------------------------------------------- |
-| Open a bash terminal in a pod    | =kubectl exec -it storage -- bash=            |
-| Check pod environment variables  | =kubectl exec redis-master-ft9ex env=         |
-| Delete pod                       | =kubectl delete pod hello-node-95913-n63qs=   |
-| Start a service                  | =kubectl run hello --image=my_img --port=80=  |
-| Similar to =docker ps=           | =kubectl get nodes=                           |
-| Similar to =docker inspect=      | =kubectl describe pod nginx-app-413181-cn=    |
-| Similar to =docker logs=         | =kubectl logs=                                |
-| Similar to =docker exec=         | =kubectl exec=                                |
-| View cluster events              | =kubectl get events=                          |
-| Get deployment info              | =kubectl get deploy=                          |
-| Get replication controller       | =kubectl get rc=                              |
-| Delete service                   | =kubectl delete service nginxservice=         |
-| Delete replication controller    | =kubectl delete rc nginx=                     |
+| Name                            | Command                                      |
+|---------------------------------+----------------------------------------------|
+| Open a bash terminal in a pod   | =kubectl exec -it storage -- bash=           |
+| Check pod environment variables | =kubectl exec redis-master-ft9ex env=        |
+| Delete pod                      | =kubectl delete pod hello-node-95913-n63qs=  |
+| Start a service                 | =kubectl run hello --image=my_img --port=80= |
+| Similar to =docker ps=          | =kubectl get nodes=                          |
+| Similar to =docker inspect=     | =kubectl describe pod nginx-app-413181-cn=   |
+| Similar to =docker logs=        | =kubectl logs=                               |
+| Similar to =docker exec=        | =kubectl exec=                               |
+| View cluster events             | =kubectl get events=                         |
+| Get deployment info             | =kubectl get deploy=                         |
+| Get replication controller      | =kubectl get rc=                             |
+| Delete service                  | =kubectl delete service nginxservice=        |
+| Delete replication controller   | =kubectl delete rc nginx=                    |
 
 ** Namespace & Security
 
 | Name                             | Command                                    |
-| :------------------------------- | ------------------------------------------ |
+|----------------------------------+--------------------------------------------|
 | list authenticated contexts      | =kubectl config get-contexts=              |
 | set the context to interact with | =kubectl config use-context $context_name= |
 | list all namespaces defined      | =kubectl get namespaces=                   |
 
 ** Volume
 
-| Name                       | Command                         |
-| :------------------------- | ------------------------------- |
-| Check the mounted volumes  | =kubectl exec storage ls /data= |
-| Check persist volume       | =kubectl describe pv pv0001=    |
+| Name                      | Command                         |
+|---------------------------+---------------------------------|
+| Check the mounted volumes | =kubectl exec storage ls /data= |
+| Check persist volume      | =kubectl describe pv pv0001=    |
 
 ** Scale & Deployment
 
 [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][link]]
 
 | Name                   | Command                                                       |
-| :--------------------- | :-----------------------------------------------              |
+|------------------------+---------------------------------------------------------------|
 | Scale out              | =kubectl scale --replicas=3 deployment/nginx-app=             |
 | online rolling upgrade | =kubectl rolling-update app-v1 app-v2 --image=img:v2=         |
 | Roll backup            | =kubectl rolling-update app-v1 app-v2 --rollback=             |
@@ -139,16 +139,16 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 
 minikube in GitHub: [[https://github.com/kubernetes/minikube][link]]
 
-| Name                   | Command                        |
-| :--------------------- | ------------------------------ |
-| Start minikube env     | =minikube start=               |
-| minikube docker-env    | =eval $(minikube docker-env)=  |
-| Get dashboard          | =minikube dashboard=           |
-| ssh to minikube vm     | =minikube ssh=                 |
-| Get ip                 | =minikube ip=                  |
-| Get cluster info       | =kubectl cluster-info=         |
-| List addons            | =minikube addons list=         |
-| Get service info       | =minikube service $srv_name=   |
+| Name                | Command                       |
+|---------------------+-------------------------------|
+| Start minikube env  | =minikube start=              |
+| minikube docker-env | =eval $(minikube docker-env)= |
+| Get dashboard       | =minikube dashboard=          |
+| ssh to minikube vm  | =minikube ssh=                |
+| Get ip              | =minikube ip=                 |
+| Get cluster info    | =kubectl cluster-info=        |
+| List addons         | =minikube addons list=        |
+| Get service info    | =minikube service $srv_name=  |
 
 
 TODO: rolling-update command is imperative, better use Deployments rollout. It's declarative.
@@ -190,63 +190,6 @@ Available Commands:
 ...
 ...
 #+END_EXAMPLE
-* Org-mode
-#+BEGIN_HTML
-<a href="https://www.dennyzhang.com"><img align="right" width="201" height="268" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/denny_201706.png"></a>
-
-<a href="https://www.dennyzhang.com"><img align="right" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
-#+END_HTML
-** org-mode export
-| Name                        | Comment                                   |
-|-----------------------------+-------------------------------------------|
-| Export org-mode to markdown | =org-md-export-to-markdown= =C-c C-e m m= |
-** Different Annotations
-- Add comment
-#+BEGIN_QUOTE
- #+BEGIN_COMMENT
-
- /Foo/
-
- #+BEGIN_SRC c++
- int main() { }
- #+END_SRC
-
- #+END_COMMENT
-#+END_QUOTE
-- Add Quote
-#+BEGIN_QUOTE
- #+BEGIN_QUOTE
-
- /Example:/
-
- This is blockquote text.
-
- #+END_QUOTE
-#+END_QUOTE
-
-- Center Text
-#+BEGIN_QUOTE
- not center
- #+BEGIN_CENTER
- center
- #+END_CENTER
- not center, again
-
-#+END_QUOTE
-
-** Emphasis
-| *bold* *bold*                                                        | [[http://www.google.com]] *bold*                                                        | [[http://www.xkcd.com][helpful text link]] *bold*                                                        | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] *bold*                                                        | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] *bold*                                                        |
-| *bold* /italic/                                                      | [[http://www.google.com]] /italic/                                                      | [[http://www.xkcd.com][helpful text link]] /italic/                                                      | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] /italic/                                                      | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] /italic/                                                      |
-| *bold* =code=                                                        | [[http://www.google.com]] =code=                                                        | [[http://www.xkcd.com][helpful text link]] =code=                                                        | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] =code=                                                        | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] =code=                                                        |
-| *bold* ~verbatim~                                                    | [[http://www.google.com]] ~verbatim~                                                    | [[http://www.xkcd.com][helpful text link]] ~verbatim~                                                    | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] ~verbatim~                                                    | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] ~verbatim~                                                    |
-| *bold* _underline_                                                   | [[http://www.google.com]] _underline_                                                   | [[http://www.xkcd.com][helpful text link]] _underline_                                                   | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] _underline_                                                   | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] _underline_                                                   |
-| *bold* +strikethrough+                                               | [[http://www.google.com]] +strikethrough+                                               | [[http://www.xkcd.com][helpful text link]] +strikethrough+                                               | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] +strikethrough+                                               | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] +strikethrough+                                               |
-| *bold* [[http://www.bing.com]]                                           | [[http://www.google.com]] [[http://www.bing.com]]                                           | [[http://www.xkcd.com][helpful text link]] [[http://www.bing.com]]                                           | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.bing.com]]                                           | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.bing.com]]                                           |
-| *bold* [[http://www.google.com]]                                         | [[http://www.google.com]] [[http://www.google.com]]                                         | [[http://www.xkcd.com][helpful text link]] [[http://www.google.com]]                                         | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.google.com]]                                         | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.google.com]]                                         |
-| *bold* [[http://www.xkcd.com][helpful text link]]                                             | [[http://www.google.com]] [[http://www.xkcd.com][helpful text link]]                                             | [[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][helpful text link]]                                             | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][helpful text link]]                                             | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][helpful text link]]                                             |
-| *bold* [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.google.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.xkcd.com][helpful text link]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] |
-| *bold* [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.google.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       |
-| *bold* <http://www.google.com>                                       | [[http://www.google.com]] <http://www.google.com>                                       | [[http://www.xkcd.com][helpful text link]] <http://www.google.com>                                       | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] <http://www.google.com>                                       | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] <http://www.google.com>                                       |
 * More Resources
 License: Code is licensed under [[https://www.dennyzhang.com/wp-content/mit_license.txt][MIT License]].
 
