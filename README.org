@@ -1,6 +1,270 @@
--*- mode:org; fill-column:70; coding:utf-8;  -*-
-#+SEQ_TODO: TODO HALF ASSIGN | DONE CANCELED BYPASS DELEGATE DEFERRED
-* [#A] Kubernets                                                  :IMPORTANT:
+* org-mode configuration                                           :noexport:
+#+STARTUP: overview customtime noalign logdone hidestars
+#+TITLE:  Emacs CheatSheet
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+AUTHOR: Denny Zhang
+#+EMAIL:  denny@dennyzhang.com
+#+TAGS: noexport(n)
+#+PRIORITIES: A D C
+#+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:nil skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+EXPORT_EXCLUDE_TAGS: exclude noexport
+#+SEQ_TODO: TODO HALF ASSIGN | DONE BYPASS DELEGATE CANCELED DEFERRED
+#+LINK_UP:   
+#+LINK_HOME: 
+* Summary
+#+BEGIN_HTML
+<a href="https://www.linkedin.com/in/dennyzhang001"><img src="https://www.dennyzhang.com/wp-content/uploads/sns/linkedin.png" alt="linkedin" /></a>
+<a href="https://github.com/DennyZhang"><img src="https://www.dennyzhang.com/wp-content/uploads/sns/github.png" alt="github" /></a>
+<a href="https://www.dennyzhang.com/slack" target="_blank" rel="nofollow"><img src="http://slack.dennyzhang.com/badge.svg" alt="slack"/></a>
+<a href="https://github.com/DennyZhang"><img align="right" width="200" height="183" src="https://www.dennyzhang.com/wp-content/uploads/denny/watermark/github.png" /></a>
+
+<br/><br/>
+
+<a href="http://makeapullrequest.com" target="_blank" rel="nofollow"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"/></a>
+#+END_HTML
+* CheatSheet
+File me [[https://github.com/DennyZhang/cheatsheet-kubernetes-A4/issues][Issues]] or star [[https://github.com/DennyZhang/cheatsheet-kubernetes-A4][this repo]].
+
+See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
+** Key Concepts
+
+| Name   | Summary                           |
+| :----- | ---------------------             |
+| CRI    | Container Runtime Interface       |
+| CNI    | Container Network Interface       |
+| CSI    | Container Storage Interface       |
+| CNCF   | Cloud Native Computing Foundation |
+
+** Kubernets Critical Files
+
+| Name                                                  | Summary                   |
+| :---------------------------------------------------  | ------------------------- |
+| /etc/kubernetes/                                      | config folder             |
+| /etc/kubernetes/pki/                                  | certificate files         |
+| /etc/kubernetes/kubelet.conf                          | credentials to API server |
+| /etc/kubernetes/admin.conf                            | superuser credentials     |
+| /var/lib/kubelet/                                     | kubernets working dir     |
+| /var/lib/docker                                       | docker working dir        |
+| /var/lib/etcd                                         |                           |
+| /etc/cni/net.d                                        | network cni               |
+| /var/log/containers                                   |                           |
+| /var/log/pods                                         | log files                 |
+| export KUBECONFIG=/etc/kubernetes/admin.conf          | env                       |
+| /etc/systemd/system/kubelet.service.d/10-kubeadm.conf | env                       |
+| kubelet logs                                          | logs                      |
+
+<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+
+** Check status
+
+| Name                                 | Command                                               |
+| :----------------------------------- | ----------------------------------------------------- |
+| Get kubectl version                  | =kubectl version=                                     |
+| Get cluster info                     | =kubectl cluster-info=                                |
+| Get configuration                    | =kubectl config view=                                 |
+| Get component status                 | =kubectl get componentstatus=                         |
+| Get node status                      | =kubectl describe node $node_name=                    |
+| Get services for current namespace   | =kubectl get svc=                                     |
+| Get all services for all namespace   | =kubectl get service --all-namespaces=                |
+| Get system conf                      | =kubectl -n kube-system get cm kubeadm-config -oyaml= |
+| Query healthcheck endpoint           | =curl -L http://127.0.0.1:10250/healthz=              |
+
+** Pod
+
+| Name                         | Command                                                                                                                                   |
+| :----------------------      | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Get pod by selector          | =pod_name=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')=                              |
+| List pods with docker images | =kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'= |
+| kubectl run command          | =kubectl exec -it -n "$namespace" "$pod_name"  -- sh -c "echo $test_msg  >>/dev/termination-log"=                                         |
+| List all pods with labels    | =kubectl get pods --show-labels=                                                                                                          |
+| List all pods                | =kubectl get pods=                                                                                                                        |
+| List all pods                | =kubectl get pods –all-namespaces=                                                                                                        |
+| List pods with more info     | =kubectl get pod -o wide=                                                                                                                 |
+| List all services            | =kubectl get services=                                                                                                                    |
+| List all critical pods       | =kubectl get -n kube-system pods -a=                                                                                                      |
+| Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                   |
+| Add label to pod             | =kubectl label pods labelex owner=denny=                                                                                                  |
+| Filter pod by label          | =kubectl get pods --selector owner=michael=                                                                                               |
+
+** Common Commands
+
+| Name                             | Command                                       |
+| :------------------------------- | --------------------------------------------- |
+| Open a bash terminal in a pod    | =kubectl exec -it storage -- bash=            |
+| Check pod environment variables  | =kubectl exec redis-master-ft9ex env=         |
+| Delete pod                       | =kubectl delete pod hello-node-95913-n63qs=   |
+| Start a service                  | =kubectl run hello --image=my_img --port=80=  |
+| Similar to =docker ps=           | =kubectl get nodes=                           |
+| Similar to =docker inspect=      | =kubectl describe pod nginx-app-413181-cn=    |
+| Similar to =docker logs=         | =kubectl logs=                                |
+| Similar to =docker exec=         | =kubectl exec=                                |
+| View cluster events              | =kubectl get events=                          |
+| Get deployment info              | =kubectl get deploy=                          |
+| Get replication controller       | =kubectl get rc=                              |
+| Delete service                   | =kubectl delete service nginxservice=         |
+| Delete replication controller    | =kubectl delete rc nginx=                     |
+
+** Namespace & Security
+
+| Name                             | Command                                    |
+| :------------------------------- | ------------------------------------------ |
+| list authenticated contexts      | =kubectl config get-contexts=              |
+| set the context to interact with | =kubectl config use-context $context_name= |
+| list all namespaces defined      | =kubectl get namespaces=                   |
+
+** Volume
+
+| Name                       | Command                         |
+| :------------------------- | ------------------------------- |
+| Check the mounted volumes  | =kubectl exec storage ls /data= |
+| Check persist volume       | =kubectl describe pv pv0001=    |
+
+** Scale & Deployment
+
+[[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][link]]
+
+| Name                   | Command                                                       |
+| :--------------------- | :-----------------------------------------------              |
+| Scale out              | =kubectl scale --replicas=3 deployment/nginx-app=             |
+| online rolling upgrade | =kubectl rolling-update app-v1 app-v2 --image=img:v2=         |
+| Roll backup            | =kubectl rolling-update app-v1 app-v2 --rollback=             |
+| List rollout           | =kubectl get rs=                                              |
+| Check update status    | =kubectl rollout status deployment/nginx-app=                 |
+| Check update history   | =kubectl rollout history deployment/nginx-app=                |
+| Pause/Resume           | =kubectl rollout pause deployment/nginx-deployment=, =resume= |
+
+** Minikube
+
+minikube in GitHub: [[https://github.com/kubernetes/minikube][link]]
+
+| Name                   | Command                        |
+| :--------------------- | ------------------------------ |
+| Start minikube env     | =minikube start=               |
+| minikube docker-env    | =eval $(minikube docker-env)=  |
+| Get dashboard          | =minikube dashboard=           |
+| ssh to minikube vm     | =minikube ssh=                 |
+| Get ip                 | =minikube ip=                  |
+| Get cluster info       | =kubectl cluster-info=         |
+| List addons            | =minikube addons list=         |
+| Get service info       | =minikube service $srv_name=   |
+
+
+TODO: rolling-update command is imperative, better use Deployments rollout. It's declarative.
+
+#+BEGIN_EXAMPLE
+$ kubectl --help
+kubectl controls the Kubernetes cluster manager.
+
+Find more information at https://github.com/GoogleCloudPlatform/kubernetes.
+
+Usage:
+  kubectl [flags]
+  kubectl [command]
+
+Available Commands:
+  get            Display one or many resources
+  describe       Show details of a specific resource
+  create         Create a resource by filename or stdin
+  update         Update a resource by filename or stdin.
+  delete         Delete a resource by filename, stdin, resource and ID, or by resources and label selector.
+  namespace      SUPERCEDED: Set and view the current Kubernetes namespace
+  logs           Print the logs for a container in a pod.
+  rolling-update Perform a rolling update of the given ReplicationController.
+  scale          Set a new size for a Replication Controller.
+  exec           Execute a command in a container.
+  port-forward   Forward one or more local ports to a pod.
+  proxy          Run a proxy to the Kubernetes API server
+  run            Run a particular image on the cluster.
+  stop           Gracefully shut down a resource by id or filename.
+  expose         Take a replicated application and expose it as Kubernetes Service
+  label          Update the labels on a resource
+  config         config modifies kubeconfig files
+  cluster-info   Display cluster info
+  api-versions   Print available API versions.
+  version        Print the client and server version information.
+  help           Help about any command
+
+...
+...
+...
+#+END_EXAMPLE
+* Org-mode
+#+BEGIN_HTML
+<a href="https://www.dennyzhang.com"><img align="right" width="201" height="268" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/denny_201706.png"></a>
+
+<a href="https://www.dennyzhang.com"><img align="right" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+#+END_HTML
+** org-mode export
+| Name                        | Comment                                   |
+|-----------------------------+-------------------------------------------|
+| Export org-mode to markdown | =org-md-export-to-markdown= =C-c C-e m m= |
+** Different Annotations
+- Add comment
+#+BEGIN_QUOTE
+ #+BEGIN_COMMENT
+
+ /Foo/
+
+ #+BEGIN_SRC c++
+ int main() { }
+ #+END_SRC
+
+ #+END_COMMENT
+#+END_QUOTE
+- Add Quote
+#+BEGIN_QUOTE
+ #+BEGIN_QUOTE
+
+ /Example:/
+
+ This is blockquote text.
+
+ #+END_QUOTE
+#+END_QUOTE
+
+- Center Text
+#+BEGIN_QUOTE
+ not center
+ #+BEGIN_CENTER
+ center
+ #+END_CENTER
+ not center, again
+
+#+END_QUOTE
+
+** Emphasis
+| *bold* *bold*                                                        | [[http://www.google.com]] *bold*                                                        | [[http://www.xkcd.com][helpful text link]] *bold*                                                        | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] *bold*                                                        | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] *bold*                                                        |
+| *bold* /italic/                                                      | [[http://www.google.com]] /italic/                                                      | [[http://www.xkcd.com][helpful text link]] /italic/                                                      | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] /italic/                                                      | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] /italic/                                                      |
+| *bold* =code=                                                        | [[http://www.google.com]] =code=                                                        | [[http://www.xkcd.com][helpful text link]] =code=                                                        | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] =code=                                                        | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] =code=                                                        |
+| *bold* ~verbatim~                                                    | [[http://www.google.com]] ~verbatim~                                                    | [[http://www.xkcd.com][helpful text link]] ~verbatim~                                                    | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] ~verbatim~                                                    | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] ~verbatim~                                                    |
+| *bold* _underline_                                                   | [[http://www.google.com]] _underline_                                                   | [[http://www.xkcd.com][helpful text link]] _underline_                                                   | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] _underline_                                                   | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] _underline_                                                   |
+| *bold* +strikethrough+                                               | [[http://www.google.com]] +strikethrough+                                               | [[http://www.xkcd.com][helpful text link]] +strikethrough+                                               | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] +strikethrough+                                               | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] +strikethrough+                                               |
+| *bold* [[http://www.bing.com]]                                           | [[http://www.google.com]] [[http://www.bing.com]]                                           | [[http://www.xkcd.com][helpful text link]] [[http://www.bing.com]]                                           | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.bing.com]]                                           | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.bing.com]]                                           |
+| *bold* [[http://www.google.com]]                                         | [[http://www.google.com]] [[http://www.google.com]]                                         | [[http://www.xkcd.com][helpful text link]] [[http://www.google.com]]                                         | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.google.com]]                                         | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.google.com]]                                         |
+| *bold* [[http://www.xkcd.com][helpful text link]]                                             | [[http://www.google.com]] [[http://www.xkcd.com][helpful text link]]                                             | [[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][helpful text link]]                                             | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][helpful text link]]                                             | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][helpful text link]]                                             |
+| *bold* [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.google.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.xkcd.com][helpful text link]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] |
+| *bold* [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.google.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       |
+| *bold* <http://www.google.com>                                       | [[http://www.google.com]] <http://www.google.com>                                       | [[http://www.xkcd.com][helpful text link]] <http://www.google.com>                                       | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] <http://www.google.com>                                       | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] <http://www.google.com>                                       |
+* More Resources
+License: Code is licensed under [[https://www.dennyzhang.com/wp-content/mit_license.txt][MIT License]].
+
+- Useful links
+#+BEGIN_EXAMPLE
+- https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+- https://github.com/kubecamp/kubernetes_in_2_days
+- https://marc.xn--wckerlin-0za.ch/computer/kubernetes-on-ubuntu-16-04
+- https://codefresh.io/kubernetes-guides/kubernetes-cheat-sheet/
+#+END_EXAMPLE
+
+#+BEGIN_HTML
+<a href="https://www.dennyzhang.com"><img align="right" width="201" height="268" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/denny_201706.png"></a>
+
+<a href="https://www.dennyzhang.com"><img align="right" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+#+END_HTML
+* #  --8<-------------------------- separator ------------------------>8-- :noexport:
+* [#A] Kubernets                                         :noexport:IMPORTANT:
 https://github.com/DennyZhang/cheatsheet-kubernetes-A4
 
 k8s provides declarative primitives for the “desired state”
@@ -3888,7 +4152,217 @@ source /Users/mac/Downloads/google-cloud-sdk/path.bash.inc
    - name: varlog
      emptyDir: {}
  #+END_EXAMPLE
-* [#A] minikube
+** TODO [#A] k8s debug why termination takes time
+** TODO Kubernets availablity
+*** TODO Building High-Availability Clusters: https://kubernetes.io/docs/admin/high-availability/
+** TODO [#A] Blog: Kubernetes Service Type: NodePort, ClusterIP and Loadbalancer?
+#+BEGIN_EXAMPLE
+https://kubernetes.io/docs/concepts/services-networking/service/
+
+Publishing services - service types
+For some parts of your application (e.g. frontends) you may want to expose a Service onto an external (outside of your cluster) IP address.
+
+Kubernetes ServiceTypes allow you to specify what kind of service you want. The default is ClusterIP.
+
+Type values and their behaviors are:
+
+ClusterIP: Exposes the service on a cluster-internal IP. Choosing this value makes the service only reachable from within the cluster. This is the default ServiceType.
+NodePort: Exposes the service on each Node’s IP at a static port (the NodePort). A ClusterIP service, to which the NodePort service will route, is automatically created. You’ll be able to contact the NodePort service, from outside the cluster, by requesting <NodeIP>:<NodePort>.
+LoadBalancer: Exposes the service externally using a cloud provider’s load balancer. NodePort and ClusterIP services, to which the external load balancer will route, are automatically created.
+ExternalName: Maps the service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record with its value. No proxying of any kind is set up. This requires version 1.7 or higher of kube-dns.
+#+END_EXAMPLE
+*** Type: Loadbalancer
+*** Type: ClusterIP
+*** Type: NodePort
+If you set the type field to "NodePort", the Kubernetes master will allocate a port from a flag-configured range (default: 30000-32767)
+*** #  --8<-------------------------- separator ------------------------>8-- :noexport:
+*** TODO Now if i access IP:NodePort, will it balance the load across multiple pods ?
+https://kubernetes.io/docs/tasks/access-application-cluster/load-balance-access-application-cluster/
+#+BEGIN_EXAMPLE
+Vivek Yadav [8:34 AM]
+Hey Denny, quick question -
+
+```
+---
+ apiVersion: v1
+ kind: Service
+ metadata:
+   name: span
+   labels:
+     app: span
+ spec:
+   type: NodePort
+   ports:
+     - port: 80
+       nodePort: 30080
+   selector:
+     app: spa
+
+---
+ apiVersion: apps/v1beta2
+ kind: Deployment
+ metadata:
+   name: spa
+ spec:
+   replicas: 2
+   selector:
+     matchLabels:
+       app: spa
+   template:
+     metadata:
+       labels:
+         app: spa
+     spec:
+       containers:
+         - name: py
+           image: viveky4d4v/local-simple-python:latest
+           ports:
+             - containerPort: 8080
+         - name: nginx
+           image: viveky4d4v/local-nginx-lb:latest
+           ports:
+             - containerPort: 80
+       imagePullSecrets:
+         - name: regsecret
+
+```
+
+
+Now if i access IP:NodePort, will it balance the load across multiple pods ?
+
+
+Denny Zhang (Github . Blogger) [8:35 AM]
+I don’t think so
+#+END_EXAMPLE
+*** TODO How Does NodePort work behind the scene?
+*** #  --8<-------------------------- separator ------------------------>8-- :noexport:
+*** TODO How Loadbalancer is implemented in code?
+*** #  --8<-------------------------- separator ------------------------>8-- :noexport:
+*** TODO Does Loadbalancer works only for public cloud?
+*** TODO How I configure Ingress?
+** TODO [#A] NodePort VS clusterIP                                 :IMPORTANT:
+https://stackoverflow.com/questions/41509439/whats-the-difference-between-clusterip-nodeport-and-loadbalancer-service-types
+http://weezer.su/kubernetes-1.html
+https://docs.openshift.com/container-platform/3.3/dev_guide/getting_traffic_into_cluster.html
+
+clusterIP: You can only access this service while inside the cluster.
+** TODO [#A] k8s feature watch list
+*** I want to check pod initContainer logs, but I don't want to specify initContainer by name
+#+BEGIN_EXAMPLE
+macs-MacBook-Pro:Scenario-401 mac$ kubectl logs my-jenkins-jenkins-89889ddb7-ct7jw -c 1
+Error from server (BadRequest): container 1 is not valid for pod my-jenkins-jenkins-89889ddb7-ct7jw
+macs-MacBook-Pro:Scenario-401 mac$ kubectl logs my-jenkins-jenkins-89889ddb7-ct7jw -c  copy-default-config
+Error from server (BadRequest): container "copy-default-config" in pod "my-jenkins-jenkins-89889ddb7-ct7jw" is waiting to start: PodInitializing
+macs-MacBook-Pro:Scenario-401 mac$ kubectl logs my-jenkins-jenkins-89889ddb7-ct7jw -c  copy-default-config
+Error from server (BadRequest): container "copy-default-config" in pod "my-jenkins-jenkins-89889ddb7-ct7jw" is waiting to start: PodInitializing
+#+END_EXAMPLE
+*** Support using environment variables inside deployment yaml file
+https://github.com/kubernetes/kubernetes/issues/52787
+** TODO pod error: CreateContainerConfigError
+https://github.com/kubernetes/minikube/issues/2256
+#+BEGIN_EXAMPLE
+bash-3.2$ kubectl get pod my-wordpress-wordpress-df987548d-btvf5
+NAME                                     READY     STATUS                       RESTARTS   AGE
+my-wordpress-wordpress-df987548d-btvf5   0/1       CreateContainerConfigError   0          2m
+bash-3.2$
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+bash-3.2$ kubectl describe pod my-wordpress-wordpress-df987548d-btvf5
+Name:           my-wordpress-wordpress-df987548d-btvf5
+Namespace:      default
+Node:           minikube/192.168.99.102
+Start Time:     Fri, 05 Jan 2018 16:41:27 -0600
+Labels:         app=my-wordpress-wordpress
+                pod-template-hash=895431048
+Annotations:    kubernetes.io/created-by={"kind":"SerializedReference","apiVersion":"v1","reference":{"kind":"ReplicaSet","namespace":"default","name":"my-wordpress-wordpress-df987548d","uid":"910e01e0-f269-11e7-b6d8...
+Status:         Pending
+IP:             172.17.0.6
+Created By:     ReplicaSet/my-wordpress-wordpress-df987548d
+Controlled By:  ReplicaSet/my-wordpress-wordpress-df987548d
+Containers:
+  my-wordpress-wordpress:
+    Container ID:
+    Image:          bitnami/wordpress:4.9.1-r1
+    Image ID:
+    Ports:          80/TCP, 443/TCP
+    State:          Waiting
+      Reason:       CreateContainerConfigError
+    Ready:          False
+    Restart Count:  0
+    Requests:
+      cpu:      300m
+      memory:   512Mi
+    Liveness:   http-get http://:http/wp-login.php delay=120s timeout=5s period=10s #success=1 #failure=6
+    Readiness:  http-get http://:http/wp-login.php delay=30s timeout=3s period=5s #success=1 #failure=3
+    Environment:
+      ALLOW_EMPTY_PASSWORD:         yes
+      MARIADB_ROOT_PASSWORD:        <set to the key 'mariadb-root-password' in secret 'my-wordpress-mariadb'>  Optional: false
+      MARIADB_HOST:                 my-wordpress-mariadb
+      MARIADB_PORT_NUMBER:          3306
+      WORDPRESS_DATABASE_NAME:      bitnami_wordpress
+      WORDPRESS_DATABASE_USER:      bn_wordpress
+      WORDPRESS_DATABASE_PASSWORD:  <set to the key 'mariadb-password' in secret 'my-wordpress-mariadb'>  Optional: false
+      WORDPRESS_USERNAME:           admin
+      WORDPRESS_PASSWORD:           <set to the key 'wordpress-password' in secret 'my-wordpress-wordpress'>  Optional: false
+      WORDPRESS_EMAIL:              contact@dennyzhang.com
+      WORDPRESS_FIRST_NAME:         FirstName
+      WORDPRESS_LAST_NAME:          LastName
+      WORDPRESS_BLOG_NAME:          My DevOps Blog!
+      SMTP_HOST:
+      SMTP_PORT:
+      SMTP_USER:
+      SMTP_PASSWORD:                <set to the key 'smtp-password' in secret 'my-wordpress-wordpress'>  Optional: false
+      SMTP_USERNAME:
+      SMTP_PROTOCOL:
+    Mounts:
+      /bitnami/apache from wordpress-data (rw)
+      /bitnami/php from wordpress-data (rw)
+      /bitnami/wordpress from wordpress-data (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-tc8kd (ro)
+Conditions:
+  Type           Status
+  Initialized    True
+  Ready          False
+  PodScheduled   True
+Volumes:
+  wordpress-data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  my-wordpress-wordpress
+    ReadOnly:   false
+  default-token-tc8kd:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-tc8kd
+    Optional:    false
+QoS Class:       Burstable
+Node-Selectors:  <none>
+Tolerations:     <none>
+Events:
+  Type     Reason                 Age              From               Message
+  ----     ------                 ----             ----               -------
+  Normal   Scheduled              1m               default-scheduler  Successfully assigned my-wordpress-wordpress-df987548d-btvf5 to minikube
+  Normal   SuccessfulMountVolume  1m               kubelet, minikube  MountVolume.SetUp succeeded for volume "pvc-910644d3-f269-11e7-b6d8-08002782d6cd"
+  Normal   SuccessfulMountVolume  1m               kubelet, minikube  MountVolume.SetUp succeeded for volume "default-token-tc8kd"
+  Normal   Pulled                 1s (x7 over 1m)  kubelet, minikube  Container image "bitnami/wordpress:4.9.1-r1" already present on machine
+  Warning  Failed                 1s (x7 over 1m)  kubelet, minikube  Error: lstat /tmp/hostpath-provisioner/pvc-910644d3-f269-11e7-b6d8-08002782d6cd: no such file or directory
+  Warning  FailedSync             1s (x7 over 1m)  kubelet, minikube  Error syncing pod
+bash-3.2$
+#+END_EXAMPLE
+** TODO [#A] Certified Kubernetes Administrator (CKA)              :IMPORTANT:
+https://www.cncf.io/certification/expert/
+
+https://github.com/cncf/curriculum/blob/master/certified_kubernetes_administrator_exam_v1.8.0.pdf
+
+It is an online, proctored, performance-based test that requires solving multiple issues from a command line.
+
+Candidates have 3 hours to complete the tasks.
+** HALF Difference in between selectors and labels
+** TODO [#A] kubernetes mount a file to pod                        :IMPORTANT:
+https://stackoverflow.com/questions/33415913/whats-the-best-way-to-share-mount-one-file-into-a-pod
+https://www.linkedin.com/feed/update/urn:li:activity:6355445509146107904/
+** TODO K8S label & Selector
+https://github.com/dennyzhang/dennytest/tree/master/k8s_etcd
+* [#A] minikube                                                    :noexport:
 https://github.com/kubernetes/minikube
 https://github.com/DennyZhang/cheatsheet-kubernetes-A4
 ** install minikube
@@ -3906,8 +4380,7 @@ brew cask install minikube
  #+END_EXAMPLE
 
 ls -lth /var/lib/kubelet/pods/f2f8f500-88ba-11e8-89ad-080027cbaea4/volumes/kubernetes.io~empty-dir/varlog/1.log
-* #  --8<-------------------------- separator ------------------------>8-- :noexport:
-* [#A] kubernetes/helm: The Kubernetes Package Manager
+* [#A] kubernetes/helm: The Kubernetes Package Manager             :noexport:
 | Name    | Summary                                                                  |
 |---------+--------------------------------------------------------------------------|
 | Helm    | a chart manager.                                                         |
@@ -4169,10 +4642,9 @@ kube-system   tiller-deploy-df4fdf55d-zxdq4           0/1       Pending   0     
  #+END_EXAMPLE
 ** DONE helm start with env configured: helm install --set Master.ServiceType=NodePort stable/jenkins
    CLOSED: [2018-04-15 Sun 21:50]
-* [#A] CRD: challenges-k8s-crd
-* [#A] istio: challenges-k8s-istio
-* #  --8<-------------------------- separator ------------------------>8-- :noexport:
-* [#A] k8s metric server                                     :IMPORTANT:
+* [#A] CRD: challenges-k8s-crd                                     :noexport:
+* [#A] istio: challenges-k8s-istio                                 :noexport:
+* [#A] k8s metric server                                 :noexport:IMPORTANT:
 Metrics Server is a cluster-wide aggregator of resource usage data. 
 
 Metrics Server registered in the main API server through Kubernetes aggregator.
@@ -4254,7 +4726,7 @@ Scheduler: In the future Core Metrics will be considered in order to schedule be
 https://blog.freshtracks.io/what-is-the-the-new-kubernetes-metrics-server-849c16aa01f4
 https://blog.outlyer.com/monitoring-kubernetes-with-heapster-and-prometheus
 https://www.outcoldman.com/en/archive/2017/07/09/kubernetes-monitoring-resources/
-* Kubernetes Monitoring: prometheus, heapster
+* Kubernetes Monitoring: prometheus, heapster                      :noexport:
 https://deis.com/blog/2016/monitoring-kubernetes-with-heapster/
 https://groups.google.com/forum/#!topic/prometheus-developers/3zq4oD7if3s
 
@@ -4278,13 +4750,13 @@ Basically, if you have Prometheus, there's almost no reason to use heapster.
 ** What is the relationship of heapster and prometheus
 https://groups.google.com/forum/#!topic/prometheus-developers/3zq4oD7if3s
 https://github.com/kubernetes/heapster/issues/665
-* k8s Logging
+* k8s Logging                                                      :noexport:
 https://kubernetes.io/docs/concepts/cluster-administration/logging/
 https://kubernetes.io/blog/2015/06/cluster-level-logging-with-kubernetes/
 https://github.com/kubernetes/kubernetes/tree/release-1.0/contrib/logging
 ** DONE kubectl logs: Error from server (BadRequest): a container name must be specified for pod ...
    CLOSED: [2018-07-23 Mon 14:44]
-* k8s go client
+* k8s go client                                                    :noexport:
 ** events
 https://github.com/kubernetes/client-go/blob/master/listers/core/v1/event.go
 ** TODO Client-go does not use a Swagger generator. Instead, it uses source code generators
@@ -4326,8 +4798,7 @@ https://medium.com/programming-kubernetes/building-stuff-with-the-kubernetes-api
 #+END_SRC
 
 https://github.com/vladimirvivien/k8s-client-examples/blob/master/go/pvcwatch/main.go
-* #  --8<-------------------------- separator ------------------------>8-- :noexport:
-* k8s loadbalancer
+* k8s loadbalancer                                                 :noexport:
 ** DONE k8s service: loadbalancer
    CLOSED: [2018-06-19 Tue 13:51]
  #+BEGIN_EXAMPLE
@@ -4346,7 +4817,7 @@ https://github.com/vladimirvivien/k8s-client-examples/blob/master/go/pvcwatch/ma
    type: LoadBalancer
  EOF
  #+END_EXAMPLE
-* k8s scheduling
+* k8s scheduling                                                   :noexport:
 ** Tell k8s your estimation for resource usage(CPU/RAM) per Pod
 https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
 
@@ -4390,7 +4861,7 @@ spec:
         memory: "128Mi"
         cpu: "500m"
 #+END_EXAMPLE
-* k8s DaemonSet
+* k8s DaemonSet                                                    :noexport:
 ** DONE k8s daemonsets: ensures that all (or some) Nodes run a copy of a Pod.
    CLOSED: [2018-06-19 Tue 13:28]
  https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/
@@ -4402,10 +4873,10 @@ spec:
  - running a cluster storage daemon, such as glusterd, ceph, on each node.
  - running a logs collection daemon on every node, such as fluentd or logstash.
    - running a node monitoring daemon on every node, such as Prometheus Node Exporter, collectd, Datadog agent, New Relic agent, or Ganglia gmond.
-* [#A] etcd
+* [#A] etcd                                                        :noexport:
 https://coreos.com/etcd/docs/latest/dev-guide/interacting_v3.html
 https://coreos.com/etcd/docs/latest/v2/README.html
-* [#B] k8s addons
+* [#B] k8s addons                                                  :noexport:
 https://kubernetes.io/docs/concepts/cluster-administration/addons/
 ** DONE k8s install add-on: dashboard
   CLOSED: [2018-01-03 Wed 12:19]
@@ -4453,7 +4924,7 @@ https://blog.frognew.com/2017/09/kubeadm-install-kubernetes-1.8.html#8dashboard%
   CLOSED: [2018-01-03 Wed 12:12]
 https://github.com/kubernetes/kubectl/issues/142
 kubectl proxy --port=8001 --address=0.0.0.0
-* [#A] k8s volumes
+* [#A] k8s volumes                                                 :noexport:
   CLOSED: [2017-12-01 Fri 22:45]
 https://kubernetes.io/docs/concepts/storage/volumes
 https://kubernetes.io/docs/tasks/configure-pod-container/configure-volume-storage/
@@ -4485,7 +4956,7 @@ The access modes are:
 ReadWriteOnce – the volume can be mounted as read-write by a single node
 ReadOnlyMany – the volume can be mounted read-only by many nodes
 ReadWriteMany – the volume can be mounted as read-write by many nodes
-* [#A] kubeadm: performs the actions necessary to get a minimum viable cluster up and running
+* [#A] kubeadm: performs the actions necessary to get a minimum viable cluster up and running :noexport:
 https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/
 
 kubeadm init and kubeadm join together provides a nice user experience
@@ -4590,7 +5061,7 @@ https://marc.xn--wckerlin-0za.ch/computer/kubernetes-on-ubuntu-16-04
 
 https://github.com/kubernetes/kubeadm/blob/master/docs/design/design_v1.8.md
 https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#24-initializing-your-master
-* [#B] k8s security: secrets, authentication & authorization
+* [#B] k8s security: secrets, authentication & authorization       :noexport:
 ** what's service account: In contrast, service accounts are users managed by the Kubernetes API.
 https://kubernetes.io/docs/admin/authentication/
 https://github.com/kubernetes/kubernetes/blob/master/examples/elasticsearch/service-account.yaml
@@ -4834,7 +5305,7 @@ spec:
             key: password
   restartPolicy: Never
 #+END_EXAMPLE
-* [#B] kubectl jsonpath support
+* [#B] kubectl jsonpath support                                    :noexport:
 https://kubernetes.io/docs/reference/kubectl/jsonpath/
 
 kubectl get pods -o json
@@ -4846,217 +5317,4 @@ $ kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.
 kubectl get pods -o=jsonpath='{.items[0].metadata.name}'
 
 kubectl get pods -n oratos -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'
-* #  --8<-------------------------- separator ------------------------>8-- :noexport:
-* TODO [#A] k8s debug why termination takes time
-* TODO Kubernets availablity
-** TODO Building High-Availability Clusters: https://kubernetes.io/docs/admin/high-availability/
-* TODO [#A] Blog: Kubernetes Service Type: NodePort, ClusterIP and Loadbalancer?
-#+BEGIN_EXAMPLE
-https://kubernetes.io/docs/concepts/services-networking/service/
-
-Publishing services - service types
-For some parts of your application (e.g. frontends) you may want to expose a Service onto an external (outside of your cluster) IP address.
-
-Kubernetes ServiceTypes allow you to specify what kind of service you want. The default is ClusterIP.
-
-Type values and their behaviors are:
-
-ClusterIP: Exposes the service on a cluster-internal IP. Choosing this value makes the service only reachable from within the cluster. This is the default ServiceType.
-NodePort: Exposes the service on each Node’s IP at a static port (the NodePort). A ClusterIP service, to which the NodePort service will route, is automatically created. You’ll be able to contact the NodePort service, from outside the cluster, by requesting <NodeIP>:<NodePort>.
-LoadBalancer: Exposes the service externally using a cloud provider’s load balancer. NodePort and ClusterIP services, to which the external load balancer will route, are automatically created.
-ExternalName: Maps the service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record with its value. No proxying of any kind is set up. This requires version 1.7 or higher of kube-dns.
-#+END_EXAMPLE
-** Type: Loadbalancer
-** Type: ClusterIP
-** Type: NodePort
-If you set the type field to "NodePort", the Kubernetes master will allocate a port from a flag-configured range (default: 30000-32767)
-** #  --8<-------------------------- separator ------------------------>8-- :noexport:
-** TODO Now if i access IP:NodePort, will it balance the load across multiple pods ?
-https://kubernetes.io/docs/tasks/access-application-cluster/load-balance-access-application-cluster/
-#+BEGIN_EXAMPLE
-Vivek Yadav [8:34 AM]
-Hey Denny, quick question -
-
-```
----
- apiVersion: v1
- kind: Service
- metadata:
-   name: span
-   labels:
-     app: span
- spec:
-   type: NodePort
-   ports:
-     - port: 80
-       nodePort: 30080
-   selector:
-     app: spa
-
----
- apiVersion: apps/v1beta2
- kind: Deployment
- metadata:
-   name: spa
- spec:
-   replicas: 2
-   selector:
-     matchLabels:
-       app: spa
-   template:
-     metadata:
-       labels:
-         app: spa
-     spec:
-       containers:
-         - name: py
-           image: viveky4d4v/local-simple-python:latest
-           ports:
-             - containerPort: 8080
-         - name: nginx
-           image: viveky4d4v/local-nginx-lb:latest
-           ports:
-             - containerPort: 80
-       imagePullSecrets:
-         - name: regsecret
-
-```
-
-
-Now if i access IP:NodePort, will it balance the load across multiple pods ?
-
-
-Denny Zhang (Github . Blogger) [8:35 AM]
-I don’t think so
-#+END_EXAMPLE
-** TODO How Does NodePort work behind the scene?
-** #  --8<-------------------------- separator ------------------------>8-- :noexport:
-** TODO How Loadbalancer is implemented in code?
-** #  --8<-------------------------- separator ------------------------>8-- :noexport:
-** TODO Does Loadbalancer works only for public cloud?
-** TODO How I configure Ingress?
-* TODO [#A] NodePort VS clusterIP                                 :IMPORTANT:
-https://stackoverflow.com/questions/41509439/whats-the-difference-between-clusterip-nodeport-and-loadbalancer-service-types
-http://weezer.su/kubernetes-1.html
-https://docs.openshift.com/container-platform/3.3/dev_guide/getting_traffic_into_cluster.html
-
-clusterIP: You can only access this service while inside the cluster.
-* #  --8<-------------------------- separator ------------------------>8-- :noexport:
-* TODO [#A] k8s feature watch list
-** I want to check pod initContainer logs, but I don't want to specify initContainer by name
-#+BEGIN_EXAMPLE
-macs-MacBook-Pro:Scenario-401 mac$ kubectl logs my-jenkins-jenkins-89889ddb7-ct7jw -c 1
-Error from server (BadRequest): container 1 is not valid for pod my-jenkins-jenkins-89889ddb7-ct7jw
-macs-MacBook-Pro:Scenario-401 mac$ kubectl logs my-jenkins-jenkins-89889ddb7-ct7jw -c  copy-default-config
-Error from server (BadRequest): container "copy-default-config" in pod "my-jenkins-jenkins-89889ddb7-ct7jw" is waiting to start: PodInitializing
-macs-MacBook-Pro:Scenario-401 mac$ kubectl logs my-jenkins-jenkins-89889ddb7-ct7jw -c  copy-default-config
-Error from server (BadRequest): container "copy-default-config" in pod "my-jenkins-jenkins-89889ddb7-ct7jw" is waiting to start: PodInitializing
-#+END_EXAMPLE
-** Support using environment variables inside deployment yaml file
-https://github.com/kubernetes/kubernetes/issues/52787
-* TODO pod error: CreateContainerConfigError
-https://github.com/kubernetes/minikube/issues/2256
-#+BEGIN_EXAMPLE
-bash-3.2$ kubectl get pod my-wordpress-wordpress-df987548d-btvf5
-NAME                                     READY     STATUS                       RESTARTS   AGE
-my-wordpress-wordpress-df987548d-btvf5   0/1       CreateContainerConfigError   0          2m
-bash-3.2$
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-bash-3.2$ kubectl describe pod my-wordpress-wordpress-df987548d-btvf5
-Name:           my-wordpress-wordpress-df987548d-btvf5
-Namespace:      default
-Node:           minikube/192.168.99.102
-Start Time:     Fri, 05 Jan 2018 16:41:27 -0600
-Labels:         app=my-wordpress-wordpress
-                pod-template-hash=895431048
-Annotations:    kubernetes.io/created-by={"kind":"SerializedReference","apiVersion":"v1","reference":{"kind":"ReplicaSet","namespace":"default","name":"my-wordpress-wordpress-df987548d","uid":"910e01e0-f269-11e7-b6d8...
-Status:         Pending
-IP:             172.17.0.6
-Created By:     ReplicaSet/my-wordpress-wordpress-df987548d
-Controlled By:  ReplicaSet/my-wordpress-wordpress-df987548d
-Containers:
-  my-wordpress-wordpress:
-    Container ID:
-    Image:          bitnami/wordpress:4.9.1-r1
-    Image ID:
-    Ports:          80/TCP, 443/TCP
-    State:          Waiting
-      Reason:       CreateContainerConfigError
-    Ready:          False
-    Restart Count:  0
-    Requests:
-      cpu:      300m
-      memory:   512Mi
-    Liveness:   http-get http://:http/wp-login.php delay=120s timeout=5s period=10s #success=1 #failure=6
-    Readiness:  http-get http://:http/wp-login.php delay=30s timeout=3s period=5s #success=1 #failure=3
-    Environment:
-      ALLOW_EMPTY_PASSWORD:         yes
-      MARIADB_ROOT_PASSWORD:        <set to the key 'mariadb-root-password' in secret 'my-wordpress-mariadb'>  Optional: false
-      MARIADB_HOST:                 my-wordpress-mariadb
-      MARIADB_PORT_NUMBER:          3306
-      WORDPRESS_DATABASE_NAME:      bitnami_wordpress
-      WORDPRESS_DATABASE_USER:      bn_wordpress
-      WORDPRESS_DATABASE_PASSWORD:  <set to the key 'mariadb-password' in secret 'my-wordpress-mariadb'>  Optional: false
-      WORDPRESS_USERNAME:           admin
-      WORDPRESS_PASSWORD:           <set to the key 'wordpress-password' in secret 'my-wordpress-wordpress'>  Optional: false
-      WORDPRESS_EMAIL:              contact@dennyzhang.com
-      WORDPRESS_FIRST_NAME:         FirstName
-      WORDPRESS_LAST_NAME:          LastName
-      WORDPRESS_BLOG_NAME:          My DevOps Blog!
-      SMTP_HOST:
-      SMTP_PORT:
-      SMTP_USER:
-      SMTP_PASSWORD:                <set to the key 'smtp-password' in secret 'my-wordpress-wordpress'>  Optional: false
-      SMTP_USERNAME:
-      SMTP_PROTOCOL:
-    Mounts:
-      /bitnami/apache from wordpress-data (rw)
-      /bitnami/php from wordpress-data (rw)
-      /bitnami/wordpress from wordpress-data (rw)
-      /var/run/secrets/kubernetes.io/serviceaccount from default-token-tc8kd (ro)
-Conditions:
-  Type           Status
-  Initialized    True
-  Ready          False
-  PodScheduled   True
-Volumes:
-  wordpress-data:
-    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
-    ClaimName:  my-wordpress-wordpress
-    ReadOnly:   false
-  default-token-tc8kd:
-    Type:        Secret (a volume populated by a Secret)
-    SecretName:  default-token-tc8kd
-    Optional:    false
-QoS Class:       Burstable
-Node-Selectors:  <none>
-Tolerations:     <none>
-Events:
-  Type     Reason                 Age              From               Message
-  ----     ------                 ----             ----               -------
-  Normal   Scheduled              1m               default-scheduler  Successfully assigned my-wordpress-wordpress-df987548d-btvf5 to minikube
-  Normal   SuccessfulMountVolume  1m               kubelet, minikube  MountVolume.SetUp succeeded for volume "pvc-910644d3-f269-11e7-b6d8-08002782d6cd"
-  Normal   SuccessfulMountVolume  1m               kubelet, minikube  MountVolume.SetUp succeeded for volume "default-token-tc8kd"
-  Normal   Pulled                 1s (x7 over 1m)  kubelet, minikube  Container image "bitnami/wordpress:4.9.1-r1" already present on machine
-  Warning  Failed                 1s (x7 over 1m)  kubelet, minikube  Error: lstat /tmp/hostpath-provisioner/pvc-910644d3-f269-11e7-b6d8-08002782d6cd: no such file or directory
-  Warning  FailedSync             1s (x7 over 1m)  kubelet, minikube  Error syncing pod
-bash-3.2$
-#+END_EXAMPLE
-* TODO [#A] Certified Kubernetes Administrator (CKA)              :IMPORTANT:
-https://www.cncf.io/certification/expert/
-
-https://github.com/cncf/curriculum/blob/master/certified_kubernetes_administrator_exam_v1.8.0.pdf
-
-It is an online, proctored, performance-based test that requires solving multiple issues from a command line.
-
-Candidates have 3 hours to complete the tasks.
-* TODO HPA: Horizontal Pod Autoscaler
-* #  --8<-------------------------- separator ------------------------>8-- :noexport:
-* HALF Difference in between selectors and labels
-* TODO [#A] kubernetes mount a file to pod                        :IMPORTANT:
-https://stackoverflow.com/questions/33415913/whats-the-best-way-to-share-mount-one-file-into-a-pod
-https://www.linkedin.com/feed/update/urn:li:activity:6355445509146107904/
-* TODO K8S label & Selector
-https://github.com/dennyzhang/dennytest/tree/master/k8s_etcd
+* HPA: Horizontal Pod Autoscaler                                   :noexport:
