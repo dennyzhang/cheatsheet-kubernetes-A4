@@ -29,7 +29,6 @@ File me [[https://github.com/DennyZhang/cheatsheet-kubernetes-A4/issues][Issues]
 
 See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
 ** Key Concepts
-
 | Name | Summary                           |
 |------+-----------------------------------|
 | CRI  | Container Runtime Interface       |
@@ -38,7 +37,6 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | CNCF | Cloud Native Computing Foundation |
 
 ** Kubernets Critical Files
-
 | Name                                                  | Summary                   |
 |-------------------------------------------------------+---------------------------|
 | /etc/kubernetes/                                      | config folder             |
@@ -59,7 +57,6 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 <a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
 #+END_HTML
 ** Check status
-
 | Name                               | Command                                               |
 |------------------------------------+-------------------------------------------------------|
 | Get kubectl version                | =kubectl version=                                     |
@@ -72,8 +69,26 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Get system conf                    | =kubectl -n kube-system get cm kubeadm-config -oyaml= |
 | Query healthcheck endpoint         | =curl -L http://127.0.0.1:10250/healthz=              |
 
-** Pod
+** Node
+- Get node hardware resource utilization
+#+BEGIN_SRC sh
+kubectl get nodes --no-headers | awk '{print $1}' \
+    | xargs -I {} sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5'
 
+kubectl get nodes --no-headers | awk '{print $1}' \
+    | xargs -I {} sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5 | grep -ve Event -ve Allocated -ve percent -ve -- ; echo'
+#+END_SRC
+
+** Namespace & Security
+| Name                        | Command                                     |
+|-----------------------------+---------------------------------------------|
+| List authenticated contexts | =kubectl config get-contexts=               |
+| List contexts               | =kubectl get use-context=                   |
+| Switch context              | =kubectl config use-context <cluster-name>= |
+| List all namespaces defined | =kubectl get namespaces=                    |
+| kubectl config file         | =~/.kube/config=                            |
+
+** Pod
 | Name                         | Command                                                                                                                                   |
 |------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------|
 | Get pod by selector          | =pod_name=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')=                              |
@@ -90,7 +105,6 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Filter pod by label          | =kubectl get pods --selector owner=michael=                                                                                               |
 
 ** Common Commands
-
 | Name                            | Command                                      |
 |---------------------------------+----------------------------------------------|
 | Open a bash terminal in a pod   | =kubectl exec -it storage -- bash=           |
@@ -107,16 +121,7 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Delete service                  | =kubectl delete service nginxservice=        |
 | Delete replication controller   | =kubectl delete rc nginx=                    |
 
-** Namespace & Security
-
-| Name                             | Command                                    |
-|----------------------------------+--------------------------------------------|
-| list authenticated contexts      | =kubectl config get-contexts=              |
-| set the context to interact with | =kubectl config use-context $context_name= |
-| list all namespaces defined      | =kubectl get namespaces=                   |
-
 ** Volume
-
 | Name                      | Command                         |
 |---------------------------+---------------------------------|
 | Check the mounted volumes | =kubectl exec storage ls /data= |
@@ -137,9 +142,7 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Pause/Resume           | =kubectl rollout pause deployment/nginx-deployment=, =resume= |
 
 ** Minikube
-
 minikube in GitHub: [[https://github.com/kubernetes/minikube][link]]
-
 | Name                | Command                       |
 |---------------------+-------------------------------|
 | Start minikube env  | =minikube start=              |
@@ -150,7 +153,6 @@ minikube in GitHub: [[https://github.com/kubernetes/minikube][link]]
 | Get cluster info    | =kubectl cluster-info=        |
 | List addons         | =minikube addons list=        |
 | Get service info    | =minikube service $srv_name=  |
-
 
 TODO: rolling-update command is imperative, better use Deployments rollout. It's declarative.
 
