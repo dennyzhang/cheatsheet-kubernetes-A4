@@ -57,17 +57,19 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 <a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
 #+END_HTML
 ** Check status
-| Name                               | Command                                               |
-|------------------------------------+-------------------------------------------------------|
-| Get kubectl version                | =kubectl version=                                     |
-| Get cluster info                   | =kubectl cluster-info=                                |
-| Get configuration                  | =kubectl config view=                                 |
-| Get component status               | =kubectl get componentstatus=                         |
-| Get node status                    | =kubectl describe node $node_name=                    |
-| Get services for current namespace | =kubectl get svc=                                     |
-| Get all services for all namespace | =kubectl get service --all-namespaces=                |
-| Get system conf                    | =kubectl -n kube-system get cm kubeadm-config -oyaml= |
-| Query healthcheck endpoint         | =curl -L http://127.0.0.1:10250/healthz=              |
+| Name                                  | Command                                               |
+|---------------------------------------+-------------------------------------------------------|
+| Get kubectl version                   | =kubectl version=                                     |
+| Get cluster info                      | =kubectl cluster-info=                                |
+| Get configuration                     | =kubectl config view=                                 |
+| Get component status                  | =kubectl get componentstatus=                         |
+| Get node status                       | =kubectl describe node $node_name=                    |
+| Get services for current namespace    | =kubectl get svc=                                     |
+| Get all services for all namespace    | =kubectl get service --all-namespaces=                |
+| Get system conf                       | =kubectl -n kube-system get cm kubeadm-config -oyaml= |
+| Query healthcheck endpoint            | =curl -L http://127.0.0.1:10250/healthz=              |
+| Get pod hardware resource utilization | =kubectl top pod --all-namespaces=                    |
+| Get all containers hardware resource  | =kubectl top pod --all-namespaces --containers=true=  |
 
 ** Node
 - Get node hardware resource utilization
