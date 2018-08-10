@@ -1871,7 +1871,7 @@ If y'all run into the following error: `is forbidden: attempt to grant extra pri
 
 ```kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value account)```
 #+END_EXAMPLE
-* [#A] Blog: interview candidates for k8s experience
+* TODO [#A] Blog: interview candidates for k8s experience          :noexport:
 ** Explain concepts
 *** What's k8s context. Why we need it?
 *** What's initContainer? Why we need it?
