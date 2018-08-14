@@ -1,19 +1,4 @@
-* org-mode configuration                                           :noexport:
-#+STARTUP: overview customtime noalign logdone showall
-#+TITLE:  Kubernets CheatSheet
-#+DESCRIPTION: 
-#+KEYWORDS: 
-#+AUTHOR: Denny Zhang
-#+EMAIL:  denny@dennyzhang.com
-#+TAGS: noexport(n)
-#+PRIORITIES: A D C
-#+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
-#+OPTIONS:   TeX:t LaTeX:nil skip:nil d:nil todo:t pri:nil tags:not-in-toc
-#+EXPORT_EXCLUDE_TAGS: exclude noexport
-#+SEQ_TODO: TODO HALF ASSIGN | DONE BYPASS DELEGATE CANCELED DEFERRED
-#+LINK_UP:   
-#+LINK_HOME: 
-* Summary
+* Kubernets CheatSheet
 #+BEGIN_HTML
 <a href="https://www.linkedin.com/in/dennyzhang001"><img src="https://www.dennyzhang.com/wp-content/uploads/sns/linkedin.png" alt="linkedin" /></a>
 <a href="https://github.com/DennyZhang"><img src="https://www.dennyzhang.com/wp-content/uploads/sns/github.png" alt="github" /></a>
@@ -24,7 +9,7 @@
 
 <a href="http://makeapullrequest.com" target="_blank" rel="nofollow"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"/></a>
 #+END_HTML
-* CheatSheet
+
 File me [[https://github.com/DennyZhang/cheatsheet-kubernetes-A4/issues][Issues]] or star [[https://github.com/DennyZhang/cheatsheet-kubernetes-A4][this repo]].
 
 See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
@@ -117,17 +102,16 @@ kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMa
 |------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------|
 | Get pod by selector          | =pod_name=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')=                              |
 | List pods with docker images | =kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'= |
-| kubectl run command          | =kubectl exec -it -n "$namespace" "$pod_name"  -- sh -c "echo $test_msg  >>/dev/termination-log"=                                         |
+| kubectl run command          | kubectl exec -it -n "$namespace" "$pod_name" -- sh -c "echo $test_msg  >>/dev/termination-log"                                            |
 | List all pods with labels    | =kubectl get pods --show-labels=                                                                                                          |
 | List all pods                | =kubectl get pods=                                                                                                                        |
-| List all pods                | =kubectl get pods –all-namespaces=                                                                                                        |
+| List all pods                | =kubectl get pods -all-namespaces=                                                                                                        |
 | List pods with more info     | =kubectl get pod -o wide=                                                                                                                 |
 | List all services            | =kubectl get services=                                                                                                                    |
 | List all critical pods       | =kubectl get -n kube-system pods -a=                                                                                                      |
 | Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                   |
-| Add label to pod             | =kubectl label pods labelex owner=denny=                                                                                                  |
-| Filter pod by label          | =kubectl get pods --selector owner=michael=                                                                                               |
-
+| Add label to pod             | =kubectl label pods label owner=denny=                                                                                                    |
+| Filter pod by label          | =kubectl get pods --selector owner=denny=                                                                                      |
 ** Common Commands
 | Name                            | Command                                      |
 |---------------------------------+----------------------------------------------|
@@ -150,7 +134,6 @@ kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMa
 |---------------------------+---------------------------------|
 | Check the mounted volumes | =kubectl exec storage ls /data= |
 | Check persist volume      | =kubectl describe pv pv0001=    |
-
 ** Scale & Deployment
 
 [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][link]]
@@ -217,22 +200,37 @@ Available Commands:
 ...
 ...
 #+END_EXAMPLE
-* More Resources
-License: Code is licensed under [[https://www.dennyzhang.com/wp-content/mit_license.txt][MIT License]].
+** More Resources
+ License: Code is licensed under [[https://www.dennyzhang.com/wp-content/mit_license.txt][MIT License]].
 
-- Useful links
-#+BEGIN_EXAMPLE
-- https://kubernetes.io/docs/reference/kubectl/cheatsheet/
-- https://github.com/kubecamp/kubernetes_in_2_days
-- https://marc.xn--wckerlin-0za.ch/computer/kubernetes-on-ubuntu-16-04
-- https://codefresh.io/kubernetes-guides/kubernetes-cheat-sheet/
-#+END_EXAMPLE
+ - Useful links
+ #+BEGIN_EXAMPLE
+ - https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+ - https://github.com/kubecamp/kubernetes_in_2_days
+ - https://marc.xn--wckerlin-0za.ch/computer/kubernetes-on-ubuntu-16-04
+ - https://codefresh.io/kubernetes-guides/kubernetes-cheat-sheet/
+ #+END_EXAMPLE
 
-#+BEGIN_HTML
-<a href="https://www.dennyzhang.com"><img align="right" width="201" height="268" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/denny_201706.png"></a>
+ #+BEGIN_HTML
+ <a href="https://www.dennyzhang.com"><img align="right" width="201" height="268" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/denny_201706.png"></a>
 
-<a href="https://www.dennyzhang.com"><img align="right" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
-#+END_HTML
+ <a href="https://www.dennyzhang.com"><img align="right" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+ #+END_HTML
+* org-mode configuration                                           :noexport:
+#+STARTUP: overview customtime noalign logdone showall
+#+TITLE:  Kubernets CheatSheet
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+AUTHOR: Denny Zhang
+#+EMAIL:  denny@dennyzhang.com
+#+TAGS: noexport(n)
+#+PRIORITIES: A D C
+#+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:nil skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+EXPORT_EXCLUDE_TAGS: exclude noexport
+#+SEQ_TODO: TODO HALF ASSIGN | DONE BYPASS DELEGATE CANCELED DEFERRED
+#+LINK_UP:   
+#+LINK_HOME: 
 * #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * [#A] Kubernets                                         :noexport:IMPORTANT:
 https://github.com/DennyZhang/cheatsheet-kubernetes-A4
@@ -1489,9 +1487,9 @@ This is called as PersistentVolumeClaim.
   CLOSED: [2018-01-02 Tue 16:52]
 The access modes are:
 
-ReadWriteOnce – the volume can be mounted as read-write by a single node
-ReadOnlyMany – the volume can be mounted read-only by many nodes
-ReadWriteMany – the volume can be mounted as read-write by many nodes
+ReadWriteOnce - the volume can be mounted as read-write by a single node
+ReadOnlyMany - the volume can be mounted read-only by many nodes
+ReadWriteMany - the volume can be mounted as read-write by many nodes
 * [#A] kubeadm: performs the actions necessary to get a minimum viable cluster up and running :noexport:
 https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/
 
@@ -1865,12 +1863,6 @@ Error from server (ServiceUnavailable): the server is currently unable to handle
 Testing in minikube
 ** Pod stucks in containercreating for a long time
 * HALF kubectl apply to a list of folder: kubectl apply -R -f namespace-drain-manifests/manifests :noexport:
-* GKE user access                                                  :noexport:
-#+BEGIN_EXAMPLE
-If y'all run into the following error: `is forbidden: attempt to grant extra privileges:` when trying to run `kubectl apply -R -f ~/workspace/namespace-drain/manifests/` against a GKE cluster, then run the following command.
-
-```kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value account)```
-#+END_EXAMPLE
 * TODO [#A] Blog: interview candidates for k8s experience          :noexport:
 ** Explain concepts
 *** What's k8s context. Why we need it?
@@ -1899,3 +1891,11 @@ https://vsupalov.com/kubernetes-labels-annotations-difference/ (edited)
 *** layer of yaml
 *** ABBA on volumes
 *** apply one configmap to all namespace
+* GKE user access                                                  :noexport:
+#+BEGIN_EXAMPLE
+If y'all run into the following error: `is forbidden: attempt to grant extra privileges:` when trying to run `kubectl apply -R -f ~/workspace/namespace-drain/manifests/` against a GKE cluster, then run the following command.
+
+```kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value account)```
+#+END_EXAMPLE
+* #  --8<-------------------------- separator ------------------------>8-- :noexport:
+* How Enterprise Do XXX in Container world?                        :noexport:
