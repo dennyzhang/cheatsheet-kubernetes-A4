@@ -901,7 +901,7 @@ Candidates have 3 hours to complete the tasks.
 https://stackoverflow.com/questions/33415913/whats-the-best-way-to-share-mount-one-file-into-a-pod
 https://www.linkedin.com/feed/update/urn:li:activity:6355445509146107904/
 ** TODO K8S label & Selector
-https://github.com/dennyzhang/dennytest/tree/master/k8s_etcd
+https://github.com/dennyzhang/dennytest/tree/master/cheatsheet-kubernetes-A4][challenges-leetcode-interesting]]
 * [#A] minikube                                                    :noexport:
 https://github.com/kubernetes/minikube
 https://github.com/dennyzhang/cheatsheet-kubernetes-A4
@@ -951,7 +951,7 @@ https://daemonza.github.io/2017/02/20/using-helm-to-deploy-to-kubernetes/
 https://www.mirantis.com/blog/install-kubernetes-apps-helm/
 ** DONE Use helm to install mysql
    CLOSED: [2018-01-05 Fri 13:09]
-https://github.com/kubernetes/charts/tree/master/stable/mysql
+https://github.com/kubernetes/charts/tree/master/cheatsheet-kubernetes-A4][challenges-leetcode-interesting]]
 *** helm inspect stable/mysql
 #+BEGIN_EXAMPLE
 ubuntu@k8s1:~$ helm inspect stable/mysql
@@ -1376,7 +1376,7 @@ Creating and using a persistent volume is a three step process:
 This is called as PersistentVolumeClaim.
 1. Use claim: Claims are mounted as volumes and used in pods for storage.
 #+END_EXAMPLE
-** DONE persistence.accessMode ReadWriteOnce or ReadOnly: https://github.com/kubernetes/charts/tree/master/stable/mysql
+** DONE persistence.accessMode ReadWriteOnce or ReadOnly: https://github.com/kubernetes/charts/tree/master/cheatsheet-kubernetes-A4][challenges-leetcode-interesting]]
   CLOSED: [2018-01-02 Tue 16:52]
 The access modes are:
 
