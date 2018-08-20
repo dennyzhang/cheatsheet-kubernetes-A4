@@ -153,6 +153,7 @@ kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMa
 | Check update status    | =kubectl rollout status deployment/nginx-app=                 |
 | Check update history   | =kubectl rollout history deployment/nginx-app=                |
 | Pause/Resume           | =kubectl rollout pause deployment/nginx-deployment=, =resume= |
+| Rollback to previous version | =kubectl rollout undo deployment/nginx-deployment=      |
 
 ** Minikube
 minikube in GitHub: [[https://github.com/kubernetes/minikube][link]]
