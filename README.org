@@ -38,33 +38,33 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | List resource utilization for all containers | =kubectl top pod --all-namespaces --containers=true=                          |
 | Query healthcheck endpoint                   | =curl -L http://127.0.0.1:10250/healthz=                                      |
 
-  - Get node hardware resource utilization
-  #+BEGIN_SRC sh
-  kubectl get nodes --no-headers \
-      | awk '{print $1}' | xargs -I {} \
-      sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5'
+- Get node hardware resource utilization
+#+BEGIN_SRC sh
+kubectl get nodes --no-headers \
+     | awk '{print $1}' | xargs -I {} \
+     sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5'
 
-  kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
-      sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5 | grep -ve Event -ve Allocated -ve percent -ve -- ; echo'
-  #+END_SRC
+kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
+    sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5 | grep -ve Event -ve Allocated -ve percent -ve -- ; echo'
+#+END_SRC
 
-  - Tail pod log by label
-  #+BEGIN_SRC sh
-  namespace="mynamespace"
-  mylabel="app=mylabel"
-  kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
-      | awk -F' ' '{print $1}' | xargs -I{} \
+- Tail pod log by label
+#+BEGIN_SRC sh
+namespace="mynamespace"
+mylabel="app=mylabel"
+kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
+    | awk -F' ' '{print $1}' | xargs -I{} \
       kubectl logs -n "$namespace" -f {}
-  #+END_SRC
+#+END_SRC
 
-  - Apply yamls file recursively
-  #+BEGIN_SRC sh
+- Apply yamls file recursively
+#+BEGIN_SRC sh
   # create
   time ls -1 */*.yml | grep -v namespace | xargs -I{} kubectl apply -f {}
 
   # delete
   time ls -1r */*.yml | grep -v namespace | xargs -I{} kubectl delete -f {}
-  #+END_SRC
+#+END_SRC
 ** Per Concept
 *** Pod
 | Name                         | Command                                                                                                                                 |
