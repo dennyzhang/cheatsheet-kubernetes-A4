@@ -22,43 +22,21 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
 ** Common Usage
 *** yaml templates
- | Name                          | Summary                     |
- |-------------------------------+-----------------------------|
- | Dummy pod                     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]]              |
- | Create default serviceaccount | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]] |
-
+ | Name                                     | Summary                     |
+ |------------------------------------------+-----------------------------|
+ | Create a dummy pod                       | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]]              |
+ | Create a default serviceaccount for RBAC | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]] |
 *** Common Commands
- | Name                            | Command                                      |
- |---------------------------------+----------------------------------------------|
- | Start a pod without yaml | kubectl run --rm -i demo --image=denny/image:test --image-pull-policy=Never |
- | Open a bash terminal in a pod   | =kubectl exec -it storage -- bash=           |
- | Check pod environment variables | =kubectl exec redis-master-ft9ex env=        |
- | Delete pod                      | =kubectl delete pod hello-node-95913-n63qs=  |
- | Start a service                 | =kubectl run hello --image=my_img --port=80= |
- | Similar to =docker ps=          | =kubectl get nodes=                          |
- | Similar to =docker inspect=     | =kubectl describe pod nginx-app-413181-cn=   |
- | Similar to =docker logs=        | =kubectl logs=                               |
- | Similar to =docker exec=        | =kubectl exec=                               |
- | View cluster events             | =kubectl get events=                         |
- | Get deployment info             | =kubectl get deploy=                         |
- | Get replication controller      | =kubectl get rc=                             |
- | Delete service                  | =kubectl delete service nginxservice=        |
- | Delete replication controller   | =kubectl delete rc nginx=                    |
-
-**** Check status
-  | Name                                  | Command                                                |
-  |---------------------------------------+--------------------------------------------------------|
-  | Get kubectl version                   | =kubectl version=                                      |
-  | Get cluster info                      | =kubectl cluster-info=                                 |
-  | Get configuration                     | =kubectl config view=                                  |
-  | Get component status                  | =kubectl get componentstatus=                          |
-  | Get node status                       | =kubectl describe node $node_name=                     |
-  | Get services for current namespace    | =kubectl get svc=                                      |
-  | Get all services for all namespace    | =kubectl get service --all-namespaces=                 |
-  | Get system conf                       | =kubectl -n kube-system get cm kubeadm-config -o yaml= |
-  | Query healthcheck endpoint            | =curl -L http://127.0.0.1:10250/healthz=               |
-  | Get pod hardware resource utilization | =kubectl top pod --all-namespaces=                     |
-  | Get all containers hardware resource  | =kubectl top pod --all-namespaces --containers=true=   |
+ | Name                                         | Command                                                                       |
+ |----------------------------------------------+-------------------------------------------------------------------------------|
+ | Start a pod without yaml                     | =kubectl run --rm -i demo --image=denny/image:test --image-pull-policy=Never= |
+ | Open a bash terminal in a pod                | =kubectl exec -it storage sh=                                                 |
+ | Check pod environment variables              | =kubectl exec redis-master-ft9ex env=                                         |
+ | Get all services for all namespace           | =kubectl get service --all-namespaces=                                        |
+ | Get system conf(kubeadm-config configmap)    | =kubectl -n kube-system get cm kubeadm-config -o yaml=                        |
+ | List resource utilization for all pods       | =kubectl top pod --all-namespaces=                                            |
+ | List resource utilization for all containers | =kubectl top pod --all-namespaces --containers=true=                          |
+ | Query healthcheck endpoint                   | =curl -L http://127.0.0.1:10250/healthz=                                      |
 
   - Get node hardware resource utilization
   #+BEGIN_SRC sh
@@ -87,7 +65,6 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
   # delete
   time ls -1r */*.yml | grep -v namespace | xargs -I{} kubectl delete -f {}
   #+END_SRC
-
 ** Per Concept
 *** Pod
  | Name                         | Command                                                                                                                                 |
@@ -102,6 +79,7 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
  | List pods with more info     | =kubectl get pod -o wide=                                                                                                               |
  | List all services            | =kubectl get services=                                                                                                                  |
  | List all critical pods       | =kubectl get -n kube-system pods -a=                                                                                                    |
+ | Delete pod                   | =kubectl delete pod hello-node-95913-n63qs=                                                                                             |
  | Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                 |
  | Add label to pod             | =kubectl label pods label owner=denny=                                                                                                  |
  | Filter pod by label          | =kubectl get pods --selector owner=denny=                                                                                               |
@@ -115,6 +93,11 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
  | Switch context                | =kubectl config use-context <cluster-name>= |
  | List all namespaces defined   | =kubectl get namespaces=                    |
  | kubectl config file           | =~/.kube/config=                            |
+
+*** Network
+ | Name                              | Command                                 |
+ |-----------------------------------+-----------------------------------------|
+ | Temporarily add a port-forwarding | =kubectl port-forward redis-izl09 6379= |
 
 *** kubectl apply
 
@@ -142,59 +125,6 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
  | Check update history   | =kubectl rollout history deployment/nginx-app=                |
  | Pause/Resume           | =kubectl rollout pause deployment/nginx-deployment=, =resume= |
  | Rollback to previous version | =kubectl rollout undo deployment/nginx-deployment=      |
-** Minikube
-minikube in GitHub: [[https://github.com/kubernetes/minikube][link]]
-| Name                | Command                       |
-|---------------------+-------------------------------|
-| Start minikube env  | =minikube start=              |
-| minikube docker-env | =eval $(minikube docker-env)= |
-| Get dashboard       | =minikube dashboard=          |
-| ssh to minikube vm  | =minikube ssh=                |
-| Get ip              | =minikube ip=                 |
-| Get cluster info    | =kubectl cluster-info=        |
-| List addons         | =minikube addons list=        |
-| Get service info    | =minikube service $srv_name=  |
-
-TODO: rolling-update command is imperative, better use Deployments rollout. It's declarative.
-
-#+BEGIN_EXAMPLE
-$ kubectl --help
-kubectl controls the Kubernetes cluster manager.
-
-Find more information at https://github.com/GoogleCloudPlatform/kubernetes.
-
-Usage:
-  kubectl [flags]
-  kubectl [command]
-
-Available Commands:
-  get            Display one or many resources
-  describe       Show details of a specific resource
-  create         Create a resource by filename or stdin
-  update         Update a resource by filename or stdin.
-  delete         Delete a resource by filename, stdin, resource and ID, or by resources and label selector.
-  namespace      SUPERCEDED: Set and view the current Kubernetes namespace
-  logs           Print the logs for a container in a pod.
-  rolling-update Perform a rolling update of the given ReplicationController.
-  scale          Set a new size for a Replication Controller.
-  exec           Execute a command in a container.
-  port-forward   Forward one or more local ports to a pod.
-  proxy          Run a proxy to the Kubernetes API server
-  run            Run a particular image on the cluster.
-  stop           Gracefully shut down a resource by id or filename.
-  expose         Take a replicated application and expose it as Kubernetes Service
-  label          Update the labels on a resource
-  config         config modifies kubeconfig files
-  cluster-info   Display cluster info
-  api-versions   Print available API versions.
-  version        Print the client and server version information.
-  help           Help about any command
-
-...
-...
-...
-#+END_EXAMPLE
-
 ** Basic
 *** Key Concepts
  | Name | Summary                           |
@@ -223,10 +153,42 @@ Available Commands:
  #+BEGIN_HTML
  <a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
  #+END_HTML
+*** Check status
+ | Name                               | Summary                                      |
+ |------------------------------------+----------------------------------------------|
+ | Start a service                    | =kubectl run hello --image=my_img --port=80= |
+ | Similar to =docker ps=             | =kubectl get nodes=                          |
+ | Similar to =docker inspect=        | =kubectl describe pod nginx-app-413181-cn=   |
+ | Similar to =docker logs=           | =kubectl logs=                               |
+ | Similar to =docker exec=           | =kubectl exec=                               |
+ | View cluster events                | =kubectl get events=                         |
+ | Get deployment info                | =kubectl get deploy=                         |
+ | Delete service                     | =kubectl delete service nginxservice=        |
+ | Get kubectl version                | =kubectl version=                            |
+ | Get cluster info                   | =kubectl cluster-info=                       |
+ | Get configuration                  | =kubectl config view=                        |
+ | Get component status               | =kubectl get componentstatus=                |
+ | Get node status                    | =kubectl describe node $node_name=           |
+ | Get services for current namespace | =kubectl get svc=                            |
+
 *** Kubernetes Developer Resources
  | Name            | Summary                                                                                   |
  |-----------------+-------------------------------------------------------------------------------------------|
  | API Conventions | https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md |
+** Minikube
+minikube in GitHub: [[https://github.com/kubernetes/minikube][link]]
+| Name                | Command                       |
+|---------------------+-------------------------------|
+| Start minikube env  | =minikube start=              |
+| minikube docker-env | =eval $(minikube docker-env)= |
+| Get dashboard       | =minikube dashboard=          |
+| ssh to minikube vm  | =minikube ssh=                |
+| Get ip              | =minikube ip=                 |
+| Get cluster info    | =kubectl cluster-info=        |
+| List addons         | =minikube addons list=        |
+| Get service info    | =minikube service $srv_name=  |
+
+TODO: rolling-update command is imperative, better use Deployments rollout. It's declarative.
 ** More Resources
  License: Code is licensed under [[https://www.dennyzhang.com/wp-content/mit_license.txt][MIT License]].
 
