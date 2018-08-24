@@ -23,60 +23,72 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 ** Key Concepts
 | Name | Summary                           |
 |------+-----------------------------------|
+| CNCF | Cloud Native Computing Foundation |
 | CRI  | Container Runtime Interface       |
 | CNI  | Container Network Interface       |
 | CSI  | Container Storage Interface       |
-| CNCF | Cloud Native Computing Foundation |
+
+** Debug Tips
+| Name                     | Summary                                                                     |
+|--------------------------+-----------------------------------------------------------------------------|
+| Start a pod without yaml | kubectl run --rm -i demo --image=denny/image:test --image-pull-policy=Never |
+
+** Kubernetes Developer Resources
+| Name            | Summary                                                                                   |
+|-----------------+-------------------------------------------------------------------------------------------|
+| API Conventions | https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md |
 
 ** Kubernets Critical Files
-| Name                                                  | Summary                   |
-|-------------------------------------------------------+---------------------------|
-| /etc/kubernetes/                                      | config folder             |
-| /etc/kubernetes/pki/                                  | certificate files         |
-| /etc/kubernetes/kubelet.conf                          | credentials to API server |
-| /etc/kubernetes/admin.conf                            | superuser credentials     |
-| /var/lib/kubelet/                                     | kubernets working dir     |
-| /var/lib/docker                                       | docker working dir        |
-| /var/lib/etcd                                         |                           |
-| /etc/cni/net.d                                        | network cni               |
-| /var/log/containers                                   |                           |
-| /var/log/pods                                         | log files                 |
-| export KUBECONFIG=/etc/kubernetes/admin.conf          | env                       |
-| /etc/systemd/system/kubelet.service.d/10-kubeadm.conf | env                       |
+| Name                      | Comment                                                 |
+|---------------------------+---------------------------------------------------------|
+| Config folder             | =/etc/kubernetes/=                                      |
+| Certificate files         | =/etc/kubernetes/pki/=                                  |
+| Credentials to API server | =/etc/kubernetes/kubelet.conf=                          |
+| Superuser credentials     | =/etc/kubernetes/admin.conf=                            |
+| Kubernets working dir     | =/var/lib/kubelet/=                                     |
+| Docker working dir        | =/var/lib/docker/=                                      |
+| Etcd working dir          | =/var/lib/etcd/=                                        |
+| Network cni               | =/etc/cni/net.d/=                                       |
+| Docker container log      | =/var/log/containers/=                                  |
+| Log files                 | =/var/log/pods/=                                        |
+| Env                       | =export KUBECONFIG=/etc/kubernetes/admin.conf=          |
+| Env                       | =/etc/systemd/system/kubelet.service.d/10-kubeadm.conf= |
 
 #+BEGIN_HTML
 <a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
 #+END_HTML
 ** Check status
-| Name                                  | Command                                               |
-|---------------------------------------+-------------------------------------------------------|
-| Get kubectl version                   | =kubectl version=                                     |
-| Get cluster info                      | =kubectl cluster-info=                                |
-| Get configuration                     | =kubectl config view=                                 |
-| Get component status                  | =kubectl get componentstatus=                         |
-| Get node status                       | =kubectl describe node $node_name=                    |
-| Get services for current namespace    | =kubectl get svc=                                     |
-| Get all services for all namespace    | =kubectl get service --all-namespaces=                |
-| Get system conf                       | =kubectl -n kube-system get cm kubeadm-config -oyaml= |
-| Query healthcheck endpoint            | =curl -L http://127.0.0.1:10250/healthz=              |
-| Get pod hardware resource utilization | =kubectl top pod --all-namespaces=                    |
-| Get all containers hardware resource  | =kubectl top pod --all-namespaces --containers=true=  |
+| Name                                  | Command                                                |
+|---------------------------------------+--------------------------------------------------------|
+| Get kubectl version                   | =kubectl version=                                      |
+| Get cluster info                      | =kubectl cluster-info=                                 |
+| Get configuration                     | =kubectl config view=                                  |
+| Get component status                  | =kubectl get componentstatus=                          |
+| Get node status                       | =kubectl describe node $node_name=                     |
+| Get services for current namespace    | =kubectl get svc=                                      |
+| Get all services for all namespace    | =kubectl get service --all-namespaces=                 |
+| Get system conf                       | =kubectl -n kube-system get cm kubeadm-config -o yaml= |
+| Query healthcheck endpoint            | =curl -L http://127.0.0.1:10250/healthz=               |
+| Get pod hardware resource utilization | =kubectl top pod --all-namespaces=                     |
+| Get all containers hardware resource  | =kubectl top pod --all-namespaces --containers=true=   |
 
 - Get node hardware resource utilization
 #+BEGIN_SRC sh
-kubectl get nodes --no-headers | awk '{print $1}' \
-    | xargs -I {} sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5'
+kubectl get nodes --no-headers \
+    | awk '{print $1}' | xargs -I {} \
+    sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5'
 
-kubectl get nodes --no-headers | awk '{print $1}' \
-    | xargs -I {} sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5 | grep -ve Event -ve Allocated -ve percent -ve -- ; echo'
+kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
+    sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5 | grep -ve Event -ve Allocated -ve percent -ve -- ; echo'
 #+END_SRC
 
 - Tail pod log by label
 #+BEGIN_SRC sh
 namespace="mynamespace"
 mylabel="app=mylabel"
-kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 | awk -F' ' '{print $1}' \
-    | xargs -I{} kubectl logs -n "$namespace" -f {}
+kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
+    | awk -F' ' '{print $1}' | xargs -I{} \
+    kubectl logs -n "$namespace" -f {}
 #+END_SRC
 
 - Apply yamls file recursively
@@ -96,29 +108,31 @@ kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMa
 #+END_EXAMPLE
 
 ** Namespace & Security
-| Name                        | Command                                     |
-|-----------------------------+---------------------------------------------|
-| List authenticated contexts | =kubectl config get-contexts=               |
-| List contexts               | =kubectl config get-contexts=        |
-| Switch context              | =kubectl config use-context <cluster-name>= |
-| List all namespaces defined | =kubectl get namespaces=                    |
-| kubectl config file         | =~/.kube/config=                            |
+| Name                          | Command                                     |
+|-------------------------------+---------------------------------------------|
+| Create default serviceaccount | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                 |
+| List authenticated contexts   | =kubectl config get-contexts=               |
+| List contexts                 | =kubectl config get-contexts=               |
+| Switch context                | =kubectl config use-context <cluster-name>= |
+| List all namespaces defined   | =kubectl get namespaces=                    |
+| kubectl config file           | =~/.kube/config=                            |
 
 ** Pod
-| Name                         | Command                                                                                                                                   |
-|------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------|
-| Get pod by selector          | =pod_name=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')=                              |
-| List pods with docker images | =kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'= |
-| kubectl run command          | kubectl exec -it -n "$namespace" "$pod_name" -- sh -c "echo $test_msg  >>/dev/termination-log"                                            |
-| List all pods with labels    | =kubectl get pods --show-labels=                                                                                                          |
-| List all pods                | =kubectl get pods=                                                                                                                        |
-| List all pods                | =kubectl get pods -all-namespaces=                                                                                                        |
-| List pods with more info     | =kubectl get pod -o wide=                                                                                                                 |
-| List all services            | =kubectl get services=                                                                                                                    |
-| List all critical pods       | =kubectl get -n kube-system pods -a=                                                                                                      |
-| Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                   |
-| Add label to pod             | =kubectl label pods label owner=denny=                                                                                                    |
-| Filter pod by label          | =kubectl get pods --selector owner=denny=                                                                                      |
+| Name                         | Command                                                                                                                                 |
+|------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------|
+| Dummy pod                    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]]                                                                                                                          |
+| Get pod by selector          | =pod_name=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')=                            |
+| List pods with docker images | kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}' |
+| kubectl run command          | kubectl exec -it -n "$namespace" "$podname" -- sh -c "echo $msg  >>/dev/termination-log"                                                |
+| List all pods with labels    | =kubectl get pods --show-labels=                                                                                                        |
+| List all pods                | =kubectl get pods=                                                                                                                      |
+| List pods for all namespace  | =kubectl get pods -all-namespaces=                                                                                                      |
+| List pods with more info     | =kubectl get pod -o wide=                                                                                                               |
+| List all services            | =kubectl get services=                                                                                                                  |
+| List all critical pods       | =kubectl get -n kube-system pods -a=                                                                                                    |
+| Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                 |
+| Add label to pod             | =kubectl label pods label owner=denny=                                                                                                  |
+| Filter pod by label          | =kubectl get pods --selector owner=denny=                                                                                               |
 ** Common Commands
 | Name                            | Command                                      |
 |---------------------------------+----------------------------------------------|
@@ -226,7 +240,6 @@ Available Commands:
  #+END_HTML
 * org-mode configuration                                           :noexport:
 #+STARTUP: overview customtime noalign logdone showall
-#+TITLE:  Kubernets CheatSheet
 #+DESCRIPTION: 
 #+KEYWORDS: 
 #+AUTHOR: Denny Zhang
@@ -243,7 +256,7 @@ Available Commands:
 * [#A] Kubernets                                         :noexport:IMPORTANT:
 https://github.com/dennyzhang/cheatsheet-kubernetes-A4
 
-k8s provides declarative primitives for the “desired state”
+k8s provides declarative primitives for the "desired state"
 - Self-healing
 - Horizontal scaling
 - Automatic binpacking
@@ -283,10 +296,10 @@ Potentially the following scenarios;
     * Setting up ingresses and TLS
               * Fully configure something like Nginx Ingress Controller or Traefik.
               * Create TLS Secrets within Kubernetes, and use them in your ingress controller.
-    * Managing RBAC  (Don’t know enough about this one, but sounds like a good concept to include)
+    * Managing RBAC  (Don't know enough about this one, but sounds like a good concept to include)
               * Creating new roles, etc
 
-I’ll have a think and if anymore come to me, I’ll let you know.
+I'll have a think and if anymore come to me, I'll let you know.
 
 
 Denny Zhang (Github . Blogger)
@@ -309,7 +322,7 @@ DNS.
 
 Denny Zhang (Github . Blogger)
 [4:02 PM]
-I’m trying to cover the volume via mysql scenarios
+I'm trying to cover the volume via mysql scenarios
 
 
 Gui [4:02 PM]
@@ -709,8 +722,8 @@ Kubernetes ServiceTypes allow you to specify what kind of service you want. The 
 Type values and their behaviors are:
 
 ClusterIP: Exposes the service on a cluster-internal IP. Choosing this value makes the service only reachable from within the cluster. This is the default ServiceType.
-NodePort: Exposes the service on each Node’s IP at a static port (the NodePort). A ClusterIP service, to which the NodePort service will route, is automatically created. You’ll be able to contact the NodePort service, from outside the cluster, by requesting <NodeIP>:<NodePort>.
-LoadBalancer: Exposes the service externally using a cloud provider’s load balancer. NodePort and ClusterIP services, to which the external load balancer will route, are automatically created.
+NodePort: Exposes the service on each Node's IP at a static port (the NodePort). A ClusterIP service, to which the NodePort service will route, is automatically created. You'll be able to contact the NodePort service, from outside the cluster, by requesting <NodeIP>:<NodePort>.
+LoadBalancer: Exposes the service externally using a cloud provider's load balancer. NodePort and ClusterIP services, to which the external load balancer will route, are automatically created.
 ExternalName: Maps the service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record with its value. No proxying of any kind is set up. This requires version 1.7 or higher of kube-dns.
 #+END_EXAMPLE
 *** Type: Loadbalancer
@@ -774,7 +787,7 @@ Now if i access IP:NodePort, will it balance the load across multiple pods ?
 
 
 Denny Zhang (Github . Blogger) [8:35 AM]
-I don’t think so
+I don't think so
 #+END_EXAMPLE
 *** TODO How Does NodePort work behind the scene?
 *** #  --8<-------------------------- separator ------------------------>8-- :noexport:
@@ -1523,7 +1536,7 @@ https://github.com/kubernetes/dashboard/wiki/Creating-sample-user
 #+begin_example
 Location: https://github.com/kubernetes/dashboard/wiki/Creating-sample-user
 Skip to content
-The vote is over, but the fight for net neutrality isn’t. Show your support for a free and open
+The vote is over, but the fight for net neutrality isn't. Show your support for a free and open
 internet.
 Learn more Dismiss
 
@@ -1573,7 +1586,7 @@ Pages 21
   * Release procedures
   * Roadmap
   * Text conventions
-  * Show 6 more pages…
+  * Show 6 more pages...
 
  Home
 
@@ -1771,7 +1784,7 @@ If y'all run into the following error: `is forbidden: attempt to grant extra pri
 What are k8s Annotations? What differences it is compared with labels:
 
 - Like labels, annotations are key/value pairs. Where labels have length limits, annotations can be quite large.
--  you can’t query or select objects based on annotations.
+-  you can't query or select objects based on annotations.
 - Are used for non-identifying information. Stuff not used internally by k8s.
 
 https://codeengineered.com/blog/2017/kubernetes-labels-annotations/
@@ -1792,7 +1805,48 @@ https://vsupalov.com/kubernetes-labels-annotations-difference/ (edited)
 https://github.com/kubernetes/kubeadm/blob/master/docs/release-cycle.md
 * Blog: Kubernetes Limitation List                                 :noexport:
 - Starting with Kubernetes 1.6 we support 5000 nodes clusters with 30 pods per node. ([[https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/metrics-server.md#scalability-limitations][link]])
+* #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * TODO Why need kubernetes/apiserver: https://github.com/kubernetes/apiserver :noexport:
 Library for writing a Kubernetes-style API server.
 
 https://github.com/kubernetes/kube-aggregator
+* TODO k8s concept learning                                        :noexport:
+** TODO How often k8s perodically check the desired state          :noexport:
+*** TODO Once you've set your desired state, the Kubernetes Control Plane works to make the cluster's current state match the desired state. :noexport:
+  https://kubernetes.io/docs/concepts/
+*** TODO A Kubernetes object is a "record of intent"–once you create the object, the Kubernetes system will constantly work to ensure that object exists. :noexport:
+  https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/
+* k8s quiz                                                         :noexport:
+** Pods & Controllers
+https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/#pods-and-controllers
+
+Pods and Controllers
+A Controller can create and manage multiple Pods for you, handling replication and rollout and providing self-healing capabilities at cluster scope. For example, if a Node fails, the Controller might automatically replace the Pod by scheduling an identical replacement on a different Node.
+
+Some examples of Controllers that contain one or more pods include:
+
+Deployment
+StatefulSet
+DaemonSet
+In general, Controllers use a Pod Template that you provide to create the Pods for which it is responsible.
+
+** Object Spec and Status
+https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/
+
+Every Kubernetes object includes two nested object fields that govern the object's configuration: the object spec and the object status. The spec, which you must provide, describes your desired state for the object–the characteristics that you want the object to have. The status describes the actual state of the object, and is supplied and updated by the Kubernetes system. At any given time, the Kubernetes Control Plane actively manages an object's actual state to match the desired state you supplied.
+** quiz: web hosting env, who we implement it in k8s world
+Pod: containers to run git pull
+* TODO [#A] Questions                                              :noexport:
+** Containers inside a Pod can communicate with one another using localhost. 
+https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/
+
+Networking
+Each Pod is assigned a unique IP address. Every container in a Pod shares the network namespace, including the IP address and network ports. Containers inside a Pod can communicate with one another using localhost. When containers in a Pod communicate with entities outside the Pod, they must coordinate how they use the shared network resources (such as ports).
+
+** How to restart a container inside a Pod?
+https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/
+
+Restarting a container in a Pod should not be confused with restarting the Pod. The Pod itself does not run, but is an environment the containers run in and persists until it is deleted.
+** explain k8s components: apiserver, scheduler, controller-manager, kube-proxy
+* TODO k8s architecture                                            :noexport:
+https://www.youtube.com/watch?v=_WfJz5VS_cU&list=PLj6h78yzYM2NGwRwkBPxigKio2r0XHPl9
