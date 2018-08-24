@@ -20,156 +20,128 @@ Blog URL: https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes, Category: [[h
 File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]] or star [[https://github.com/DennyZhang/cheatsheet-kubernetes-A4][this repo]].
 
 See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
-** Key Concepts
-| Name | Summary                           |
-|------+-----------------------------------|
-| CNCF | Cloud Native Computing Foundation |
-| CRI  | Container Runtime Interface       |
-| CNI  | Container Network Interface       |
-| CSI  | Container Storage Interface       |
+** Common Usage
+*** yaml templates
+ | Name                          | Summary                     |
+ |-------------------------------+-----------------------------|
+ | Dummy pod                     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]]              |
+ | Create default serviceaccount | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]] |
 
-** Debug Tips
-| Name                     | Summary                                                                     |
-|--------------------------+-----------------------------------------------------------------------------|
-| Start a pod without yaml | kubectl run --rm -i demo --image=denny/image:test --image-pull-policy=Never |
+*** Common Commands
+ | Name                            | Command                                      |
+ |---------------------------------+----------------------------------------------|
+ | Start a pod without yaml | kubectl run --rm -i demo --image=denny/image:test --image-pull-policy=Never |
+ | Open a bash terminal in a pod   | =kubectl exec -it storage -- bash=           |
+ | Check pod environment variables | =kubectl exec redis-master-ft9ex env=        |
+ | Delete pod                      | =kubectl delete pod hello-node-95913-n63qs=  |
+ | Start a service                 | =kubectl run hello --image=my_img --port=80= |
+ | Similar to =docker ps=          | =kubectl get nodes=                          |
+ | Similar to =docker inspect=     | =kubectl describe pod nginx-app-413181-cn=   |
+ | Similar to =docker logs=        | =kubectl logs=                               |
+ | Similar to =docker exec=        | =kubectl exec=                               |
+ | View cluster events             | =kubectl get events=                         |
+ | Get deployment info             | =kubectl get deploy=                         |
+ | Get replication controller      | =kubectl get rc=                             |
+ | Delete service                  | =kubectl delete service nginxservice=        |
+ | Delete replication controller   | =kubectl delete rc nginx=                    |
 
-** Kubernetes Developer Resources
-| Name            | Summary                                                                                   |
-|-----------------+-------------------------------------------------------------------------------------------|
-| API Conventions | https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md |
+**** Check status
+  | Name                                  | Command                                                |
+  |---------------------------------------+--------------------------------------------------------|
+  | Get kubectl version                   | =kubectl version=                                      |
+  | Get cluster info                      | =kubectl cluster-info=                                 |
+  | Get configuration                     | =kubectl config view=                                  |
+  | Get component status                  | =kubectl get componentstatus=                          |
+  | Get node status                       | =kubectl describe node $node_name=                     |
+  | Get services for current namespace    | =kubectl get svc=                                      |
+  | Get all services for all namespace    | =kubectl get service --all-namespaces=                 |
+  | Get system conf                       | =kubectl -n kube-system get cm kubeadm-config -o yaml= |
+  | Query healthcheck endpoint            | =curl -L http://127.0.0.1:10250/healthz=               |
+  | Get pod hardware resource utilization | =kubectl top pod --all-namespaces=                     |
+  | Get all containers hardware resource  | =kubectl top pod --all-namespaces --containers=true=   |
 
-** Kubernets Critical Files
-| Name                      | Comment                                                 |
-|---------------------------+---------------------------------------------------------|
-| Config folder             | =/etc/kubernetes/=                                      |
-| Certificate files         | =/etc/kubernetes/pki/=                                  |
-| Credentials to API server | =/etc/kubernetes/kubelet.conf=                          |
-| Superuser credentials     | =/etc/kubernetes/admin.conf=                            |
-| Kubernets working dir     | =/var/lib/kubelet/=                                     |
-| Docker working dir        | =/var/lib/docker/=                                      |
-| Etcd working dir          | =/var/lib/etcd/=                                        |
-| Network cni               | =/etc/cni/net.d/=                                       |
-| Docker container log      | =/var/log/containers/=                                  |
-| Log files                 | =/var/log/pods/=                                        |
-| Env                       | =export KUBECONFIG=/etc/kubernetes/admin.conf=          |
-| Env                       | =/etc/systemd/system/kubelet.service.d/10-kubeadm.conf= |
+  - Get node hardware resource utilization
+  #+BEGIN_SRC sh
+  kubectl get nodes --no-headers \
+      | awk '{print $1}' | xargs -I {} \
+      sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5'
 
-#+BEGIN_HTML
-<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
-#+END_HTML
-** Check status
-| Name                                  | Command                                                |
-|---------------------------------------+--------------------------------------------------------|
-| Get kubectl version                   | =kubectl version=                                      |
-| Get cluster info                      | =kubectl cluster-info=                                 |
-| Get configuration                     | =kubectl config view=                                  |
-| Get component status                  | =kubectl get componentstatus=                          |
-| Get node status                       | =kubectl describe node $node_name=                     |
-| Get services for current namespace    | =kubectl get svc=                                      |
-| Get all services for all namespace    | =kubectl get service --all-namespaces=                 |
-| Get system conf                       | =kubectl -n kube-system get cm kubeadm-config -o yaml= |
-| Query healthcheck endpoint            | =curl -L http://127.0.0.1:10250/healthz=               |
-| Get pod hardware resource utilization | =kubectl top pod --all-namespaces=                     |
-| Get all containers hardware resource  | =kubectl top pod --all-namespaces --containers=true=   |
+  kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
+      sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5 | grep -ve Event -ve Allocated -ve percent -ve -- ; echo'
+  #+END_SRC
 
-- Get node hardware resource utilization
-#+BEGIN_SRC sh
-kubectl get nodes --no-headers \
-    | awk '{print $1}' | xargs -I {} \
-    sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5'
+  - Tail pod log by label
+  #+BEGIN_SRC sh
+  namespace="mynamespace"
+  mylabel="app=mylabel"
+  kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
+      | awk -F' ' '{print $1}' | xargs -I{} \
+      kubectl logs -n "$namespace" -f {}
+  #+END_SRC
 
-kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
-    sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5 | grep -ve Event -ve Allocated -ve percent -ve -- ; echo'
-#+END_SRC
+  - Apply yamls file recursively
+  #+BEGIN_SRC sh
+  # create
+  time ls -1 */*.yml | grep -v namespace | xargs -I{} kubectl apply -f {}
 
-- Tail pod log by label
-#+BEGIN_SRC sh
-namespace="mynamespace"
-mylabel="app=mylabel"
-kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
-    | awk -F' ' '{print $1}' | xargs -I{} \
-    kubectl logs -n "$namespace" -f {}
-#+END_SRC
+  # delete
+  time ls -1r */*.yml | grep -v namespace | xargs -I{} kubectl delete -f {}
+  #+END_SRC
 
-- Apply yamls file recursively
-#+BEGIN_SRC sh
-# create
-time ls -1 */*.yml | grep -v namespace | xargs -I{} kubectl apply -f {}
+** Per Concept
+*** Pod
+ | Name                         | Command                                                                                                                                 |
+ |------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------|
+ | Dummy pod                    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]]                                                                                                                          |
+ | Get pod by selector          | =pod_name=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')=                            |
+ | List pods with docker images | kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}' |
+ | kubectl run command          | kubectl exec -it -n "$namespace" "$podname" -- sh -c "echo $msg  >>/dev/termination-log"                                                |
+ | List all pods with labels    | =kubectl get pods --show-labels=                                                                                                        |
+ | List all pods                | =kubectl get pods=                                                                                                                      |
+ | List pods for all namespace  | =kubectl get pods -all-namespaces=                                                                                                      |
+ | List pods with more info     | =kubectl get pod -o wide=                                                                                                               |
+ | List all services            | =kubectl get services=                                                                                                                  |
+ | List all critical pods       | =kubectl get -n kube-system pods -a=                                                                                                    |
+ | Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                 |
+ | Add label to pod             | =kubectl label pods label owner=denny=                                                                                                  |
+ | Filter pod by label          | =kubectl get pods --selector owner=denny=                                                                                               |
 
-# delete
-time ls -1r */*.yml | grep -v namespace | xargs -I{} kubectl delete -f {}
-#+END_SRC
+*** Namespace & Security
+ | Name                          | Command                                     |
+ |-------------------------------+---------------------------------------------|
+ | Create default serviceaccount | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                 |
+ | List authenticated contexts   | =kubectl config get-contexts=               |
+ | List contexts                 | =kubectl config get-contexts=               |
+ | Switch context                | =kubectl config use-context <cluster-name>= |
+ | List all namespaces defined   | =kubectl get namespaces=                    |
+ | kubectl config file           | =~/.kube/config=                            |
 
-** kubectl apply
+*** kubectl apply
 
-- Apply the configuration in manifest.yaml and delete all the other configmaps that are not in the file.
-#+BEGIN_EXAMPLE
-kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMap
-#+END_EXAMPLE
+ - Apply the configuration in manifest.yaml and delete all the other configmaps that are not in the file.
+ #+BEGIN_EXAMPLE
+ kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMap
+ #+END_EXAMPLE
 
-** Namespace & Security
-| Name                          | Command                                     |
-|-------------------------------+---------------------------------------------|
-| Create default serviceaccount | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                 |
-| List authenticated contexts   | =kubectl config get-contexts=               |
-| List contexts                 | =kubectl config get-contexts=               |
-| Switch context                | =kubectl config use-context <cluster-name>= |
-| List all namespaces defined   | =kubectl get namespaces=                    |
-| kubectl config file           | =~/.kube/config=                            |
+*** Volume
+ | Name                      | Command                         |
+ |---------------------------+---------------------------------|
+ | Check the mounted volumes | =kubectl exec storage ls /data= |
+ | Check persist volume      | =kubectl describe pv pv0001=    |
+*** Scale & Deployment
 
-** Pod
-| Name                         | Command                                                                                                                                 |
-|------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------|
-| Dummy pod                    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]]                                                                                                                          |
-| Get pod by selector          | =pod_name=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')=                            |
-| List pods with docker images | kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}' |
-| kubectl run command          | kubectl exec -it -n "$namespace" "$podname" -- sh -c "echo $msg  >>/dev/termination-log"                                                |
-| List all pods with labels    | =kubectl get pods --show-labels=                                                                                                        |
-| List all pods                | =kubectl get pods=                                                                                                                      |
-| List pods for all namespace  | =kubectl get pods -all-namespaces=                                                                                                      |
-| List pods with more info     | =kubectl get pod -o wide=                                                                                                               |
-| List all services            | =kubectl get services=                                                                                                                  |
-| List all critical pods       | =kubectl get -n kube-system pods -a=                                                                                                    |
-| Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                 |
-| Add label to pod             | =kubectl label pods label owner=denny=                                                                                                  |
-| Filter pod by label          | =kubectl get pods --selector owner=denny=                                                                                               |
-** Common Commands
-| Name                            | Command                                      |
-|---------------------------------+----------------------------------------------|
-| Open a bash terminal in a pod   | =kubectl exec -it storage -- bash=           |
-| Check pod environment variables | =kubectl exec redis-master-ft9ex env=        |
-| Delete pod                      | =kubectl delete pod hello-node-95913-n63qs=  |
-| Start a service                 | =kubectl run hello --image=my_img --port=80= |
-| Similar to =docker ps=          | =kubectl get nodes=                          |
-| Similar to =docker inspect=     | =kubectl describe pod nginx-app-413181-cn=   |
-| Similar to =docker logs=        | =kubectl logs=                               |
-| Similar to =docker exec=        | =kubectl exec=                               |
-| View cluster events             | =kubectl get events=                         |
-| Get deployment info             | =kubectl get deploy=                         |
-| Get replication controller      | =kubectl get rc=                             |
-| Delete service                  | =kubectl delete service nginxservice=        |
-| Delete replication controller   | =kubectl delete rc nginx=                    |
+ [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][link]]
 
-** Volume
-| Name                      | Command                         |
-|---------------------------+---------------------------------|
-| Check the mounted volumes | =kubectl exec storage ls /data= |
-| Check persist volume      | =kubectl describe pv pv0001=    |
-** Scale & Deployment
-
-[[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][link]]
-
-| Name                   | Command                                                       |
-|------------------------+---------------------------------------------------------------|
-| Scale out              | =kubectl scale --replicas=3 deployment/nginx-app=             |
-| online rolling upgrade | =kubectl rolling-update app-v1 app-v2 --image=img:v2=         |
-| Roll backup            | =kubectl rolling-update app-v1 app-v2 --rollback=             |
-| List rollout           | =kubectl get rs=                                              |
-| Check update status    | =kubectl rollout status deployment/nginx-app=                 |
-| Check update history   | =kubectl rollout history deployment/nginx-app=                |
-| Pause/Resume           | =kubectl rollout pause deployment/nginx-deployment=, =resume= |
-| Rollback to previous version | =kubectl rollout undo deployment/nginx-deployment=      |
-
+ | Name                   | Command                                                       |
+ |------------------------+---------------------------------------------------------------|
+ | Scale out              | =kubectl scale --replicas=3 deployment/nginx-app=             |
+ | online rolling upgrade | =kubectl rolling-update app-v1 app-v2 --image=img:v2=         |
+ | Roll backup            | =kubectl rolling-update app-v1 app-v2 --rollback=             |
+ | List rollout           | =kubectl get rs=                                              |
+ | Check update status    | =kubectl rollout status deployment/nginx-app=                 |
+ | Check update history   | =kubectl rollout history deployment/nginx-app=                |
+ | Pause/Resume           | =kubectl rollout pause deployment/nginx-deployment=, =resume= |
+ | Rollback to previous version | =kubectl rollout undo deployment/nginx-deployment=      |
 ** Minikube
 minikube in GitHub: [[https://github.com/kubernetes/minikube][link]]
 | Name                | Command                       |
@@ -222,6 +194,39 @@ Available Commands:
 ...
 ...
 #+END_EXAMPLE
+
+** Basic
+*** Key Concepts
+ | Name | Summary                           |
+ |------+-----------------------------------|
+ | CNCF | Cloud Native Computing Foundation |
+ | CRI  | Container Runtime Interface       |
+ | CNI  | Container Network Interface       |
+ | CSI  | Container Storage Interface       |
+
+*** Kubernets Critical Files
+ | Name                      | Comment                                                 |
+ |---------------------------+---------------------------------------------------------|
+ | Config folder             | =/etc/kubernetes/=                                      |
+ | Certificate files         | =/etc/kubernetes/pki/=                                  |
+ | Credentials to API server | =/etc/kubernetes/kubelet.conf=                          |
+ | Superuser credentials     | =/etc/kubernetes/admin.conf=                            |
+ | Kubernets working dir     | =/var/lib/kubelet/=                                     |
+ | Docker working dir        | =/var/lib/docker/=                                      |
+ | Etcd working dir          | =/var/lib/etcd/=                                        |
+ | Network cni               | =/etc/cni/net.d/=                                       |
+ | Docker container log      | =/var/log/containers/=                                  |
+ | Log files                 | =/var/log/pods/=                                        |
+ | Env                       | =export KUBECONFIG=/etc/kubernetes/admin.conf=          |
+ | Env                       | =/etc/systemd/system/kubelet.service.d/10-kubeadm.conf= |
+
+ #+BEGIN_HTML
+ <a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+ #+END_HTML
+*** Kubernetes Developer Resources
+ | Name            | Summary                                                                                   |
+ |-----------------+-------------------------------------------------------------------------------------------|
+ | API Conventions | https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md |
 ** More Resources
  License: Code is licensed under [[https://www.dennyzhang.com/wp-content/mit_license.txt][MIT License]].
 
