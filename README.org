@@ -65,7 +65,14 @@ kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
   # delete
   time ls -1r */*.yml | grep -v namespace | xargs -I{} kubectl delete -f {}
 #+END_SRC
-** Per Concept
+** Components & Resources
+*** Label & Annontation
+| Name                             | Command                                                               |
+|----------------------------------+-----------------------------------------------------------------------|
+| Filter pods by label             | =kubectl get pods -l owner=denny=                                     |
+| Manually add label to a pod      | =kubectl label pods dummy-input owner=denny=                          |
+| Remove label                     | =kubectl label pods dummy-input owner-=                               |
+| Manually add annonation to a pod | =kubectl annotate pods dummy-input my-url=https://www.dennyzhang.com= |
 *** Pod
 | Name                         | Command                                                                                                                                 |
 |------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------|
@@ -73,16 +80,14 @@ kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
 | Get pod by selector          | =pod_name=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')=                            |
 | List pods with docker images | kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}' |
 | kubectl run command          | kubectl exec -it -n "$namespace" "$podname" -- sh -c "echo $msg  >>/dev/termination-log"                                                |
-| List all pods with labels    | =kubectl get pods --show-labels=                                                                                                        |
 | List all pods                | =kubectl get pods=                                                                                                                      |
+| List all pods with labels    | =kubectl get pods --show-labels=                                                                                                        |
 | List pods for all namespace  | =kubectl get pods -all-namespaces=                                                                                                      |
 | List pods with more info     | =kubectl get pod -o wide=                                                                                                               |
 | List all services            | =kubectl get services=                                                                                                                  |
 | List all critical pods       | =kubectl get -n kube-system pods -a=                                                                                                    |
 | Delete pod                   | =kubectl delete pod hello-node-95913-n63qs=                                                                                             |
 | Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                 |
-| Add label to pod             | =kubectl label pods label owner=denny=                                                                                                  |
-| Filter pod by label          | =kubectl get pods --selector owner=denny=                                                                                               |
 
 *** Namespace & Security
 | Name                          | Command                                     |
@@ -1801,6 +1806,10 @@ In general, Controllers use a Pod Template that you provide to create the Pods f
 https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/
 
 Every Kubernetes object includes two nested object fields that govern the object's configuration: the object spec and the object status. The spec, which you must provide, describes your desired state for the object–the characteristics that you want the object to have. The status describes the actual state of the object, and is supplied and updated by the Kubernetes system. At any given time, the Kubernetes Control Plane actively manages an object's actual state to match the desired state you supplied.
+** how pod can talk with kubectl in security workflow?
+/Users/zdenny/git_code/kubernets_community/client-go/rest/config.go
+
+/var/run/secrets/kubernetes.io/serviceaccount/
 ** quiz: web hosting env, who we implement it in k8s world
 Pod: containers to run git pull
 * TODO [#A] Questions                                              :noexport:
@@ -1817,3 +1826,14 @@ Restarting a container in a Pod should not be confused with restarting the Pod. 
 ** explain k8s components: apiserver, scheduler, controller-manager, kube-proxy
 * TODO k8s architecture                                            :noexport:
 https://www.youtube.com/watch?v=_WfJz5VS_cU&list=PLj6h78yzYM2NGwRwkBPxigKio2r0XHPl9
+* TODO k8s scenario problems                                       :noexport:
+** TODO export k8s dashboard: kube proxy VS ingress
+** TODO how to back and restore etcd
+https://kubernetes-incubator.github.io/kube-aws/advanced-topics/etcd-backup-and-restore.html
+* TODO Read source code of k8s go client                           :noexport:
+** pod watch interface
+/Users/zdenny/git_code/kubernets_community/client-go/kubernetes/typed/core/v1/pod.go
+** pod put and pod patch
+/Users/zdenny/git_code/kubernets_community/client-go/kubernetes/typed/core/v1/pod.go
+** Start a pod and run a REST kubelet API call
+/Users/zdenny/git_code/kubernets_community/client-go/rest/config.go
