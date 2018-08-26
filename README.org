@@ -224,7 +224,6 @@ Available Commands:
  #+END_HTML
 * org-mode configuration                                           :noexport:
 #+STARTUP: overview customtime noalign logdone showall
-#+TITLE:  Kubernets CheatSheet
 #+DESCRIPTION: 
 #+KEYWORDS: 
 #+AUTHOR: Denny Zhang
@@ -241,7 +240,7 @@ Available Commands:
 * [#A] Kubernets                                         :noexport:IMPORTANT:
 https://github.com/DennyZhang/cheatsheet-kubernetes-A4
 
-k8s provides declarative primitives for the “desired state”
+k8s provides declarative primitives for the "desired state"
 - Self-healing
 - Horizontal scaling
 - Automatic binpacking
@@ -281,10 +280,10 @@ Potentially the following scenarios;
     * Setting up ingresses and TLS
               * Fully configure something like Nginx Ingress Controller or Traefik.
               * Create TLS Secrets within Kubernetes, and use them in your ingress controller.
-    * Managing RBAC  (Don’t know enough about this one, but sounds like a good concept to include)
+    * Managing RBAC  (Don't know enough about this one, but sounds like a good concept to include)
               * Creating new roles, etc
 
-I’ll have a think and if anymore come to me, I’ll let you know.
+I'll have a think and if anymore come to me, I'll let you know.
 
 
 Denny Zhang (Github . Blogger)
@@ -307,7 +306,7 @@ DNS.
 
 Denny Zhang (Github . Blogger)
 [4:02 PM]
-I’m trying to cover the volume via mysql scenarios
+I'm trying to cover the volume via mysql scenarios
 
 
 Gui [4:02 PM]
@@ -707,8 +706,8 @@ Kubernetes ServiceTypes allow you to specify what kind of service you want. The 
 Type values and their behaviors are:
 
 ClusterIP: Exposes the service on a cluster-internal IP. Choosing this value makes the service only reachable from within the cluster. This is the default ServiceType.
-NodePort: Exposes the service on each Node’s IP at a static port (the NodePort). A ClusterIP service, to which the NodePort service will route, is automatically created. You’ll be able to contact the NodePort service, from outside the cluster, by requesting <NodeIP>:<NodePort>.
-LoadBalancer: Exposes the service externally using a cloud provider’s load balancer. NodePort and ClusterIP services, to which the external load balancer will route, are automatically created.
+NodePort: Exposes the service on each Node's IP at a static port (the NodePort). A ClusterIP service, to which the NodePort service will route, is automatically created. You'll be able to contact the NodePort service, from outside the cluster, by requesting <NodeIP>:<NodePort>.
+LoadBalancer: Exposes the service externally using a cloud provider's load balancer. NodePort and ClusterIP services, to which the external load balancer will route, are automatically created.
 ExternalName: Maps the service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record with its value. No proxying of any kind is set up. This requires version 1.7 or higher of kube-dns.
 #+END_EXAMPLE
 *** Type: Loadbalancer
@@ -772,7 +771,7 @@ Now if i access IP:NodePort, will it balance the load across multiple pods ?
 
 
 Denny Zhang (Github . Blogger) [8:35 AM]
-I don’t think so
+I don't think so
 #+END_EXAMPLE
 *** TODO How Does NodePort work behind the scene?
 *** #  --8<-------------------------- separator ------------------------>8-- :noexport:
@@ -1209,7 +1208,7 @@ Today (Kubernetes 1.7), there are several sources of metrics within a Kubernetes
 Resource Metrics API is an effort to provide a first-class Kubernetes API (stable, versioned, discoverable, available through apiserver and with client support) that serves resource usage metrics for pods and nodes.
 
 - metric server is sort of a stripped-down version of Heapster
-- The metrics-server will collect “Core” metrics from cAdvisor APIs (currently embedded in the kubelet) and store them in memory as opposed to in etcd. 
+- The metrics-server will collect "Core" metrics from cAdvisor APIs (currently embedded in the kubelet) and store them in memory as opposed to in etcd. 
 - The metrics-server will provide a supported API for feeding schedulers and horizontal pod auto-scalers
 - All other Kubernetes components will supply their own metrics in a Prometheus format
 ** Cadvisor
@@ -1217,7 +1216,7 @@ Cadvisor monitors node and container core metrics in addition to container event
 It natively provides a Prometheus metrics endpoint
 The Kubernetes kublet has an embedded Cadvisor that only exposes the metrics, not the events.
 ** heapster
-Heapster is an add on to Kubernetes that collects and forwards both node, namespace, pod and container level metrics to one or more “sinks” (e.g. InfluxDB). 
+Heapster is an add on to Kubernetes that collects and forwards both node, namespace, pod and container level metrics to one or more "sinks" (e.g. InfluxDB). 
 
 It also provides REST endpoints to gather those metrics. The metrics are constrained to CPU, filesystem, memory, network and uptime.
 
@@ -1230,7 +1229,7 @@ Today, heapster is the source of the time-series data for the Kubernetes Dashboa
 The metrics-server will provide a much needed official API for the internal components of Kubernetes to make decisions about the utilization and performance of the cluster.
 
 - HPA(Horizontal Pod Autoscaler) need input to do good auto-scaling
-** TODO There are plans for an “Infrastore”, a Kubernetes component that keeps historical data and events
+** TODO There are plans for an "Infrastore", a Kubernetes component that keeps historical data and events
 ** #  --8<-------------------------- separator ------------------------>8-- :noexport:
 ** TODO why from heapster to k8s metric server?
 ** TODO kube-aggregator
@@ -1634,7 +1633,7 @@ https://github.com/kubernetes/dashboard/wiki/Creating-sample-user
 #+begin_example
 Location: https://github.com/kubernetes/dashboard/wiki/Creating-sample-user
 Skip to content
-The vote is over, but the fight for net neutrality isn’t. Show your support for a free and open
+The vote is over, but the fight for net neutrality isn't. Show your support for a free and open
 internet.
 Learn more Dismiss
 
@@ -1684,7 +1683,7 @@ Pages 21
   * Release procedures
   * Roadmap
   * Text conventions
-  * Show 6 more pages…
+  * Show 6 more pages...
 
  Home
 
@@ -1880,7 +1879,7 @@ Testing in minikube
 What are k8s Annotations? What differences it is compared with labels:
 
 - Like labels, annotations are key/value pairs. Where labels have length limits, annotations can be quite large.
--  you can’t query or select objects based on annotations.
+-  you can't query or select objects based on annotations.
 - Are used for non-identifying information. Stuff not used internally by k8s.
 
 https://codeengineered.com/blog/2017/kubernetes-labels-annotations/
