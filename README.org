@@ -105,6 +105,11 @@ kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
 |-----------------------------------+-----------------------------------------|
 | Temporarily add a port-forwarding | =kubectl port-forward redis-izl09 6379= |
 
+*** Endpoint
+| Name           | Command                 |
+|----------------+-------------------------|
+| List endpoints | =kubectl get endpoints= |
+
 *** kubectl apply
 
  - Apply the configuration in manifest.yaml and delete all the other configmaps that are not in the file.
@@ -1170,9 +1175,6 @@ kube-system   tiller-deploy-df4fdf55d-zxdq4           0/1       Pending   0     
  #+END_EXAMPLE
 ** DONE helm start with env configured: helm install --set Master.ServiceType=NodePort stable/jenkins
    CLOSED: [2018-04-15 Sun 21:50]
-* [#A] CRD: challenges-k8s-crd                                     :noexport:
-<<<<<<< HEAD
-* [#A] istio: challenges-k8s-istio                                 :noexport:
 * [#A] k8s metric server                                 :noexport:IMPORTANT:
 Metrics Server is a cluster-wide aggregator of resource usage data. 
 
@@ -1900,7 +1902,7 @@ In general, Controllers use a Pod Template that you provide to create the Pods f
 https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/
 
 Every Kubernetes object includes two nested object fields that govern the object's configuration: the object spec and the object status. The spec, which you must provide, describes your desired state for the object–the characteristics that you want the object to have. The status describes the actual state of the object, and is supplied and updated by the Kubernetes system. At any given time, the Kubernetes Control Plane actively manages an object's actual state to match the desired state you supplied.
-<<<<<<< HEAD
+
 ** service discovery: kube-dns, CoreDNS, kubelet, dnsmasqd
 CoreDNS is a replacement for kube-dns for service discovery.
 
@@ -1914,6 +1916,17 @@ https://kubernetes.io/blog/2018/07/10/coredns-ga-for-kubernetes-cluster-dns/
 ** quiz: web hosting env, who we implement it in k8s world
 Pod: containers to run git pull
 * TODO [#A] Questions                                              :noexport:
+** pod type
+https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application/#my-service-is-missing-endpoints
+#+BEGIN_EXAMPLE
+...
+spec:
+  - selector:
+     name: nginx
+     type: frontend
+#+END_EXAMPLE
+
+kubectl get pods --selector=name=nginx,type=frontend
 ** Containers inside a Pod can communicate with one another using localhost. 
 https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/
 
@@ -1936,7 +1949,6 @@ $ kubectl logs --previous ${POD_NAME} ${CONTAINER_NAME}
 https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
 * TODO k8s architecture                                            :noexport:
 https://www.youtube.com/watch?v=_WfJz5VS_cU&list=PLj6h78yzYM2NGwRwkBPxigKio2r0XHPl9
-<<<<<<< HEAD
 * TODO [#A] Try minikube for latest k8s                            :noexport:
 * TODO k8s scenario problems                                       :noexport:
 ** TODO export k8s dashboard: kube proxy VS ingress
