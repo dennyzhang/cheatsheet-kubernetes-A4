@@ -29,6 +29,7 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 *** Common Commands
 | Name                                         | Command                                                                       |
 |----------------------------------------------+-------------------------------------------------------------------------------|
+| Validate yaml file                           | =kubectl create --dry-run --validate -f pod-dummy.yaml=                       |
 | Start a pod without yaml                     | =kubectl run --rm -i demo --image=denny/image:test --image-pull-policy=Never= |
 | Open a bash terminal in a pod                | =kubectl exec -it storage sh=                                                 |
 | Check pod environment variables              | =kubectl exec redis-master-ft9ex env=                                         |
@@ -104,6 +105,11 @@ kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
 |-----------------------------------+-----------------------------------------|
 | Temporarily add a port-forwarding | =kubectl port-forward redis-izl09 6379= |
 
+*** Endpoint
+| Name           | Command                 |
+|----------------+-------------------------|
+| List endpoints | =kubectl get endpoints= |
+
 *** kubectl apply
 
  - Apply the configuration in manifest.yaml and delete all the other configmaps that are not in the file.
@@ -120,16 +126,16 @@ kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
 
  [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][link]]
 
-| Name                   | Command                                                       |
-|------------------------+---------------------------------------------------------------|
-| Scale out              | =kubectl scale --replicas=3 deployment/nginx-app=             |
-| online rolling upgrade | =kubectl rolling-update app-v1 app-v2 --image=img:v2=         |
-| Roll backup            | =kubectl rolling-update app-v1 app-v2 --rollback=             |
-| List rollout           | =kubectl get rs=                                              |
-| Check update status    | =kubectl rollout status deployment/nginx-app=                 |
-| Check update history   | =kubectl rollout history deployment/nginx-app=                |
-| Pause/Resume           | =kubectl rollout pause deployment/nginx-deployment=, =resume= |
-| Rollback to previous version | =kubectl rollout undo deployment/nginx-deployment=      |
+| Name                         | Command                                                       |
+|------------------------------+---------------------------------------------------------------|
+| Scale out                    | =kubectl scale --replicas=3 deployment/nginx-app=             |
+| online rolling upgrade       | =kubectl rollout app-v1 app-v2 --image=img:v2=                |
+| Roll backup                  | =kubectl rollout app-v1 app-v2 --rollback=                    |
+| List rollout                 | =kubectl get rs=                                              |
+| Check update status          | =kubectl rollout status deployment/nginx-app=                 |
+| Check update history         | =kubectl rollout history deployment/nginx-app=                |
+| Pause/Resume                 | =kubectl rollout pause deployment/nginx-deployment=, =resume= |
+| Rollback to previous version | =kubectl rollout undo deployment/nginx-deployment=            |
 ** Basic
 *** Key Concepts
 | Name | Summary                           |
@@ -1169,9 +1175,9 @@ kube-system   tiller-deploy-df4fdf55d-zxdq4           0/1       Pending   0     
  #+END_EXAMPLE
 ** DONE helm start with env configured: helm install --set Master.ServiceType=NodePort stable/jenkins
    CLOSED: [2018-04-15 Sun 21:50]
+<<<<<<< HEAD
 * [#A] CRD: challenges-k8s-crd                                     :noexport:
 <<<<<<< HEAD
-* [#A] istio: challenges-k8s-istio                                 :noexport:
 * [#A] k8s metric server                                 :noexport:IMPORTANT:
 Metrics Server is a cluster-wide aggregator of resource usage data. 
 
@@ -1254,38 +1260,7 @@ Scheduler: In the future Core Metrics will be considered in order to schedule be
 https://blog.freshtracks.io/what-is-the-the-new-kubernetes-metrics-server-849c16aa01f4
 https://blog.outlyer.com/monitoring-kubernetes-with-heapster-and-prometheus
 https://www.outcoldman.com/en/archive/2017/07/09/kubernetes-monitoring-resources/
-* Kubernetes Monitoring: prometheus, heapster                      :noexport:
-https://deis.com/blog/2016/monitoring-kubernetes-with-heapster/
-https://groups.google.com/forum/#!topic/prometheus-developers/3zq4oD7if3s
-
-Since we're extending heapster in various ways for auto-scaling, and
-we're about to add support for collecting and aggregating custom
-metrics, we should decide and document what the boundaries for
-heapster's responsibilities should be. In particular, I don't want it
-to grow into a general-purpose application and/or infrastructure
-monitoring, dashboarding, and alerting system, such as
-Prometheus. There are many such systems, and we shouldn't compete with
-them.
-
-#+BEGIN_EXAMPLE
-Heapster is a competing monitoring system.
-
- * Heapster is limited to Kuberenetes container metrics, it is not general use.
- * Heapster only provides metrics back as REST, it does not have a query language. (atleast that I could find)
- * Heapster does not have any form of alerting.
-Basically, if you have Prometheus, there's almost no reason to use heapster.
-#+END_EXAMPLE
-** What is the relationship of heapster and prometheus
-https://groups.google.com/forum/#!topic/prometheus-developers/3zq4oD7if3s
-https://github.com/kubernetes/heapster/issues/665
-* k8s Logging                                                      :noexport:
-https://kubernetes.io/docs/concepts/cluster-administration/logging/
-https://kubernetes.io/blog/2015/06/cluster-level-logging-with-kubernetes/
-https://github.com/kubernetes/kubernetes/tree/release-1.0/contrib/logging
-** DONE kubectl logs: Error from server (BadRequest): a container name must be specified for pod ...
-   CLOSED: [2018-07-23 Mon 14:44]
-=======
->>>>>>> 1d847937416bbe2df5ea0f548048ea4fbe75579b
+<<<<<<< HEAD
 * k8s go client                                                    :noexport:
 ** events
 https://github.com/kubernetes/client-go/blob/master/listers/core/v1/event.go
@@ -1905,6 +1880,9 @@ https://github.com/kubernetes/kube-aggregator
 *** TODO A Kubernetes object is a "record of intent"–once you create the object, the Kubernetes system will constantly work to ensure that object exists. :noexport:
   https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/
 * k8s quiz                                                         :noexport:
+** Pod Priority and Preemption
+https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption
+** Why we need subresources: /status, /scale
 ** Pods & Controllers
 https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/#pods-and-controllers
 
@@ -1922,13 +1900,31 @@ In general, Controllers use a Pod Template that you provide to create the Pods f
 https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/
 
 Every Kubernetes object includes two nested object fields that govern the object's configuration: the object spec and the object status. The spec, which you must provide, describes your desired state for the object–the characteristics that you want the object to have. The status describes the actual state of the object, and is supplied and updated by the Kubernetes system. At any given time, the Kubernetes Control Plane actively manages an object's actual state to match the desired state you supplied.
+
+** service discovery: kube-dns, CoreDNS, kubelet, dnsmasqd
+CoreDNS is a replacement for kube-dns for service discovery.
+
+https://kubernetes.io/blog/2018/07/10/coredns-ga-for-kubernetes-cluster-dns/
+=======
 ** how pod can talk with kubectl in security workflow?
 /Users/zdenny/git_code/kubernets_community/client-go/rest/config.go
 
 /var/run/secrets/kubernetes.io/serviceaccount/
+
 ** quiz: web hosting env, who we implement it in k8s world
 Pod: containers to run git pull
 * TODO [#A] Questions                                              :noexport:
+** pod type
+https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application/#my-service-is-missing-endpoints
+#+BEGIN_EXAMPLE
+...
+spec:
+  - selector:
+     name: nginx
+     type: frontend
+#+END_EXAMPLE
+
+kubectl get pods --selector=name=nginx,type=frontend
 ** Containers inside a Pod can communicate with one another using localhost. 
 https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/
 
@@ -1940,8 +1936,18 @@ https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/
 
 Restarting a container in a Pod should not be confused with restarting the Pod. The Pod itself does not run, but is an environment the containers run in and persists until it is deleted.
 ** explain k8s components: apiserver, scheduler, controller-manager, kube-proxy
+** get logs of failed container
+https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application/#my-pod-is-crashing-or-otherwise-unhealthy
+#+BEGIN_EXAMPLE
+If your container has previously crashed, you can access the previous container's crash log with:
+
+$ kubectl logs --previous ${POD_NAME} ${CONTAINER_NAME}
+#+END_EXAMPLE
+** Why k8s dashboard get deprecated?
+https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
 * TODO k8s architecture                                            :noexport:
 https://www.youtube.com/watch?v=_WfJz5VS_cU&list=PLj6h78yzYM2NGwRwkBPxigKio2r0XHPl9
+* TODO [#A] Try minikube for latest k8s                            :noexport:
 * TODO k8s scenario problems                                       :noexport:
 ** TODO export k8s dashboard: kube proxy VS ingress
 ** TODO how to back and restore etcd
