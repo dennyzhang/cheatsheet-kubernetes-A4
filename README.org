@@ -39,6 +39,20 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | List resource utilization for all containers | =kubectl top pod --all-namespaces --containers=true=                          |
 | Query healthcheck endpoint                   | =curl -L http://127.0.0.1:10250/healthz=                                      |
 
+- Tail pod log by label
+#+BEGIN_SRC sh
+namespace="mynamespace"
+mylabel="app=mylabel"
+kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
+    | awk -F' ' '{print $1}' | xargs -I{} \
+      kubectl logs -n "$namespace" -f {}
+#+END_SRC
+*** Check Performance
+| Name                    | Command            |
+|-------------------------+--------------------|
+| Get node resource usage | =kubectl top node= |
+| Get node resource usage | =kubectl top pod= |
+
 - Get node hardware resource utilization
 #+BEGIN_SRC sh
 kubectl get nodes --no-headers \
@@ -48,25 +62,16 @@ kubectl get nodes --no-headers \
 kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
     sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5 | grep -ve Event -ve Allocated -ve percent -ve -- ; echo'
 #+END_SRC
-
-- Tail pod log by label
-#+BEGIN_SRC sh
-namespace="mynamespace"
-mylabel="app=mylabel"
-kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
-    | awk -F' ' '{print $1}' | xargs -I{} \
-      kubectl logs -n "$namespace" -f {}
-#+END_SRC
-
-- Apply yamls file recursively
-#+BEGIN_SRC sh
-  # create
-  time ls -1 */*.yml | grep -v namespace | xargs -I{} kubectl apply -f {}
-
-  # delete
-  time ls -1r */*.yml | grep -v namespace | xargs -I{} kubectl delete -f {}
-#+END_SRC
 ** Components & Resources
+*** Log files
+| Name                           | Command                                 |
+|--------------------------------+-----------------------------------------|
+| API Server.log= in master node | =/var.log=/kube-apiserver.log=          |
+| Scheduler.log= in master node  | =/var.log=/kube-scheduler.log=          |
+| Controller.log= in master node | =/var.log=/kube-controller-manager.log= |
+| Kubelet.log= in worker node    | =/var.log=/kubelet.log=                 |
+| Kube Proxy.log= in worker node | =/var.log=/kubelet-proxy.log=           |
+
 *** Label & Annontation
 | Name                             | Command                                                               |
 |----------------------------------+-----------------------------------------------------------------------|
@@ -89,6 +94,12 @@ kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
 | List all critical pods       | =kubectl get -n kube-system pods -a=                                                                                                    |
 | Delete pod                   | =kubectl delete pod hello-node-95913-n63qs=                                                                                             |
 | Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                 |
+| Get Pod initContainer status | =kubectl get pod dummy --template '{{.status.initContainerStatuses}}'=                                                                  |
+
+*** Events & Metrics
+| Name            | Command                               |
+|-----------------+---------------------------------------|
+| View all events | =kubectl get events --all-namespaces= |
 
 *** Namespace & Security
 | Name                          | Command                                     |
@@ -111,11 +122,11 @@ kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
 | List endpoints | =kubectl get endpoints= |
 
 *** kubectl apply
+- Apply the configuration in manifest.yaml and delete all the other configmaps that are not in the file.
 
- - Apply the configuration in manifest.yaml and delete all the other configmaps that are not in the file.
- #+BEGIN_EXAMPLE
- kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMap
- #+END_EXAMPLE
+#+BEGIN_EXAMPLE
+kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMap
+#+END_EXAMPLE
 
 *** Volume
 | Name                      | Command                         |
@@ -123,7 +134,6 @@ kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
 | Check the mounted volumes | =kubectl exec storage ls /data= |
 | Check persist volume      | =kubectl describe pv pv0001=    |
 *** Scale & Deployment
-
  [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][link]]
 
 | Name                         | Command                                                       |
@@ -172,7 +182,6 @@ kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
 | Similar to =docker inspect=        | =kubectl describe pod nginx-app-413181-cn=   |
 | Similar to =docker logs=           | =kubectl logs=                               |
 | Similar to =docker exec=           | =kubectl exec=                               |
-| View cluster events                | =kubectl get events=                         |
 | Get deployment info                | =kubectl get deploy=                         |
 | Delete service                     | =kubectl delete service nginxservice=        |
 | Get kubectl version                | =kubectl version=                            |
@@ -898,10 +907,6 @@ https://github.com/dennyzhang/dennytest/tree/master/cheatsheet-kubernetes-A4][ch
 * [#A] minikube                                                    :noexport:
 https://github.com/kubernetes/minikube
 https://github.com/dennyzhang/cheatsheet-kubernetes-A4
-** install minikube
-https://github.com/kubernetes/minikube
-
-brew cask install minikube
 ** DONE minikube volume local drive
    CLOSED: [2018-07-15 Sun 22:46]
  https://stackoverflow.com/questions/42456159/minikube-volumes
@@ -1261,48 +1266,6 @@ https://blog.freshtracks.io/what-is-the-the-new-kubernetes-metrics-server-849c16
 https://blog.outlyer.com/monitoring-kubernetes-with-heapster-and-prometheus
 https://www.outcoldman.com/en/archive/2017/07/09/kubernetes-monitoring-resources/
 <<<<<<< HEAD
-* k8s go client                                                    :noexport:
-** events
-https://github.com/kubernetes/client-go/blob/master/listers/core/v1/event.go
-** TODO Client-go does not use a Swagger generator. Instead, it uses source code generators
-source code generators are originated from the Kubernetes project, to create Kubernetes-style API objects and serializers.
-
-https://medium.com/programming-kubernetes/building-stuff-with-the-kubernetes-api-part-4-using-go-b1d0e3c1c899
-** sample: subscribe to events
-#+BEGIN_SRC go
-    ch := watcher.ResultChan()
-
-    fmt.Printf("--- PVC Watch (max claims %v) ----\n", maxClaimedQuant.String())
-    for event := range ch {
-	pvc, ok := event.Object.(*v1.PersistentVolumeClaim)
-	if !ok {
-		log.Fatal("unexpected type")
-	}
-	quant := pvc.Spec.Resources.Requests[v1.ResourceStorage]
-
-	switch event.Type {
-	case watch.Added:
-		totalClaimedQuant.Add(quant)
-		log.Printf("PVC %s added, claim size %s\n", pvc.Name, quant.String())
-
-		// is claim overage?
-		if totalClaimedQuant.Cmp(maxClaimedQuant) == 1 {
-			log.Printf("\nClaim overage reached: max %s at %s",
-				maxClaimedQuant.String(),
-				totalClaimedQuant.String(),
-			)
-			// trigger action
-			log.Println("*** Taking action ***")
-		}
-
-	case watch.Modified:
-		//log.Printf("Pod %s modified\n", pod.GetName())
-	case watch.Deleted:
-		quant := pvc.Spec.Resources.Requests[v1.ResourceStorage]
-		totalClaimedQuant.Sub(quant)
-#+END_SRC
-
-https://github.com/vladimirvivien/k8s-client-examples/blob/master/go/pvcwatch/main.go
 * k8s loadbalancer                                                 :noexport:
 ** DONE k8s service: loadbalancer
    CLOSED: [2018-06-19 Tue 13:51]
@@ -1322,50 +1285,6 @@ https://github.com/vladimirvivien/k8s-client-examples/blob/master/go/pvcwatch/ma
    type: LoadBalancer
  EOF
  #+END_EXAMPLE
-* k8s scheduling                                                   :noexport:
-** Tell k8s your estimation for resource usage(CPU/RAM) per Pod
-https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
-
-https://kubernetes.io/docs/concepts/policy/resource-quotas/#requests-vs-limits
-
-#+BEGIN_EXAMPLE
-Each Container of a Pod can specify one or more of the following:
-
-spec.containers[].resources.limits.cpu
-spec.containers[].resources.limits.memory
-spec.containers[].resources.requests.cpu
-spec.containers[].resources.requests.memory
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-apiVersion: v1
-kind: Pod
-metadata:
-  name: frontend
-spec:
-  containers:
-  - name: db
-    image: mysql
-    env:
-    - name: MYSQL_ROOT_PASSWORD
-      value: "password"
-    resources:
-      requests:
-        memory: "64Mi"
-        cpu: "250m"
-      limits:
-        memory: "128Mi"
-        cpu: "500m"
-  - name: wp
-    image: wordpress
-    resources:
-      requests:
-        memory: "64Mi"
-        cpu: "250m"
-      limits:
-        memory: "128Mi"
-        cpu: "500m"
-#+END_EXAMPLE
 * k8s DaemonSet                                                    :noexport:
 ** DONE k8s daemonsets: ensures that all (or some) Nodes run a copy of a Pod.
    CLOSED: [2018-06-19 Tue 13:28]
@@ -1810,18 +1729,6 @@ spec:
             key: password
   restartPolicy: Never
 #+END_EXAMPLE
-* [#B] kubectl jsonpath support                                    :noexport:
-https://kubernetes.io/docs/reference/kubectl/jsonpath/
-
-kubectl get pods -o json
-$ kubectl get pods -o=jsonpath='{@}'
-$ kubectl get pods -o=jsonpath='{.items[0]}'
-$ kubectl get pods -o=jsonpath='{.items[0].metadata.name}'
-$ kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.startTime}{"\n"}{end}'
-
-kubectl get pods -o=jsonpath='{.items[0].metadata.name}'
-
-kubectl get pods -n oratos -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'
 * HPA: Horizontal Pod Autoscaler                                   :noexport:
 * Uncertainty & Uncomfortable things with K8S                      :noexport:
 ** Destroy namepsace takes more than 15 minutes, with nowhere to check
@@ -1873,46 +1780,6 @@ https://github.com/kubernetes/kubeadm/blob/master/docs/release-cycle.md
 Library for writing a Kubernetes-style API server.
 
 https://github.com/kubernetes/kube-aggregator
-* TODO k8s concept learning                                        :noexport:
-** TODO How often k8s perodically check the desired state          :noexport:
-*** TODO Once you've set your desired state, the Kubernetes Control Plane works to make the cluster's current state match the desired state. :noexport:
-  https://kubernetes.io/docs/concepts/
-*** TODO A Kubernetes object is a "record of intent"–once you create the object, the Kubernetes system will constantly work to ensure that object exists. :noexport:
-  https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/
-* k8s quiz                                                         :noexport:
-** Pod Priority and Preemption
-https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption
-** Why we need subresources: /status, /scale
-** Pods & Controllers
-https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/#pods-and-controllers
-
-Pods and Controllers
-A Controller can create and manage multiple Pods for you, handling replication and rollout and providing self-healing capabilities at cluster scope. For example, if a Node fails, the Controller might automatically replace the Pod by scheduling an identical replacement on a different Node.
-
-Some examples of Controllers that contain one or more pods include:
-
-Deployment
-StatefulSet
-DaemonSet
-In general, Controllers use a Pod Template that you provide to create the Pods for which it is responsible.
-
-** Object Spec and Status
-https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/
-
-Every Kubernetes object includes two nested object fields that govern the object's configuration: the object spec and the object status. The spec, which you must provide, describes your desired state for the object–the characteristics that you want the object to have. The status describes the actual state of the object, and is supplied and updated by the Kubernetes system. At any given time, the Kubernetes Control Plane actively manages an object's actual state to match the desired state you supplied.
-
-** service discovery: kube-dns, CoreDNS, kubelet, dnsmasqd
-CoreDNS is a replacement for kube-dns for service discovery.
-
-https://kubernetes.io/blog/2018/07/10/coredns-ga-for-kubernetes-cluster-dns/
-=======
-** how pod can talk with kubectl in security workflow?
-/Users/zdenny/git_code/kubernets_community/client-go/rest/config.go
-
-/var/run/secrets/kubernetes.io/serviceaccount/
-
-** quiz: web hosting env, who we implement it in k8s world
-Pod: containers to run git pull
 * TODO [#A] Questions                                              :noexport:
 ** pod type
 https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application/#my-service-is-missing-endpoints
@@ -1952,10 +1819,11 @@ https://www.youtube.com/watch?v=_WfJz5VS_cU&list=PLj6h78yzYM2NGwRwkBPxigKio2r0XH
 ** TODO export k8s dashboard: kube proxy VS ingress
 ** TODO how to back and restore etcd
 https://kubernetes-incubator.github.io/kube-aws/advanced-topics/etcd-backup-and-restore.html
-* TODO Read source code of k8s go client                           :noexport:
-** pod watch interface
-/Users/zdenny/git_code/kubernets_community/client-go/kubernetes/typed/core/v1/pod.go
-** pod put and pod patch
-/Users/zdenny/git_code/kubernets_community/client-go/kubernetes/typed/core/v1/pod.go
-** Start a pod and run a REST kubelet API call
-/Users/zdenny/git_code/kubernets_community/client-go/rest/config.go
+* Apply yamls file recursively                                     :noexport:
+#+BEGIN_SRC sh
+# create
+time ls -1 */*.yml | grep -v namespace | xargs -I{} kubectl apply -f {}
+
+# delete
+time ls -1r */*.yml | grep -v namespace | xargs -I{} kubectl delete -f {}
+#+END_SRC
