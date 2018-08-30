@@ -31,15 +31,15 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Serviceaccount yaml examples | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                                                    |
 
 *** Common Commands
-| Name                                         | Command                                                              |
-|----------------------------------------------+----------------------------------------------------------------------|
-| Validate yaml file                           | =kubectl create --dry-run --validate -f pod-dummy.yaml=              |
-| Start a pod without yaml                     | =kubectl run --rm -i demo --image=busybox --image-pull-policy=Never= |
-| Open a bash terminal in a pod                | =kubectl exec -it storage sh=                                        |
-| Check pod environment variables              | =kubectl exec redis-master-ft9ex env=                                |
-| Get all services for all namespace           | =kubectl get service --all-namespaces=                               |
-| Get system conf(kubeadm-config configmap)    | =kubectl -n kube-system get cm kubeadm-config -o yaml=               |
-| Query healthcheck endpoint                   | =curl -L http://127.0.0.1:10250/healthz=                             |
+| Name                               | Command                                                              |
+|------------------------------------+----------------------------------------------------------------------|
+| Validate yaml file with dry run    | =kubectl create --dry-run --validate -f pod-dummy.yaml=              |
+| Start a pod without yaml           | =kubectl run --rm -i demo --image=busybox --image-pull-policy=Never= |
+| Open a bash terminal in a pod      | =kubectl exec -it storage sh=                                        |
+| Check pod environment variables    | =kubectl exec redis-master-ft9ex env=                                |
+| Get all services for all namespace | =kubectl get service --all-namespaces=                               |
+| Get system conf via configmap      | =kubectl -n kube-system get cm kubeadm-config -o yaml=               |
+| Query healthcheck endpoint         | =curl -L http://127.0.0.1:10250/healthz=                             |
 
 *** Check Performance
 | Name                                         | Command                                              |
