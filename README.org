@@ -22,10 +22,14 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
 ** Common Usage
 *** yaml templates
-| Name                                     | Summary                     |
-|------------------------------------------+-----------------------------|
-| Create a dummy pod                       | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]]              |
-| Create a default serviceaccount for RBAC | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]] |
+| Name                    | Summary                                                                   |
+|-------------------------+---------------------------------------------------------------------------|
+| Pod Examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-gitclone.yaml][pod-gitclone.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-nginx.yaml][pod-nginx.yaml]],  [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-redis.yaml][pod-volume-redis.yaml]] |
+| Serviceaccount Examples | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                                               |
+| Service Examples        | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/service-clusterip-nginx.yaml][service-clusterip-nginx.yaml]]                                              |
+| Statefulset Examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-nginx.yaml][statefulset-nginx.yaml]]                                                    |
+| Deployment Examples     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/deployment-nginx.yaml][deployment-nginx.yaml]]                                                     |
+
 *** Common Commands
 | Name                                         | Command                                                              |
 |----------------------------------------------+----------------------------------------------------------------------|
