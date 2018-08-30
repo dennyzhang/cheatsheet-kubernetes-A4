@@ -4,6 +4,8 @@ kind: Pod
 metadata:
   name: dummy
   namespace: default
+  labels:
+    env: test
 spec:
   containers:
   - name: dummy

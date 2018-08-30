@@ -1,3 +1,4 @@
+# https://kubernetes.io/docs/tutorials/k8s201/
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,11 +15,11 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx
+        image: nginx:1.8
         resources:
           limits:
             memory: "128Mi"
-            cpu: "500m"
+            cpu: "250m"
         ports:
         - containerPort: 80
           

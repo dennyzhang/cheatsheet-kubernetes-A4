@@ -92,9 +92,14 @@ kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
 | List pods with more info     | =kubectl get pod -o wide=                                                                                                               |
 | List all services            | =kubectl get services=                                                                                                                  |
 | List all critical pods       | =kubectl get -n kube-system pods -a=                                                                                                    |
-| Delete pod                   | =kubectl delete pod hello-node-95913-n63qs=                                                                                             |
 | Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                 |
 | Get Pod initContainer status | =kubectl get pod dummy --template '{{.status.initContainerStatuses}}'=                                                                  |
+
+- Delete Pod
+| Name                | Command                                     |
+|---------------------+---------------------------------------------|
+| Delete pod          | =kubectl delete pod hello-node-95913-n63qs= |
+| Delete pod by label | =kubectl delete pod -l "env=test"=          |
 
 *** Events & Metrics
 | Name            | Command                               |
