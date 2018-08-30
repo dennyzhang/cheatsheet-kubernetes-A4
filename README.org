@@ -22,13 +22,13 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
 ** Common Usage
 *** yaml templates
-| Name                    | Summary                                                                        |
-|-------------------------+--------------------------------------------------------------------------------|
-| Pod Examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-gitclone.yaml][pod-gitclone.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-nginx.yaml][pod-nginx.yaml]],  [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-redis.yaml][pod-volume-redis.yaml]]      |
-| Serviceaccount Examples | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                                                    |
-| Service Examples        | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/service-clusterip-nginx.yaml][service-clusterip-nginx.yaml]]                                                   |
-| Statefulset Examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-nginx.yaml][statefulset-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-single-mysql][statefulset-single-mysql]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-mysql][statefulset-replicated-mysql]] |
-| Deployment Examples     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/deployment-nginx.yaml][deployment-nginx.yaml]]                                                          |
+| Name                         | Summary                                                                        |
+|------------------------------+--------------------------------------------------------------------------------|
+| Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-gitclone.yaml][pod-gitclone.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-nginx.yaml][pod-nginx.yaml]],  [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-redis.yaml][pod-volume-redis.yaml]]      |
+| Deployment yaml examples     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/deployment-nginx.yaml][deployment-nginx.yaml]]                                                          |
+| Service yaml examples        | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/service-clusterip-nginx.yaml][service-clusterip-nginx.yaml]]                                                   |
+| Statefulset yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-nginx.yaml][statefulset-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-single-mysql][statefulset-single-mysql]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-mysql][statefulset-replicated-mysql]] |
+| Serviceaccount yaml examples | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                                                    |
 
 *** Common Commands
 | Name                                         | Command                                                              |
@@ -47,6 +47,25 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Get node resource usage                      | =kubectl top node=                                   |
 | Get node resource usage                      | =kubectl top pod=                                    |
 | List resource utilization for all containers | =kubectl top pod --all-namespaces --containers=true= |
+** Pod
+| Name                         | Command                                                                                                                                 |
+|------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------|
+| List all pods                | =kubectl get pods=                                                                                                                      |
+| List all pods with labels    | =kubectl get pods --show-labels=                                                                                                        |
+| List pods for all namespace  | =kubectl get pods -all-namespaces=                                                                                                      |
+| List pods with more info     | =kubectl get pod -o wide=                                                                                                               |
+| List all critical pods       | =kubectl get -n kube-system pods -a=                                                                                                    |
+| Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                 |
+| Get Pod initContainer status | =kubectl get pod dummy --template '{{.status.initContainerStatuses}}'=                                                                  |
+| Get pod by selector          | podname=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')                               |
+| List pods with docker images | kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}' |
+| kubectl run command          | kubectl exec -it -n "$namespace" "$podname" -- sh -c "echo $msg  >>/dev/termination-log"                                                |
+
+- Delete Pod
+| Name                | Command                                     |
+|---------------------+---------------------------------------------|
+| Delete pod          | =kubectl delete pod hello-node-95913-n63qs= |
+| Delete pod by label | =kubectl delete pod -l env=test=            |
 
 ** Label & Annontation
 | Name                             | Command                                                               |
@@ -55,26 +74,6 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Manually add label to a pod      | =kubectl label pods dummy-input owner=denny=                          |
 | Remove label                     | =kubectl label pods dummy-input owner-=                               |
 | Manually add annonation to a pod | =kubectl annotate pods dummy-input my-url=https://www.dennyzhang.com= |
-** Pod
-| Name                         | Command                                                                                                                                 |
-|------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------|
-| Dummy pod                    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]]                                                                                                                          |
-| Get pod by selector          | =pod_name=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')=                            |
-| List pods with docker images | kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}' |
-| kubectl run command          | kubectl exec -it -n "$namespace" "$podname" -- sh -c "echo $msg  >>/dev/termination-log"                                                |
-| List all pods                | =kubectl get pods=                                                                                                                      |
-| List all pods with labels    | =kubectl get pods --show-labels=                                                                                                        |
-| List pods for all namespace  | =kubectl get pods -all-namespaces=                                                                                                      |
-| List pods with more info     | =kubectl get pod -o wide=                                                                                                               |
-| List all critical pods       | =kubectl get -n kube-system pods -a=                                                                                                    |
-| Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                 |
-| Get Pod initContainer status | =kubectl get pod dummy --template '{{.status.initContainerStatuses}}'=                                                                  |
-
-- Delete Pod
-| Name                | Command                                     |
-|---------------------+---------------------------------------------|
-| Delete pod          | =kubectl delete pod hello-node-95913-n63qs= |
-| Delete pod by label | =kubectl delete pod -l env=test=            |
 
 ** Deployment & Scale
  [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][link]]
@@ -94,8 +93,8 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 |--------------------------+-------------------------------------------------------------------------------------|
 | List all services        | =kubectl get services=                                                              |
 | Get service detail       | =kubectl get service nginx-service -o yaml=                                         |
-| Get service cluster ip   | =kubectl get service nginx-service -o go-template='{{.spec.clusterIP}}'=            |
-| Get service cluster port | =kubectl get service nginx-service -o go-template='{{(index .spec.ports 0).port}}'= |
+| Get service cluster ip   | kubectl get service nginx-service -o go-template='{{.spec.clusterIP}}'              |
+| Get service cluster port | kubectl get service nginx-service -o go-template='{{(index .spec.ports 0).port}}'   |
 ** StatefulSet
 | Name                               | Command                                                                        |
 |------------------------------------+--------------------------------------------------------------------------------|
@@ -126,7 +125,6 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 *** Namespace & Security
 | Name                          | Command                                     |
 |-------------------------------+---------------------------------------------|
-| Create default serviceaccount | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                 |
 | List authenticated contexts   | =kubectl config get-contexts=               |
 | List contexts                 | =kubectl config get-contexts=               |
 | Switch context                | =kubectl config use-context <cluster-name>= |
