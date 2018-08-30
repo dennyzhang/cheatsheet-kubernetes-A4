@@ -14,6 +14,10 @@ spec:
         - --
         - https://github.com/dennyzhang/challenges-kubernetes.git
         - /data/challenges-kubernetes
+    securityContext:
+        runAsUser: 1 # Any non-root user will do. Match to the workload.
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
     volumeMounts:
     - mountPath: /data
       name: www-data
