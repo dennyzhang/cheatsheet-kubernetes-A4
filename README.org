@@ -24,7 +24,8 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 *** yaml templates
 | Name                         | Summary                                                                        |
 |------------------------------+--------------------------------------------------------------------------------|
-| Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-gitclone.yaml][pod-gitclone.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-nginx.yaml][pod-nginx.yaml]],  [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-redis.yaml][pod-volume-redis.yaml]]      |
+| Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-nginx.yaml][pod-nginx.yaml]],  [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-redis.yaml][pod-volume-redis.yaml]]                         |
+| Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-gitclone.yaml][pod-gitclone.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-healthcheck-nginx.yaml][pod-healthcheck-nginx.yaml]]                                  |
 | Deployment yaml examples     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/deployment-nginx.yaml][deployment-nginx.yaml]]                                                          |
 | Service yaml examples        | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/service-clusterip-nginx.yaml][service-clusterip-nginx.yaml]]                                                   |
 | Statefulset yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-nginx.yaml][statefulset-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-single-mysql][statefulset-single-mysql]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-mysql][statefulset-replicated-mysql]] |
@@ -51,11 +52,11 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Name                         | Command                                                                                                                                 |
 |------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------|
 | List all pods                | =kubectl get pods=                                                                                                                      |
-| List all pods with labels    | =kubectl get pods --show-labels=                                                                                                        |
 | List pods for all namespace  | =kubectl get pods -all-namespaces=                                                                                                      |
-| List pods with more info     | =kubectl get pod -o wide=                                                                                                               |
 | List all critical pods       | =kubectl get -n kube-system pods -a=                                                                                                    |
+| List pods with more info     | =kubectl get pod -o wide=, =kubectl get pod -o yaml=                                                                                                         |
 | Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                 |
+| List all pods with labels    | =kubectl get pods --show-labels=                                                                                                        |
 | Get Pod initContainer status | =kubectl get pod dummy --template '{{.status.initContainerStatuses}}'=                                                                  |
 | Get pod by selector          | podname=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')                               |
 | List pods with docker images | kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}' |
