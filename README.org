@@ -25,22 +25,23 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Name                         | Summary                                                                        |
 |------------------------------+--------------------------------------------------------------------------------|
 | Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-nginx.yaml][pod-nginx.yaml]],  [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-redis.yaml][pod-volume-redis.yaml]]                         |
-| Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-gitclone.yaml][pod-gitclone.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-healthcheck-nginx.yaml][pod-healthcheck-nginx.yaml]]                                  |
+| Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-healthcheck-nginx.yaml][pod-healthcheck-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-gitclone.yaml][pod-gitclone.yaml]]                                  |
 | Deployment yaml examples     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/deployment-nginx.yaml][deployment-nginx.yaml]]                                                          |
 | Service yaml examples        | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/service-clusterip-nginx.yaml][service-clusterip-nginx.yaml]]                                                   |
 | Statefulset yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-nginx.yaml][statefulset-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-single-mysql][statefulset-single-mysql]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-mysql][statefulset-replicated-mysql]] |
 | Serviceaccount yaml examples | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                                                    |
 
 *** Common Commands
-| Name                               | Command                                                              |
-|------------------------------------+----------------------------------------------------------------------|
-| Validate yaml file with dry run    | =kubectl create --dry-run --validate -f pod-dummy.yaml=              |
-| Start a pod without yaml           | =kubectl run --rm -i demo --image=busybox --image-pull-policy=Never= |
-| Open a bash terminal in a pod      | =kubectl exec -it storage sh=                                        |
-| Check pod environment variables    | =kubectl exec redis-master-ft9ex env=                                |
-| Get all services for all namespace | =kubectl get service --all-namespaces=                               |
-| Get system conf via configmap      | =kubectl -n kube-system get cm kubeadm-config -o yaml=               |
-| Query healthcheck endpoint         | =curl -L http://127.0.0.1:10250/healthz=                             |
+| Name                                   | Command                                                               |
+|----------------------------------------+-----------------------------------------------------------------------|
+| Validate yaml file with dry run        | =kubectl create --dry-run --validate -f pod-dummy.yaml=               |
+| Start a temporary pod to run wget test | =kubectl run --rm wget-test --image=busybox --restart=Never --tty -i= |
+| Start a temporary pod to run curl test | =kubectl run --rm curl-test --image=yauritux/busybox-curl --tty -i=   |
+| Open a bash terminal in a pod          | =kubectl exec -it storage sh=                                         |
+| Check pod environment variables        | =kubectl exec redis-master-ft9ex env=                                 |
+| Get all services for all namespace     | =kubectl get service --all-namespaces=                                |
+| Get system conf via configmap          | =kubectl -n kube-system get cm kubeadm-config -o yaml=                |
+| Query healthcheck endpoint             | =curl -L http://127.0.0.1:10250/healthz=                              |
 
 *** Check Performance
 | Name                                         | Command                                              |
@@ -54,10 +55,10 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | List all pods                | =kubectl get pods=                                                                                                                      |
 | List pods for all namespace  | =kubectl get pods -all-namespaces=                                                                                                      |
 | List all critical pods       | =kubectl get -n kube-system pods -a=                                                                                                    |
-| List pods with more info     | =kubectl get pod -o wide=, =kubectl get pod -o yaml=                                                                                                         |
+| List pods with more info     | =kubectl get pod -o wide=, =kubectl get pod -o yaml=                                                                                    |
 | Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                 |
 | List all pods with labels    | =kubectl get pods --show-labels=                                                                                                        |
-| Get Pod initContainer status | =kubectl get pod dummy --template '{{.status.initContainerStatuses}}'=                                                                  |
+| Get Pod initContainer status | kubectl get pod dummy --template '{{.status.initContainerStatuses}}'                                                                    |
 | Get pod by selector          | podname=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')                               |
 | List pods with docker images | kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}' |
 | kubectl run command          | kubectl exec -it -n "$namespace" "$podname" -- sh -c "echo $msg  >>/dev/termination-log"                                                |
@@ -77,7 +78,8 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Manually add annonation to a pod | =kubectl annotate pods dummy-input my-url=https://www.dennyzhang.com= |
 
 ** Deployment & Scale
- [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][link]]
+[[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][link: Pausing and Resuming a Deployment]]
+
 | Name                         | Command                                                       |
 |------------------------------+---------------------------------------------------------------|
 | Scale out                    | =kubectl scale --replicas=3 deployment/nginx-app=             |
@@ -192,7 +194,7 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 |-----------------+-------------------------------------------------------------------------------------------|
 | API Conventions | https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md |
 ** Minikube
-minikube in GitHub: [[https://github.com/kubernetes/minikube][link]]
+[[https://github.com/kubernetes/minikube][link: minikube in GitHub]]
 | Name                | Command                       |
 |---------------------+-------------------------------|
 | Start minikube env  | =minikube start=              |
