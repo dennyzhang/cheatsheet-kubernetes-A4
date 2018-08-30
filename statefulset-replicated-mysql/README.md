@@ -1,4 +1,4 @@
-https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/
+https://kubernetes.io/docs/tasks/run-application/run-replicated-stateful-application/
 
 Accessing the MySQL instance
 

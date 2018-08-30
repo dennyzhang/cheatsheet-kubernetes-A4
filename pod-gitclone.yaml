@@ -1,0 +1,29 @@
+# https://kubernetes.io/docs/tutorials/k8s101/
+# https://gist.github.com/tallclair/849601a16cebeee581ef2be50c351841
+apiVersion: v1
+kind: Pod
+metadata:
+  name: www
+spec:
+  initContainers:
+  - name: git-clone
+    image: alpine/git
+    args:
+        - clone
+        - --single-branch
+        - --
+        - https://github.com/dennyzhang/challenges-kubernetes.git
+        - /data/challenges-kubernetes
+    volumeMounts:
+    - mountPath: /data
+      name: www-data
+  containers:
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - mountPath: /srv/www
+      name: www-data
+      readOnly: true
+  volumes:
+  - name: www-data
+    emptyDir: {}

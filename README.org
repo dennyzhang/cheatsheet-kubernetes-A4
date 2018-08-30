@@ -27,17 +27,17 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Create a dummy pod                       | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]]              |
 | Create a default serviceaccount for RBAC | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]] |
 *** Common Commands
-| Name                                         | Command                                                                       |
-|----------------------------------------------+-------------------------------------------------------------------------------|
-| Validate yaml file                           | =kubectl create --dry-run --validate -f pod-dummy.yaml=                       |
-| Start a pod without yaml                     | =kubectl run --rm -i demo --image=denny/image:test --image-pull-policy=Never= |
-| Open a bash terminal in a pod                | =kubectl exec -it storage sh=                                                 |
-| Check pod environment variables              | =kubectl exec redis-master-ft9ex env=                                         |
-| Get all services for all namespace           | =kubectl get service --all-namespaces=                                        |
-| Get system conf(kubeadm-config configmap)    | =kubectl -n kube-system get cm kubeadm-config -o yaml=                        |
-| List resource utilization for all pods       | =kubectl top pod --all-namespaces=                                            |
-| List resource utilization for all containers | =kubectl top pod --all-namespaces --containers=true=                          |
-| Query healthcheck endpoint                   | =curl -L http://127.0.0.1:10250/healthz=                                      |
+| Name                                         | Command                                                              |
+|----------------------------------------------+----------------------------------------------------------------------|
+| Validate yaml file                           | =kubectl create --dry-run --validate -f pod-dummy.yaml=              |
+| Start a pod without yaml                     | =kubectl run --rm -i demo --image=busybox --image-pull-policy=Never= |
+| Open a bash terminal in a pod                | =kubectl exec -it storage sh=                                        |
+| Check pod environment variables              | =kubectl exec redis-master-ft9ex env=                                |
+| Get all services for all namespace           | =kubectl get service --all-namespaces=                               |
+| Get system conf(kubeadm-config configmap)    | =kubectl -n kube-system get cm kubeadm-config -o yaml=               |
+| List resource utilization for all pods       | =kubectl top pod --all-namespaces=                                   |
+| List resource utilization for all containers | =kubectl top pod --all-namespaces --containers=true=                 |
+| Query healthcheck endpoint                   | =curl -L http://127.0.0.1:10250/healthz=                             |
 
 - Tail pod log by label
 #+BEGIN_SRC sh
@@ -110,6 +110,14 @@ kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
 | Switch context                | =kubectl config use-context <cluster-name>= |
 | List all namespaces defined   | =kubectl get namespaces=                    |
 | kubectl config file           | =~/.kube/config=                            |
+
+*** StatefulSet
+| Name                               | Command                                                                        |
+|------------------------------------+--------------------------------------------------------------------------------|
+| List statefulset                   | =kubectl get sts=                                                              |
+| Statefulset example                | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-nginx.yaml][statefulset-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-single-mysql][statefulset-single-mysql]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-mysql][statefulset-replicated-mysql]] |
+| Scale statefulset                  | =kubectl scale sts <stateful_set_name> --replicas=5=                           |
+| Delete statefulset only (not pods) | =kubectl delete sts <stateful_set_name> --cascade=false=                       |
 
 *** Network
 | Name                              | Command                                 |
