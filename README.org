@@ -22,13 +22,13 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
 ** Common Usage
 *** yaml templates
-| Name                    | Summary                                                                   |
-|-------------------------+---------------------------------------------------------------------------|
-| Pod Examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-gitclone.yaml][pod-gitclone.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-nginx.yaml][pod-nginx.yaml]],  [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-redis.yaml][pod-volume-redis.yaml]] |
-| Serviceaccount Examples | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                                               |
-| Service Examples        | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/service-clusterip-nginx.yaml][service-clusterip-nginx.yaml]]                                              |
-| Statefulset Examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-nginx.yaml][statefulset-nginx.yaml]]                                                    |
-| Deployment Examples     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/deployment-nginx.yaml][deployment-nginx.yaml]]                                                     |
+| Name                    | Summary                                                                        |
+|-------------------------+--------------------------------------------------------------------------------|
+| Pod Examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-gitclone.yaml][pod-gitclone.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-nginx.yaml][pod-nginx.yaml]],  [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-redis.yaml][pod-volume-redis.yaml]]      |
+| Serviceaccount Examples | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                                                    |
+| Service Examples        | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/service-clusterip-nginx.yaml][service-clusterip-nginx.yaml]]                                                   |
+| Statefulset Examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-nginx.yaml][statefulset-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-single-mysql][statefulset-single-mysql]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-mysql][statefulset-replicated-mysql]] |
+| Deployment Examples     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/deployment-nginx.yaml][deployment-nginx.yaml]]                                                          |
 
 *** Common Commands
 | Name                                         | Command                                                              |
@@ -39,51 +39,23 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Check pod environment variables              | =kubectl exec redis-master-ft9ex env=                                |
 | Get all services for all namespace           | =kubectl get service --all-namespaces=                               |
 | Get system conf(kubeadm-config configmap)    | =kubectl -n kube-system get cm kubeadm-config -o yaml=               |
-| List resource utilization for all pods       | =kubectl top pod --all-namespaces=                                   |
-| List resource utilization for all containers | =kubectl top pod --all-namespaces --containers=true=                 |
 | Query healthcheck endpoint                   | =curl -L http://127.0.0.1:10250/healthz=                             |
 
-- Tail pod log by label
-#+BEGIN_SRC sh
-namespace="mynamespace"
-mylabel="app=mylabel"
-kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
-    | awk -F' ' '{print $1}' | xargs -I{} \
-      kubectl logs -n "$namespace" -f {}
-#+END_SRC
 *** Check Performance
-| Name                    | Command            |
-|-------------------------+--------------------|
-| Get node resource usage | =kubectl top node= |
-| Get node resource usage | =kubectl top pod= |
+| Name                                         | Command                                              |
+|----------------------------------------------+------------------------------------------------------|
+| Get node resource usage                      | =kubectl top node=                                   |
+| Get node resource usage                      | =kubectl top pod=                                    |
+| List resource utilization for all containers | =kubectl top pod --all-namespaces --containers=true= |
 
-- Get node hardware resource utilization
-#+BEGIN_SRC sh
-kubectl get nodes --no-headers \
-     | awk '{print $1}' | xargs -I {} \
-     sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5'
-
-kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
-    sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5 | grep -ve Event -ve Allocated -ve percent -ve -- ; echo'
-#+END_SRC
-** Components & Resources
-*** Log files
-| Name                           | Command                                 |
-|--------------------------------+-----------------------------------------|
-| API Server.log= in master node | =/var.log=/kube-apiserver.log=          |
-| Scheduler.log= in master node  | =/var.log=/kube-scheduler.log=          |
-| Controller.log= in master node | =/var.log=/kube-controller-manager.log= |
-| Kubelet.log= in worker node    | =/var.log=/kubelet.log=                 |
-| Kube Proxy.log= in worker node | =/var.log=/kubelet-proxy.log=           |
-
-*** Label & Annontation
+** Label & Annontation
 | Name                             | Command                                                               |
 |----------------------------------+-----------------------------------------------------------------------|
 | Filter pods by label             | =kubectl get pods -l owner=denny=                                     |
 | Manually add label to a pod      | =kubectl label pods dummy-input owner=denny=                          |
 | Remove label                     | =kubectl label pods dummy-input owner-=                               |
 | Manually add annonation to a pod | =kubectl annotate pods dummy-input my-url=https://www.dennyzhang.com= |
-*** Pod
+** Pod
 | Name                         | Command                                                                                                                                 |
 |------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------|
 | Dummy pod                    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]]                                                                                                                          |
@@ -94,7 +66,6 @@ kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
 | List all pods with labels    | =kubectl get pods --show-labels=                                                                                                        |
 | List pods for all namespace  | =kubectl get pods -all-namespaces=                                                                                                      |
 | List pods with more info     | =kubectl get pod -o wide=                                                                                                               |
-| List all services            | =kubectl get services=                                                                                                                  |
 | List all critical pods       | =kubectl get -n kube-system pods -a=                                                                                                    |
 | Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                 |
 | Get Pod initContainer status | =kubectl get pod dummy --template '{{.status.initContainerStatuses}}'=                                                                  |
@@ -103,7 +74,49 @@ kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
 | Name                | Command                                     |
 |---------------------+---------------------------------------------|
 | Delete pod          | =kubectl delete pod hello-node-95913-n63qs= |
-| Delete pod by label | =kubectl delete pod -l "env=test"=          |
+| Delete pod by label | =kubectl delete pod -l env=test=            |
+
+** Deployment & Scale
+ [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][link]]
+| Name                         | Command                                                       |
+|------------------------------+---------------------------------------------------------------|
+| Scale out                    | =kubectl scale --replicas=3 deployment/nginx-app=             |
+| online rolling upgrade       | =kubectl rollout app-v1 app-v2 --image=img:v2=                |
+| Roll backup                  | =kubectl rollout app-v1 app-v2 --rollback=                    |
+| List rollout                 | =kubectl get rs=                                              |
+| Check update status          | =kubectl rollout status deployment/nginx-app=                 |
+| Check update history         | =kubectl rollout history deployment/nginx-app=                |
+| Pause/Resume                 | =kubectl rollout pause deployment/nginx-deployment=, =resume= |
+| Rollback to previous version | =kubectl rollout undo deployment/nginx-deployment=            |
+
+** Service
+| Name                     | Command                                                                             |
+|--------------------------+-------------------------------------------------------------------------------------|
+| List all services        | =kubectl get services=                                                              |
+| Get service detail       | =kubectl get service nginx-service -o yaml=                                         |
+| Get service cluster ip   | =kubectl get service nginx-service -o go-template='{{.spec.clusterIP}}'=            |
+| Get service cluster port | =kubectl get service nginx-service -o go-template='{{(index .spec.ports 0).port}}'= |
+** StatefulSet
+| Name                               | Command                                                                        |
+|------------------------------------+--------------------------------------------------------------------------------|
+| List statefulset                   | =kubectl get sts=                                                              |
+| Scale statefulset                  | =kubectl scale sts <stateful_set_name> --replicas=5=                           |
+| Delete statefulset only (not pods) | =kubectl delete sts <stateful_set_name> --cascade=false=                       |
+
+** Volumes & Volume Claims
+| Name                      | Command                         |
+|---------------------------+---------------------------------|
+| Check the mounted volumes | =kubectl exec storage ls /data= |
+| Check persist volume      | =kubectl describe pv pv0001=    |
+** Other Components
+*** Log files
+| Name                           | Command                                 |
+|--------------------------------+-----------------------------------------|
+| API Server.log= in master node | =/var.log=/kube-apiserver.log=          |
+| Scheduler.log= in master node  | =/var.log=/kube-scheduler.log=          |
+| Controller.log= in master node | =/var.log=/kube-controller-manager.log= |
+| Kubelet.log= in worker node    | =/var.log=/kubelet.log=                 |
+| Kube Proxy.log= in worker node | =/var.log=/kubelet-proxy.log=           |
 
 *** Events & Metrics
 | Name            | Command                               |
@@ -120,14 +133,6 @@ kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
 | List all namespaces defined   | =kubectl get namespaces=                    |
 | kubectl config file           | =~/.kube/config=                            |
 
-*** StatefulSet
-| Name                               | Command                                                                        |
-|------------------------------------+--------------------------------------------------------------------------------|
-| List statefulset                   | =kubectl get sts=                                                              |
-| Statefulset example                | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-nginx.yaml][statefulset-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-single-mysql][statefulset-single-mysql]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-mysql][statefulset-replicated-mysql]] |
-| Scale statefulset                  | =kubectl scale sts <stateful_set_name> --replicas=5=                           |
-| Delete statefulset only (not pods) | =kubectl delete sts <stateful_set_name> --cascade=false=                       |
-
 *** Network
 | Name                              | Command                                 |
 |-----------------------------------+-----------------------------------------|
@@ -138,31 +143,6 @@ kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
 |----------------+-------------------------|
 | List endpoints | =kubectl get endpoints= |
 
-*** kubectl apply
-- Apply the configuration in manifest.yaml and delete all the other configmaps that are not in the file.
-
-#+BEGIN_EXAMPLE
-kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMap
-#+END_EXAMPLE
-
-*** Volume
-| Name                      | Command                         |
-|---------------------------+---------------------------------|
-| Check the mounted volumes | =kubectl exec storage ls /data= |
-| Check persist volume      | =kubectl describe pv pv0001=    |
-*** Scale & Deployment
- [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][link]]
-
-| Name                         | Command                                                       |
-|------------------------------+---------------------------------------------------------------|
-| Scale out                    | =kubectl scale --replicas=3 deployment/nginx-app=             |
-| online rolling upgrade       | =kubectl rollout app-v1 app-v2 --image=img:v2=                |
-| Roll backup                  | =kubectl rollout app-v1 app-v2 --rollback=                    |
-| List rollout                 | =kubectl get rs=                                              |
-| Check update status          | =kubectl rollout status deployment/nginx-app=                 |
-| Check update history         | =kubectl rollout history deployment/nginx-app=                |
-| Pause/Resume                 | =kubectl rollout pause deployment/nginx-deployment=, =resume= |
-| Rollback to previous version | =kubectl rollout undo deployment/nginx-deployment=            |
 ** Basic
 *** Key Concepts
 | Name | Summary                           |
@@ -226,6 +206,31 @@ minikube in GitHub: [[https://github.com/kubernetes/minikube][link]]
 | Get service info    | =minikube service $srv_name=  |
 
 TODO: rolling-update command is imperative, better use Deployments rollout. It's declarative.
+** Misc scripts
+- Tail pod log by label
+#+BEGIN_SRC sh
+namespace="mynamespace"
+mylabel="app=mylabel"
+kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
+    | awk -F' ' '{print $1}' | xargs -I{} \
+      kubectl logs -n "$namespace" -f {}
+#+END_SRC
+
+- Get node hardware resource utilization
+#+BEGIN_SRC sh
+kubectl get nodes --no-headers \
+     | awk '{print $1}' | xargs -I {} \
+     sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5'
+
+kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
+    sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5 | grep -ve Event -ve Allocated -ve percent -ve -- ; echo'
+#+END_SRC
+
+- Apply the configuration in manifest.yaml and delete all the other configmaps that are not in the file.
+
+#+BEGIN_EXAMPLE
+kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMap
+#+END_EXAMPLE
 ** More Resources
  License: Code is licensed under [[https://www.dennyzhang.com/wp-content/mit_license.txt][MIT License]].
 
