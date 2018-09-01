@@ -28,9 +28,9 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-healthcheck-nginx.yaml][pod-healthcheck-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-gitclone.yaml][pod-gitclone.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-handlers.yaml][pod-handlers.yaml]]               |
 | Deployment yaml examples     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/deployment-nginx.yaml][deployment-nginx.yaml]]                                                          |
 | Service yaml examples        | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/service-clusterip-nginx.yaml][service-clusterip-nginx.yaml]]                                                   |
+| Volume yaml examples         | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-empty-redis.yaml][pod-volume-empty-redis.yaml]]                                                    |
 | Statefulset yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-nginx.yaml][statefulset-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-single-mysql][statefulset-single-mysql]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-mysql][statefulset-replicated-mysql]] |
 | Serviceaccount yaml examples | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                                                    |
-| Volume yaml examples         | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-empty-redis.yaml][pod-volume-empty-redis.yaml]]                                                    |
 
 *** Common Commands
 | Name                                   | Command                                                               |
@@ -1853,3 +1853,24 @@ time ls -1r */*.yml | grep -v namespace | xargs -I{} kubectl delete -f {}
 #+END_SRC
 * TODO problems                                                    :noexport:
 ** volume mount current local drive
+* helm                                                             :noexport:
+#+BEGIN_SRC sh
+# Lets create the service account 
+kubectl create serviceaccount --namespace kube-system tiller
+kubectl create serviceaccount --namespace kubestack etcd-operator
+
+# Bind the serviceaccount to the admin role called cluster-admin inside the kube-system namespace.
+ kubectl create clusterrolebinding \
+tiller-cluster-rule \
+--clusterrole=cluster-admin \
+--serviceaccount=kube-system:tiller
+
+# Lets now initialize helm
+helm init
+
+# Update the tiller-deploy deployment to have the service account.
+ kubectl patch deployment \
+tiller-deploy -p \
+'{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}' \
+-n kube-system
+#+END_SRC
