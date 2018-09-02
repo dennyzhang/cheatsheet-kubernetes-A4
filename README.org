@@ -154,6 +154,15 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | CNI  | Container Network Interface       |
 | CSI  | Container Storage Interface       |
 
+*** Services & Components
+| Name           | Summary                                                                   |
+|----------------+---------------------------------------------------------------------------|
+| kubeadm        | the command to bootstrap the cluster.                                     |
+| kubelet        | runs on all machines, which does things like starting pods and containers |
+| kubectl        | the command line util to talk to your cluster.                            |
+| kube-apiserver |                                                                           |
+| etcd           |                                                                           |
+
 *** Kubernets Critical Files
 | Name                      | Comment                                                 |
 |---------------------------+---------------------------------------------------------|
