@@ -48,16 +48,16 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 - Services on Master Nodes
 | Name                    | Summary                                                                                                |
 |-------------------------+--------------------------------------------------------------------------------------------------------|
-| kube-apiserver          | exposes the Kubernetes API from master nodes                                                           |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-apiserver][kube-apiserver]]    | exposes the Kubernetes API from master nodes                                                           |
 | etcd                    | reliable data store for all k8s cluster data                                                           |
-| kube-scheduler          | schedule pods to run on selected nodes                                                                 |
-| kube-controller-manager | node controller, replication controller, endpoints controller, and service account & token controllers |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-scheduler][kube-scheduler]]    | schedule pods to run on selected nodes                                                                 |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-controller-manager][kube-controller-manager]] | node controller, replication controller, endpoints controller, and service account & token controllers |
 
 - Services on Worker Nodes
 | Name              | Summary                                                                                   |
 |-------------------+-------------------------------------------------------------------------------------------|
-| kubelet           | makes sure that containers are running in a pod                                           |
-| kube-proxy        | perform connection forwarding                                                             |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kubelet][kubelet]]           | makes sure that containers are running in a pod                                           |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-proxy][kube-proxy]]        | perform connection forwarding                                                             |
 | Container Runtime | Kubernetes supported runtimes: Docker, rkt, runc and any [[https://github.com/opencontainers/runtime-spec][OCI runtime-spec]] implementation. |
 
 - Addons: pods and services that implement cluster features
@@ -71,8 +71,8 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 - Tools
 | Name    | Summary                                       |
 |---------+-----------------------------------------------|
-| kubectl | the command line util to talk to k8s cluster |
-| kubeadm | the command to bootstrap the cluster          |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kubectl][kubectl]] | the command line util to talk to k8s cluster |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kubeadm][kubeadm]] | the command to bootstrap the cluster          |
 
 [[https://kubernetes.io/docs/concepts/overview/components/][link: Kubernetes Components]]
 *** Check Performance
