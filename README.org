@@ -44,6 +44,37 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Get system conf via configmap          | =kubectl -n kube-system get cm kubeadm-config -o yaml=                |
 | Query healthcheck endpoint             | =curl -L http://127.0.0.1:10250/healthz=                              |
 
+** Components & Services
+- Services on Master Nodes
+| Name                    | Summary                                                                                                |
+|-------------------------+--------------------------------------------------------------------------------------------------------|
+| kube-apiserver          | exposes the Kubernetes API from master nodes                                                           |
+| etcd                    | reliable data store for all k8s cluster data                                                           |
+| kube-scheduler          | schedule pods to run on selected nodes                                                                 |
+| kube-controller-manager | node controller, replication controller, endpoints controller, and service account & token controllers |
+
+- Services on Worker Nodes
+| Name                    | Summary                                                                   |
+|-------------------------+---------------------------------------------------------------------------|
+| kubelet                 | runs on all machines, which does things like starting pods and containers |
+| kube-proxy              |                                                                           |
+| Container Runtime       |                                                                           |
+
+- Addons: pods and services that implement cluster features
+| Name                          | Summary                                                                   |
+|-------------------------------+---------------------------------------------------------------------------|
+| DNS                           | serves DNS records for Kubernetes services                                |
+| Web UI                        | a general purpose, web-based UI for Kubernetes clusters                   |
+| Container Resource Monitoring | collect, store and serve container metrics                                |
+| Cluster-level Logging         | save container logs to a central log store with search/browsing interface |
+
+- Tools
+| Name    | Summary                                       |
+|---------+-----------------------------------------------|
+| kubectl | the command line util to talk to k8s cluster |
+| kubeadm | the command to bootstrap the cluster          |
+
+[[https://kubernetes.io/docs/concepts/overview/components/][link: Kubernetes Components]]
 *** Check Performance
 | Name                                         | Command                                              |
 |----------------------------------------------+------------------------------------------------------|
@@ -153,15 +184,6 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | CRI  | Container Runtime Interface       |
 | CNI  | Container Network Interface       |
 | CSI  | Container Storage Interface       |
-
-*** Services & Components
-| Name           | Summary                                                                   |
-|----------------+---------------------------------------------------------------------------|
-| kubeadm        | the command to bootstrap the cluster.                                     |
-| kubelet        | runs on all machines, which does things like starting pods and containers |
-| kubectl        | the command line util to talk to your cluster.                            |
-| kube-apiserver |                                                                           |
-| etcd           |                                                                           |
 
 *** Kubernets Critical Files
 | Name                      | Comment                                                 |
@@ -1213,9 +1235,6 @@ kube-system   tiller-deploy-df4fdf55d-zxdq4           0/1       Pending   0     
  #+END_EXAMPLE
 ** DONE helm start with env configured: helm install --set Master.ServiceType=NodePort stable/jenkins
    CLOSED: [2018-04-15 Sun 21:50]
-<<<<<<< HEAD
-* [#A] CRD: challenges-k8s-crd                                     :noexport:
-<<<<<<< HEAD
 * [#A] k8s metric server                                 :noexport:IMPORTANT:
 Metrics Server is a cluster-wide aggregator of resource usage data. 
 
@@ -1298,7 +1317,6 @@ Scheduler: In the future Core Metrics will be considered in order to schedule be
 https://blog.freshtracks.io/what-is-the-the-new-kubernetes-metrics-server-849c16aa01f4
 https://blog.outlyer.com/monitoring-kubernetes-with-heapster-and-prometheus
 https://www.outcoldman.com/en/archive/2017/07/09/kubernetes-monitoring-resources/
-<<<<<<< HEAD
 * k8s loadbalancer                                                 :noexport:
 ** DONE k8s service: loadbalancer
    CLOSED: [2018-06-19 Tue 13:51]
@@ -1413,111 +1431,6 @@ The access modes are:
 ReadWriteOnce - the volume can be mounted as read-write by a single node
 ReadOnlyMany - the volume can be mounted read-only by many nodes
 ReadWriteMany - the volume can be mounted as read-write by many nodes
-* [#A] kubeadm: performs the actions necessary to get a minimum viable cluster up and running :noexport:
-https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/
-
-kubeadm init and kubeadm join together provides a nice user experience
-for creating a best-practice but bare Kubernetes cluster from scratch.
-
-| Name            | Summary                                                                                                      |
-|-----------------+--------------------------------------------------------------------------------------------------------------|
-| kubeadm init    | bootstrap a Kubernetes master node                                                                           |
-| kubeadm join    | bootstrap a Kubernetes worker node and join it to the cluster                                                |
-| kubeadm upgrade | upgrade a Kubernetes cluster to a newer version                                                              |
-| kubeadm config  | if you initialized your cluster using kubeadm v1.7.x or lower, to configure your cluster for kubeadm upgrade |
-| kubeadm token   | manage tokens for kubeadm join                                                                               |
-| kubeadm reset   | revert any changes made to this host by kubeadm init or kubeadm join                                         |
-
-This process works with local VMs, physical servers and/or cloud servers.
-** DONE kubeadm: recreate a node
-  CLOSED: [2018-01-03 Wed 16:18]
-https://stackoverflow.com/questions/45913034/readd-a-deleted-node-to-kubernetes
-
-https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/
-#+BEGIN_EXAMPLE
-kubeadm: run kubeadm reset and kubeadm join ... again on the node (you might need to create a new token if the original one was short-lived, see the linked doc)
-most clouds: delete the VM. It will be recreated and will rejoin the cluster
-others: see self registration and manual registration for details.
-#+END_EXAMPLE
-** TODO kubeadm join token issue: How to caculate --discovery-token-ca-cert-hash
-https://stackoverflow.com/questions/47770486/kubeadm-init-token-xyz-or-kubeadm-init-token-xyz
-
-kubeadm token  list
-
-how to get --discovery-token-ca-cert-hash
-
-#+BEGIN_EXAMPLE
-root@k8s1:~# kubeadm init --token 2f1a31.00f66dec74fd53f3 --apiserver-advertise-address=172.42.42.1
-[init] Using Kubernetes version: v1.9.0
-[init] Using Authorization modes: [Node RBAC]
-[preflight] Running pre-flight checks.
-	[WARNING FileExisting-crictl]: crictl not found in system path
-[preflight] Starting the kubelet service
-[certificates] Generated ca certificate and key.
-[certificates] Generated apiserver certificate and key.
-[certificates] apiserver serving cert is signed for DNS names [k8s1 kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local] and IPs [10.96.0.1 172.42.42.1]
-[certificates] Generated apiserver-kubelet-client certificate and key.
-[certificates] Generated sa key and public key.
-[certificates] Generated front-proxy-ca certificate and key.
-[certificates] Generated front-proxy-client certificate and key.
-[certificates] Valid certificates and keys now exist in "/etc/kubernetes/pki"
-[kubeconfig] Wrote KubeConfig file to disk: "admin.conf"
-[kubeconfig] Wrote KubeConfig file to disk: "kubelet.conf"
-[kubeconfig] Wrote KubeConfig file to disk: "controller-manager.conf"
-[kubeconfig] Wrote KubeConfig file to disk: "scheduler.conf"
-[controlplane] Wrote Static Pod manifest for component kube-apiserver to "/etc/kubernetes/manifests/kube-apiserver.yaml"
-[controlplane] Wrote Static Pod manifest for component kube-controller-manager to "/etc/kubernetes/manifests/kube-controller-manager.yaml"
-[controlplane] Wrote Static Pod manifest for component kube-scheduler to "/etc/kubernetes/manifests/kube-scheduler.yaml"
-[etcd] Wrote Static Pod manifest for a local etcd instance to "/etc/kubernetes/manifests/etcd.yaml"
-[init] Waiting for the kubelet to boot up the control plane as Static Pods from directory "/etc/kubernetes/manifests".
-[init] This might take a minute or longer if the control plane images have to be pulled.
-[apiclient] All control plane components are healthy after 25.502909 seconds
-[uploadconfig] Storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
-[markmaster] Will mark node k8s1 as master by adding a label and a taint
-[markmaster] Master k8s1 tainted and labelled with key/value: node-role.kubernetes.io/master=""
-[bootstraptoken] Using token: 2f1a31.00f66dec74fd53f3
-[bootstraptoken] Configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
-[bootstraptoken] Configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
-[bootstraptoken] Configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
-[bootstraptoken] Creating the "cluster-info" ConfigMap in the "kube-public" namespace
-[addons] Applied essential addon: kube-dns
-[addons] Applied essential addon: kube-proxy
-
-Your Kubernetes master has initialized successfully!
-
-To start using your cluster, you need to run the following as a regular user:
-
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-You should now deploy a pod network to the cluster.
-Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
-  https://kubernetes.io/docs/concepts/cluster-administration/addons/
-
-You can now join any number of machines by running the following on each node
-as root:
-
-  kubeadm join --token 2f1a31.00f66dec74fd53f3 172.42.42.1:6443 --discovery-token-ca-cert-hash sha256:26ba6d67cbffbe67a7b77748ffa1d76bab74ff546de5a9e2af930e5a1272d188
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-root@k8s1:/var/log# kubeadm reset
-[preflight] Running pre-flight checks.
-[reset] Stopping the kubelet service.
-[reset] Unmounting mounted directories in "/var/lib/kubelet"
-[reset] Removing kubernetes-managed containers.
-[reset] Deleting contents of stateful directories: [/var/lib/kubelet /etc/cni/net.d /var/lib/dockershim /var/run/kubernetes /var/lib/etcd]
-[reset] Deleting contents of config directories: [/etc/kubernetes/manifests /etc/kubernetes/pki]
-[reset] Deleting files: [/etc/kubernetes/admin.conf /etc/kubernetes/kubelet.conf /etc/kubernetes/controller-manager.conf /etc/kubernetes/scheduler.conf]
-#+END_EXAMPLE
-** useful link
-https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/
-https://medium.com/@SystemMining/setup-kubenetes-cluster-on-ubuntu-16-04-with-kubeadm-336f4061d929
-https://marc.xn--wckerlin-0za.ch/computer/kubernetes-on-ubuntu-16-04
-
-https://github.com/kubernetes/kubeadm/blob/master/docs/design/design_v1.8.md
-https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#24-initializing-your-master
 * [#B] k8s security: secrets, authentication & authorization       :noexport:
 ** what's service account: In contrast, service accounts are users managed by the Kubernetes API.
 https://kubernetes.io/docs/admin/authentication/
@@ -1545,190 +1458,6 @@ subjects:
     name: tiller
     namespace: kube-system
 #+END_EXAMPLE
-** web page: Creating sample user · kubernetes/dashboard Wiki · GitHub
-https://github.com/kubernetes/dashboard/wiki/Creating-sample-user
-*** webcontent                                                     :noexport:
-#+begin_example
-Location: https://github.com/kubernetes/dashboard/wiki/Creating-sample-user
-Skip to content
-The vote is over, but the fight for net neutrality isn't. Show your support for a free and open
-internet.
-Learn more Dismiss
-
-  * Features
-  * Business
-  * Explore
-  * Marketplace
-  * Pricing
-
-This repository [                    ]
-Sign in or Sign up
-
-  * Watch 120
-  * Star 1,839
-  * Fork 586
-
-kubernetes/dashboard
-
-Code Issues 95 Pull requests 8 Projects 0 Wiki Insights
-
-Creating sample user
-
-Sebastian Florek edited this page Dec 14, 2017 · 6 revisions
-
-Pages 21
-
-[                    ]
-
-  * Home
-  * Access control
-  * Accessing Dashboard
-  * Accessing Dashboard 1.6.X and below
-  * Accessing Dashboard 1.7.X and above
-  * Architecture
-  * Certificate management
-  * Code conventions
-  * Compatibility matrix
-  * Creating sample user
-  * Dashboard arguments
-  * Dependency management
-  * FAQ
-  * Getting started
-  * Installation
-  * Integrations
-  * Internationalization
-  * Labels
-  * Release procedures
-  * Roadmap
-  * Text conventions
-  * Show 6 more pages...
-
- Home
-
- Common
-
-  * FAQ
-  * Compatibility matrix
-  * Roadmap
-  * Dashboard arguments
-
- User Guide
-
-  * Installation
-  * Certificate management
-  * Accessing Dashboard
-      + 1.7.X and above
-      + 1.6.X and below
-  * Access control
-      + Creating sample user
-  * Integrations
-  * Labels
-
- Development Guide
-
-  * Getting started
-  * Release procedures
-  * Dependency management
-  * Architecture
-  * Code conventions
-  * Text conventions
-  * Internationalization
-
-Clone this wiki locally
-
-[https://github.com/k]
-
-In this guide, we will find out how to create a new user using Service Account mechanism of
-Kubernetes, grant this user admin permissions and log in to Dashboard using bearer token tied to
-this user.
-
-Copy provided snippets to some xxx.yaml file and use kubectl create -f xxx.yaml to create them.
-
- Create Service Account
-
-We are creating Service Account with name admin-user in namespace kube-system first.
-
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: admin-user
-  namespace: kube-system
-
- Create ClusterRoleBinding
-
-In most cases after provisioning our cluster using kops or kubeadm or any other popular tool admin
-Role already exists in the cluster. We can use it and create only RoleBinding for our
-ServiceAccount.
-
-NOTE: apiVersion of ClusterRoleBinding resource may differ between Kubernetes versions. Starting
-from v1.8 it was promoted to rbac.authorization.k8s.io/v1.
-
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRoleBinding
-metadata:
-  name: admin-user
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-- kind: ServiceAccount
-  name: admin-user
-  namespace: kube-system
-
- Bearer Token
-
-Now we need to find token we can use to log in. Execute following command:
-
-kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
-
-It should print something like:
-
-Name:         admin-user-token-6gl6l
-Namespace:    kube-system
-Labels:       <none>
-Annotations:  kubernetes.io/service-account.name=admin-user
-              kubernetes.io/service-account.uid=b16afba9-dfec-11e7-bbb9-901b0e532516
-
-Type:  kubernetes.io/service-account-token
-
-Data
-====
-ca.crt:     1025 bytes
-namespace:  11 bytes
-token:      eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLTZnbDZsIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJiMTZhZmJhOS1kZmVjLTExZTctYmJiOS05MDFiMGU1MzI1MTYiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.M70CU3lbu3PP4OjhFms8PVL5pQKj-jj4RNSLA4YmQfTXpPUuxqXjiTf094_Rzr0fgN_IVX6gC4fiNUL5ynx9KU-lkPfk0HnX8scxfJNzypL039mpGt0bbe1IXKSIRaq_9VW59Xz-yBUhycYcKPO9RM2Qa1Ax29nqNVko4vLn1_1wPqJ6XSq3GYI8anTzV8Fku4jasUwjrws6Cn6_sPEGmL54sq5R4Z5afUtv-mItTmqZZdxnkRqcJLlg2Y8WbCPogErbsaCDJoABQ7ppaqHetwfM_0yMun6ABOQbIwwl8pspJhpplKwyo700OSpvTT9zlBsu-b35lzXGBRHzv5g_RA
-
-Now copy the token and paste it into Enter token field on log in screen. zrzut ekranu z 2017-12-14
-10-58-28
-
-Click Sign in button and that's it. You are now logged in as an admin.
-
-zrzut ekranu z 2017-12-14 10-59-31
-
-In order to find out more about how to grant/deny permissions in Kubernetes read official
-authentication & authorization documentation.
-
-Copyright 2017 The Kubernetes Authors
-
-  * © 2018 GitHub, Inc.
-  * Terms
-  * Privacy
-  * Security
-  * Status
-  * Help
-
-  * Contact GitHub
-  * API
-  * Training
-  * Shop
-  * Blog
-  * About
-
-You can't perform that action at this time.
-You signed in with another tab or window. Reload to refresh your session. You signed out in another
-tab or window. Reload to refresh your session.
-
-#+end_example
 ** k8s secrets: intended to hold sensitive information, such as passwords, OAuth tokens, and ssh keys.
 https://github.com/arun-gupta/vault-kubernetes/blob/master/secrets.yaml
 http://kubernetesbyexample.com/secrets/
