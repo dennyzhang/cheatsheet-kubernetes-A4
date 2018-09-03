@@ -54,11 +54,11 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | kube-controller-manager | node controller, replication controller, endpoints controller, and service account & token controllers |
 
 - Services on Worker Nodes
-| Name                    | Summary                                                                   |
-|-------------------------+---------------------------------------------------------------------------|
-| kubelet                 | runs on all machines, which does things like starting pods and containers |
-| kube-proxy              |                                                                           |
-| Container Runtime       |                                                                           |
+| Name              | Summary                                                                                   |
+|-------------------+-------------------------------------------------------------------------------------------|
+| kubelet           | makes sure that containers are running in a pod                                           |
+| kube-proxy        | perform connection forwarding                                                             |
+| Container Runtime | Kubernetes supported runtimes: Docker, rkt, runc and any [[https://github.com/opencontainers/runtime-spec][OCI runtime-spec]] implementation. |
 
 - Addons: pods and services that implement cluster features
 | Name                          | Summary                                                                   |
@@ -90,7 +90,7 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | List pods with more info     | =kubectl get pod -o wide=, =kubectl get pod -o yaml=                                                                                    |
 | Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                 |
 | List all pods with labels    | =kubectl get pods --show-labels=                                                                                                        |
-| Get Pod initContainer status | kubectl get pod dummy --template '{{.status.initContainerStatuses}}'                                                                    |
+| Get Pod initContainer status | =kubectl get pod dummy --template '{{.status.initContainerStatuses}}'=                                                                  |
 | Get pod by selector          | podname=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')                               |
 | List pods with docker images | kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}' |
 | kubectl run command          | kubectl exec -it -n "$namespace" "$podname" -- sh -c "echo $msg  >>/dev/termination-log"                                                |
