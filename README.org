@@ -1,6 +1,7 @@
 * Kubernets CheatSheet                                             :Kubernetes:
 :PROPERTIES:
 :type:     kubernetes
+:export_file_name: cheatsheet-kubernetes-A4.pdf
 :END:
 
 #+BEGIN_HTML
@@ -17,47 +18,53 @@
 
 Blog URL: https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes, Category: [[https://cheatsheet.dennyzhang.com/category/kubernetes/][kubernetes]]
 
+- PDF Link: [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/cheatsheet-kubernetes-A4.pdf][cheatsheet-kubernetes-A4.pdf]]
+- Blog URL: https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes
+- Category: [[https://cheatsheet.dennyzhang.com/category/kubernetes/][kubernetes]]
+
+
 File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]] or star [[https://github.com/DennyZhang/cheatsheet-kubernetes-A4][this repo]].
 
 See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
 ** Common Usage
 *** yaml templates
-| Name                         | Summary                                                                        |
-|------------------------------+--------------------------------------------------------------------------------|
-| Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-nginx.yaml][pod-nginx.yaml]],  [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-redis.yaml][pod-volume-redis.yaml]]                         |
-| Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-healthcheck-nginx.yaml][pod-healthcheck-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-gitclone.yaml][pod-gitclone.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-handlers.yaml][pod-handlers.yaml]]               |
-| Deployment yaml examples     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/deployment-nginx.yaml][deployment-nginx.yaml]]                                                          |
-| Service yaml examples        | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/service-clusterip-nginx.yaml][service-clusterip-nginx.yaml]]                                                   |
-| Volume yaml examples         | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-empty-redis.yaml][pod-volume-empty-redis.yaml]]                                                    |
-| Statefulset yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-nginx.yaml][statefulset-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-single-mysql][statefulset-single-mysql]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-mysql][statefulset-replicated-mysql]] |
-| Serviceaccount yaml examples | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                                                    |
+| Name                         | Summary                                                     |
+|------------------------------+-------------------------------------------------------------|
+| Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-nginx.yaml][pod-nginx.yaml]],  [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-healthcheck-nginx.yaml][pod-healthcheck-nginx.yaml]] |
+| Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-redis.yaml][pod-volume-redis.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-gitclone.yaml][pod-gitclone.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-handlers.yaml][pod-handlers.yaml]] |
+| Deployment yaml examples     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/deployment-nginx.yaml][deployment-nginx.yaml]]                                       |
+| Service yaml examples        | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/service-clusterip-nginx.yaml][service-clusterip-nginx.yaml]]                                |
+| Volume yaml examples         | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-empty-redis.yaml][pod-volume-empty-redis.yaml]]                                 |
+| Statefulset yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-nginx.yaml][statefulset-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-single-mysql][statefulset-single-mysql]]            |
+| Statefulset yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-mysql][statefulset-replicated-mysql]]                                |
+| Serviceaccount yaml examples | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                                 |
 
 *** Common Commands
-| Name                                   | Command                                                               |
-|----------------------------------------+-----------------------------------------------------------------------|
-| Validate yaml file with dry run        | =kubectl create --dry-run --validate -f pod-dummy.yaml=               |
-| Start a temporary pod to run wget test | =kubectl run --rm wget-test --image=busybox --restart=Never --tty -i= |
-| Start a temporary pod to run curl test | =kubectl run --rm curl-test --image=yauritux/busybox-curl --tty -i=   |
-| Open a bash terminal in a pod          | =kubectl exec -it storage sh=                                         |
-| Check pod environment variables        | =kubectl exec redis-master-ft9ex env=                                 |
-| Get all services for all namespace     | =kubectl get service --all-namespaces=                                |
-| Get system conf via configmap          | =kubectl -n kube-system get cm kubeadm-config -o yaml=                |
-| Query healthcheck endpoint             | =curl -L http://127.0.0.1:10250/healthz=                              |
+| Name                            | Command                                                     |
+|---------------------------------+-------------------------------------------------------------|
+| Validate yaml file with dry run | =kubectl create --dry-run --validate -f pod-dummy.yaml=     |
+| Run wget test temporarily       | =kubectl run --rm mytest --image=busybox -it=               |
+| Run curl test temporarily       | =kubectl run --rm mytest --image=yauritux/busybox-curl -it= |
+| Open a bash terminal in a pod   | =kubectl exec -it storage sh=                               |
+| Check pod environment variables | =kubectl exec redis-master-ft9ex env=                       |
+| Get all services                | =kubectl get service --all-namespaces=                      |
+| Get system conf via configmap   | =kubectl -n kube-system get cm kubeadm-config -o yaml=      |
+| Query healthcheck endpoint      | =curl -L http://127.0.0.1:10250/healthz=                    |
 
 ** Components & Services
 - Services on Master Nodes
 | Name                    | Summary                                                                                                |
 |-------------------------+--------------------------------------------------------------------------------------------------------|
-| kube-apiserver          | exposes the Kubernetes API from master nodes                                                           |
-| etcd                    | reliable data store for all k8s cluster data                                                           |
-| kube-scheduler          | schedule pods to run on selected nodes                                                                 |
-| kube-controller-manager | node controller, replication controller, endpoints controller, and service account & token controllers |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-apiserver][kube-apiserver]]          | exposes the Kubernetes API from master nodes                                                           |
+| [[https://coreos.com/etcd/][etcd]]                    | reliable data store for all k8s cluster data                                                           |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-scheduler][kube-scheduler]]          | schedule pods to run on selected nodes                                                                 |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-controller-manager][kube-controller-manager]] | node controller, replication controller, endpoints controller, and service account & token controllers |
 
 - Services on Worker Nodes
 | Name              | Summary                                                                                   |
 |-------------------+-------------------------------------------------------------------------------------------|
-| kubelet           | makes sure that containers are running in a pod                                           |
-| kube-proxy        | perform connection forwarding                                                             |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kubelet][kubelet]]           | makes sure that containers are running in a pod                                           |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-proxy][kube-proxy]]        | perform connection forwarding                                                             |
 | Container Runtime | Kubernetes supported runtimes: Docker, rkt, runc and any [[https://github.com/opencontainers/runtime-spec][OCI runtime-spec]] implementation. |
 
 - Addons: pods and services that implement cluster features
@@ -71,8 +78,8 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 - Tools
 | Name    | Summary                                       |
 |---------+-----------------------------------------------|
-| kubectl | the command line util to talk to k8s cluster |
-| kubeadm | the command to bootstrap the cluster          |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kubectl][kubectl]] | the command line util to talk to k8s cluster |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kubeadm][kubeadm]] | the command to bootstrap the cluster          |
 
 [[https://kubernetes.io/docs/concepts/overview/components/][link: Kubernetes Components]]
 *** Check Performance
@@ -201,9 +208,9 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Env                       | =export KUBECONFIG=/etc/kubernetes/admin.conf=          |
 | Env                       | =/etc/systemd/system/kubelet.service.d/10-kubeadm.conf= |
 
- #+BEGIN_HTML
- <a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
- #+END_HTML
+#+BEGIN_HTML
+<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+#+END_HTML
 *** Check status
 | Name                               | Summary                                      |
 |------------------------------------+----------------------------------------------|
@@ -222,9 +229,9 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Get services for current namespace | =kubectl get svc=                            |
 
 *** Kubernetes Developer Resources
-| Name            | Summary                                                                                   |
-|-----------------+-------------------------------------------------------------------------------------------|
-| API Conventions | https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md |
+| Name            | Summary               |
+|-----------------+-----------------------|
+| API Conventions | [[https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md][link: API Conventions]] |
 ** Minikube
 [[https://github.com/kubernetes/minikube][link: minikube in GitHub]]
 | Name                | Command                       |
@@ -256,7 +263,8 @@ kubectl get nodes --no-headers \
      sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5'
 
 kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
-    sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5 | grep -ve Event -ve Allocated -ve percent -ve -- ; echo'
+    sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5 \
+     | grep -ve Event -ve Allocated -ve percent -ve -- ; echo'
 #+END_SRC
 
 - Apply the configuration in manifest.yaml and delete all the other configmaps that are not in the file.
@@ -268,18 +276,18 @@ kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMa
  License: Code is licensed under [[https://www.dennyzhang.com/wp-content/mit_license.txt][MIT License]].
 
  - Useful links
- #+BEGIN_EXAMPLE
+#+BEGIN_EXAMPLE
  - https://kubernetes.io/docs/reference/kubectl/cheatsheet/
  - https://github.com/kubecamp/kubernetes_in_2_days
  - https://marc.xn--wckerlin-0za.ch/computer/kubernetes-on-ubuntu-16-04
  - https://codefresh.io/kubernetes-guides/kubernetes-cheat-sheet/
- #+END_EXAMPLE
+#+END_EXAMPLE
 
- #+BEGIN_HTML
- <a href="https://www.dennyzhang.com"><img align="right" width="201" height="268" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/denny_201706.png"></a>
+#+BEGIN_HTML
+<a href="https://www.dennyzhang.com"><img align="right" width="201" height="268" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/denny_201706.png"></a>
 
- <a href="https://www.dennyzhang.com"><img align="right" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
- #+END_HTML
+<a href="https://www.dennyzhang.com"><img align="right" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+#+END_HTML
 * org-mode configuration                                           :noexport:
 #+STARTUP: overview customtime noalign logdone showall
 #+DESCRIPTION: 
