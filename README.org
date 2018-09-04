@@ -3,8 +3,6 @@
 :type:     kubernetes
 :END:
 
-Blog URL: https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes, Category: [[https://cheatsheet.dennyzhang.com/category/kubernetes/][kubernetes]]
-
 #+BEGIN_HTML
 <a href="https://github.com/dennyzhang/cheatsheet-kubernetes-A4"><img align="right" width="200" height="183" src="https://www.dennyzhang.com/wp-content/uploads/denny/watermark/github.png" /></a>
 <div id="the whole thing" style="overflow: hidden;">
@@ -16,6 +14,8 @@ Blog URL: https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes, Category: [[h
 <br/><br/>
 <a href="http://makeapullrequest.com" target="_blank" rel="nofollow"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"/></a>
 #+END_HTML
+
+Blog URL: https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes, Category: [[https://cheatsheet.dennyzhang.com/category/kubernetes/][kubernetes]]
 
 File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]] or star [[https://github.com/DennyZhang/cheatsheet-kubernetes-A4][this repo]].
 
