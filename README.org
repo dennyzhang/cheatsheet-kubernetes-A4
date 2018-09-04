@@ -73,10 +73,11 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Cluster-level Logging         | save container logs to a central log store with search/browsing interface |
 
 - Tools
-| Name    | Summary                                       |
-|---------+-----------------------------------------------|
-| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kubectl][kubectl]] | the command line util to talk to k8s cluster |
-| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kubeadm][kubeadm]] | the command to bootstrap the cluster          |
+| Name    | Summary                                                     |
+|---------+-------------------------------------------------------------|
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kubectl][kubectl]] | the command line util to talk to k8s cluster                |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kubeadm][kubeadm]] | the command to bootstrap the cluster                        |
+| [[https://kubernetes.io/docs/reference/setup-tools/kubefed/kubefed/][kubefed]] | the command line to control a Kubernetes Cluster Federation |
 
 [[https://kubernetes.io/docs/concepts/overview/components/][link: Kubernetes Components]]
 *** Check Performance
