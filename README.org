@@ -1,4 +1,4 @@
-* Kubernets CheatSheet                                             :Kubernetes:
+* Kubernets CheatSheet                                           :Kubernetes:
 :PROPERTIES:
 :type:     kubernetes
 :export_file_name: cheatsheet-kubernetes-A4.pdf
@@ -25,7 +25,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 
 See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
 ** Common Usage
-*** yaml templates
+*** Yaml Templates
 | Name                         | Summary                                                     |
 |------------------------------+-------------------------------------------------------------|
 | Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-nginx.yaml][pod-nginx.yaml]],  [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-healthcheck-nginx.yaml][pod-healthcheck-nginx.yaml]] |
@@ -38,16 +38,19 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Serviceaccount yaml examples | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                                 |
 
 *** Common Commands
-| Name                            | Command                                                     |
-|---------------------------------+-------------------------------------------------------------|
-| Validate yaml file with dry run | =kubectl create --dry-run --validate -f pod-dummy.yaml=     |
-| Run wget test temporarily       | =kubectl run --rm mytest --image=busybox -it=               |
-| Run curl test temporarily       | =kubectl run --rm mytest --image=yauritux/busybox-curl -it= |
-| Open a bash terminal in a pod   | =kubectl exec -it storage sh=                               |
-| Check pod environment variables | =kubectl exec redis-master-ft9ex env=                       |
-| Get all services                | =kubectl get service --all-namespaces=                      |
-| Get system conf via configmap   | =kubectl -n kube-system get cm kubeadm-config -o yaml=      |
-| Query healthcheck endpoint      | =curl -L http://127.0.0.1:10250/healthz=                    |
+| Name                             | Command                                                                  |
+|----------------------------------+--------------------------------------------------------------------------|
+| Validate yaml file with dry run  | =kubectl create --dry-run --validate -f pod-dummy.yaml=                  |
+| Run wget test temporarily        | =kubectl run --rm mytest --image=busybox -it=                            |
+| Run curl test temporarily        | =kubectl run --rm mytest --image=yauritux/busybox-curl -it=              |
+| Open a bash terminal in a pod    | =kubectl exec -it storage sh=                                            |
+| Check pod environment variables  | =kubectl exec redis-master-ft9ex env=                                    |
+| Get all services                 | =kubectl get service --all-namespaces=                                   |
+| Get all services in a sorted way | =kubectl get services --sort-by=.metadata.name=                          |
+| Get pods sorted by restart count | =kubectl get pods --sort-by='.status.containerStatuses[0].restartCount'= |
+| Get system conf via configmap    | =kubectl -n kube-system get cm kubeadm-config -o yaml=                   |
+| Explain resource                 | =kubectl explain pods=, =kubectl explain svc=                            |
+| Query healthcheck endpoint       | =curl -L http://127.0.0.1:10250/healthz=                                 |
 
 ** Components & Services
 - Services on Master Nodes
@@ -96,16 +99,16 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | List pods with more info     | =kubectl get pod -o wide=, =kubectl get pod -o yaml=                                                                                    |
 | Get pod info                 | =kubectl describe pod srv-mysql-server=                                                                                                 |
 | List all pods with labels    | =kubectl get pods --show-labels=                                                                                                        |
-| Get Pod initContainer status | =kubectl get pod --template '{{.status.initContainerStatuses}}' <pod-name>=                                                        |
+| Get Pod initContainer status | =kubectl get pod --template '{{.status.initContainerStatuses}}' <pod-name>=                                                             |
+| kubectl run command          | kubectl exec -it -n "$ns" "$podname" -- sh -c "echo $msg >>/dev/err.log"                                                                |
 | Get pod by selector          | podname=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')                               |
 | List pods with docker images | kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}' |
-| kubectl run command          | kubectl exec -it -n "$namespace" "$podname" -- sh -c "echo $msg  >>/dev/termination-log"                                                |
 
 - Delete Pod
-| Name                | Command                                     |
-|---------------------+---------------------------------------------|
-| Delete pod          | =kubectl delete pod hello-node-95913-n63qs= |
-| Delete pod by label | =kubectl delete pod -l env=test=            |
+| Name                             | Command                                                      |
+|----------------------------------+--------------------------------------------------------------|
+| Delete pod                       | =kubectl delete pod hello-node-95913-n63qs -n $my-namespace= |
+| Delete all pods for given labels | =kubectl delete pod -l env=test=                             |
 
 ** Label & Annontation
 | Name                             | Command                                                               |
@@ -233,18 +236,17 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | API Conventions | [[https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md][link: API Conventions]] |
 ** Minikube
 [[https://github.com/kubernetes/minikube][link: minikube in GitHub]]
-| Name                | Command                       |
-|---------------------+-------------------------------|
-| Start minikube env  | =minikube start=              |
-| minikube docker-env | =eval $(minikube docker-env)= |
-| Get dashboard       | =minikube dashboard=          |
-| ssh to minikube vm  | =minikube ssh=                |
-| Get ip              | =minikube ip=                 |
-| Get cluster info    | =kubectl cluster-info=        |
-| List addons         | =minikube addons list=        |
-| Get service info    | =minikube service $srv_name=  |
+| Name                | Command                                                   |
+|---------------------+-----------------------------------------------------------|
+| Start minikube env  | =minikube start=, =minikube start --memory 5120 --cpus=4= |
+| minikube docker-env | =eval $(minikube docker-env)=                             |
+| Get dashboard       | =minikube dashboard=                                      |
+| ssh to minikube vm  | =minikube ssh=                                            |
+| Get ip              | =minikube ip=                                             |
+| Get cluster info    | =kubectl cluster-info=                                    |
+| List addons         | =minikube addons list=                                    |
+| Get service info    | =minikube service $srv_name=                              |
 
-TODO: rolling-update command is imperative, better use Deployments rollout. It's declarative.
 ** Misc scripts
 - Tail pod log by label
 #+BEGIN_SRC sh
@@ -1630,3 +1632,4 @@ tiller-deploy -p \
 '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}' \
 -n kube-system
 #+END_SRC
+* TODO consolidate cheatsheet and send out a PR: https://kubernetes.io/docs/reference/kubectl/cheatsheet/
