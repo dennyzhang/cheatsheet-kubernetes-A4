@@ -16,10 +16,8 @@
 <a href="http://makeapullrequest.com" target="_blank" rel="nofollow"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"/></a>
 #+END_HTML
 
-Blog URL: https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes, Category: [[https://cheatsheet.dennyzhang.com/category/kubernetes/][kubernetes]]
-
 - PDF Link: [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/cheatsheet-kubernetes-A4.pdf][cheatsheet-kubernetes-A4.pdf]]
-- Blog URL: https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes
+- Blog URL: https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-A4
 - Category: [[https://cheatsheet.dennyzhang.com/category/kubernetes/][kubernetes]]
 
 
@@ -293,8 +291,17 @@ kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMa
 #+STARTUP: overview customtime noalign logdone showall
 #+DESCRIPTION: 
 #+KEYWORDS: 
-#+LATEX_HEADER: \usepackage[margin=0.3in]{geometry}
+#+LATEX_HEADER: \usepackage[margin=0.6in]{geometry}
 #+LaTeX_CLASS_OPTIONS: [8pt]
+#+LATEX_HEADER: \usepackage[english]{babel}
+#+LATEX_HEADER: \usepackage{lastpage}
+#+LATEX_HEADER: \usepackage{fancyhdr}
+#+LATEX_HEADER: \pagestyle{fancy}
+#+LATEX_HEADER: \fancyhf{}
+#+LATEX_HEADER: \rhead{Updated: \today}
+#+LATEX_HEADER: \rfoot{\thepage\ of \pageref{LastPage}}
+#+LATEX_HEADER: \lfoot{\href{https://github.com/dennyzhang/cheatsheet-kubernetes-A4}{GitHub: https://github.com/dennyzhang/cheatsheet-kubernetes-A4}}
+#+LATEX_HEADER: \lhead{\href{https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-A4}{Blog URL: https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-A4}}
 #+AUTHOR: Denny Zhang
 #+EMAIL:  denny@dennyzhang.com
 #+TAGS: noexport(n)
