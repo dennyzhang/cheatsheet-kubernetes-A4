@@ -26,31 +26,31 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
 ** Common Usage
 *** Yaml Templates
-| Name                         | Summary                                                     |
-|------------------------------+-------------------------------------------------------------|
-| Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-nginx.yaml][pod-nginx.yaml]],  [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-healthcheck-nginx.yaml][pod-healthcheck-nginx.yaml]] |
-| Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-redis.yaml][pod-volume-redis.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-gitclone.yaml][pod-gitclone.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-handlers.yaml][pod-handlers.yaml]] |
-| Deployment yaml examples     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/deployment-nginx.yaml][deployment-nginx.yaml]]                                       |
-| Service yaml examples        | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/service-clusterip-nginx.yaml][service-clusterip-nginx.yaml]]                                |
-| Volume yaml examples         | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-empty-redis.yaml][pod-volume-empty-redis.yaml]]                                 |
-| Statefulset yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-nginx.yaml][statefulset-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-single-mysql][statefulset-single-mysql]]            |
-| Statefulset yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-mysql][statefulset-replicated-mysql]]                                |
-| Serviceaccount yaml examples | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                                 |
+| Name                         | Summary                                                             |
+|------------------------------+---------------------------------------------------------------------|
+| Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-nginx.yaml][pod-nginx.yaml]],  [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-healthcheck-nginx.yaml][pod-healthcheck-nginx.yaml]]         |
+| Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-redis.yaml][pod-volume-redis.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-gitclone.yaml][pod-gitclone.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-handlers.yaml][pod-handlers.yaml]]         |
+| Deployment yaml examples     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/deployment-nginx.yaml][deployment-nginx.yaml]]                                               |
+| Service yaml examples        | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/service-clusterip-nginx.yaml][service-clusterip-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/service-cassandra.yaml][service-cassandra.yaml]]                |
+| Volume yaml examples         | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-empty-redis.yaml][pod-volume-empty-redis.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-cassandra.yaml][minikube-hostpath]]                      |
+| Statefulset yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-nginx.yaml][statefulset-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-single-mysql][statefulset-single-mysql]]                    |
+| Statefulset yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-cassandra.yaml][statefulset-replicated-cassandra.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-mysql][statefulset-replicated-mysql]] |
+| Serviceaccount yaml examples | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                                         |
 
 *** Common Commands
-| Name                             | Command                                                                  |
-|----------------------------------+--------------------------------------------------------------------------|
-| Validate yaml file with dry run  | =kubectl create --dry-run --validate -f pod-dummy.yaml=                  |
-| Run wget test temporarily        | =kubectl run --rm mytest --image=busybox -it=                            |
-| Run curl test temporarily        | =kubectl run --rm mytest --image=yauritux/busybox-curl -it=              |
-| Open a bash terminal in a pod    | =kubectl exec -it storage sh=                                            |
-| Check pod environment variables  | =kubectl exec redis-master-ft9ex env=                                    |
-| Get all services                 | =kubectl get service --all-namespaces=                                   |
-| Get all services in a sorted way | =kubectl get services --sort-by=.metadata.name=                          |
-| Get pods sorted by restart count | =kubectl get pods --sort-by='.status.containerStatuses[0].restartCount'= |
-| Get system conf via configmap    | =kubectl -n kube-system get cm kubeadm-config -o yaml=                   |
-| Explain resource                 | =kubectl explain pods=, =kubectl explain svc=                            |
-| Query healthcheck endpoint       | =curl -L http://127.0.0.1:10250/healthz=                                 |
+| Name                             | Command                                                                |
+|----------------------------------+------------------------------------------------------------------------|
+| Validate yaml file with dry run  | =kubectl create --dry-run --validate -f pod-dummy.yaml=                |
+| Run wget test temporarily        | =kubectl run --rm mytest --image=busybox -it=                          |
+| Run curl test temporarily        | =kubectl run --rm mytest --image=yauritux/busybox-curl -it=            |
+| Open a bash terminal in a pod    | =kubectl exec -it storage sh=                                          |
+| Check pod environment variables  | =kubectl exec redis-master-ft9ex env=                                  |
+| Get system conf via configmap    | =kubectl -n kube-system get cm kubeadm-config -o yaml=                 |
+| Explain resource                 | =kubectl explain pods=, =kubectl explain svc=                          |
+| Query healthcheck endpoint       | =curl -L http://127.0.0.1:10250/healthz=                               |
+| Get all services                 | =kubectl get service --all-namespaces=                                 |
+| Get services sorted by name      | kubectl get services --sort-by=.metadata.name                          |
+| Get pods sorted by restart count | kubectl get pods --sort-by='.status.containerStatuses[0].restartCount' |
 
 ** Components & Services
 - Services on Master Nodes
@@ -235,13 +235,12 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 |-----------------+-----------------------|
 | API Conventions | [[https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md][link: API Conventions]] |
 ** Minikube
-[[https://github.com/kubernetes/minikube][link: minikube in GitHub]]
 | Name                | Command                                                   |
 |---------------------+-----------------------------------------------------------|
 | Start minikube env  | =minikube start=, =minikube start --memory 5120 --cpus=4= |
 | minikube docker-env | =eval $(minikube docker-env)=                             |
 | Get dashboard       | =minikube dashboard=                                      |
-| ssh to minikube vm  | =minikube ssh=                                            |
+| SSH to minikube vm  | =minikube ssh=                                            |
 | Get ip              | =minikube ip=                                             |
 | Get cluster info    | =kubectl cluster-info=                                    |
 | List addons         | =minikube addons list=                                    |
