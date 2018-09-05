@@ -290,6 +290,8 @@ kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMa
 #+STARTUP: overview customtime noalign logdone showall
 #+DESCRIPTION: 
 #+KEYWORDS: 
+#+LATEX_HEADER: \usepackage[margin=0.3in]{geometry}
+#+LaTeX_CLASS_OPTIONS: [8pt]
 #+AUTHOR: Denny Zhang
 #+EMAIL:  denny@dennyzhang.com
 #+TAGS: noexport(n)
