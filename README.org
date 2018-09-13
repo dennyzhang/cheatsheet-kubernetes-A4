@@ -36,6 +36,7 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Statefulset yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-nginx.yaml][statefulset-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-single-mysql][statefulset-single-mysql]]                    |
 | Statefulset yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-cassandra.yaml][statefulset-replicated-cassandra.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-mysql][statefulset-replicated-mysql]] |
 | Serviceaccount yaml examples | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                                         |
+| Limit Quota yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/limitrange-storage.yaml][limitrange-storage.yaml]]                                             |
 
 *** Common Commands
 | Name                             | Command                                                                |
@@ -144,17 +145,25 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Get service detail       | =kubectl get service nginx-service -o yaml=                                         |
 | Get service cluster ip   | kubectl get service nginx-service -o go-template='{{.spec.clusterIP}}'              |
 | Get service cluster port | kubectl get service nginx-service -o go-template='{{(index .spec.ports 0).port}}'   |
+
 ** StatefulSet
 | Name                               | Command                                                                        |
 |------------------------------------+--------------------------------------------------------------------------------|
 | List statefulset                   | =kubectl get sts=                                                              |
 | Scale statefulset                  | =kubectl scale sts <stateful_set_name> --replicas=5=                           |
 | Delete statefulset only (not pods) | =kubectl delete sts <stateful_set_name> --cascade=false=                       |
+
 ** Volumes & Volume Claims
 | Name                      | Command                         |
 |---------------------------+---------------------------------|
 | Check the mounted volumes | =kubectl exec storage ls /data= |
 | Check persist volume      | =kubectl describe pv pv0001=    |
+
+** Security
+| Name              | Command           |
+|-------------------+-------------------|
+| List certificates | =kubectl get csr= |
+
 ** Other Components
 *** Log files
 | Name                           | Command                                 |
