@@ -25,18 +25,8 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 
 See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
 ** Common Usage
-*** Yaml Templates
-| Name                         | Summary                                                             |
-|------------------------------+---------------------------------------------------------------------|
-| Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-dummy.yaml][pod-dummy.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-nginx.yaml][pod-nginx.yaml]],  [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-healthcheck-nginx.yaml][pod-healthcheck-nginx.yaml]]         |
-| Pod yaml examples            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-redis.yaml][pod-volume-redis.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-gitclone.yaml][pod-gitclone.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-handlers.yaml][pod-handlers.yaml]]         |
-| Deployment yaml examples     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/deployment-nginx.yaml][deployment-nginx.yaml]]                                               |
-| Service yaml examples        | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/service-clusterip-nginx.yaml][service-clusterip-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/service-cassandra.yaml][service-cassandra.yaml]]                |
-| Volume yaml examples         | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/pod-volume-empty-redis.yaml][pod-volume-empty-redis.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-cassandra.yaml][minikube-hostpath]]                      |
-| Statefulset yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-nginx.yaml][statefulset-nginx.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-single-mysql][statefulset-single-mysql]]                    |
-| Statefulset yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-cassandra.yaml][statefulset-replicated-cassandra.yaml]], [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/statefulset-replicated-mysql][statefulset-replicated-mysql]] |
-| Serviceaccount yaml examples | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/serviceaccount-default.yaml][serviceaccount-default.yaml]]                                         |
-| Limit Quota yaml examples    | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/limitrange-storage.yaml][limitrange-storage.yaml]]                                             |
+
+*Yaml Templates*: https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml
 
 *** Common Commands
 | Name                             | Command                                                                |
@@ -158,6 +148,7 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 |---------------------------+---------------------------------|
 | Check the mounted volumes | =kubectl exec storage ls /data= |
 | Check persist volume      | =kubectl describe pv pv0001=    |
+| List storage class        | =kubectl get storageclass=      |
 
 ** Security
 | Name              | Command           |
@@ -248,21 +239,25 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Name            | Summary               |
 |-----------------+-----------------------|
 | API Conventions | [[https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md][link: API Conventions]] |
+
 ** Minikube
-| Name                                                | Command                                                          |
-|-----------------------------------------------------+------------------------------------------------------------------|
-| Get minikube version                                | =minikube version=, [[https://github.com/kubernetes/minikube/releases][link: all minikube releases]]                  |
-| Start minikube env with a bigger machine flavor     | =minikube start=, =minikube start --memory 5120 --cpus=4=        |
-| Gets all available Kubernetes versions for minikube | =minikube get-k8s-versions=                                      |
-| Start minikube with given k8s version               | =minikube start --kubernetes-version v1.10.0=, =kubectl version= |
-| minikube docker-env                                 | =eval $(minikube docker-env)=                                    |
-| Get minikube log                                    | =minikube logs=                                                  |
-| Get dashboard                                       | =minikube dashboard=                                             |
-| SSH to minikube vm                                  | =minikube ssh=                                                   |
-| Get ip                                              | =minikube ip=                                                    |
-| Get cluster info                                    | =kubectl cluster-info=                                           |
-| List addons                                         | =minikube addons list=                                           |
-| Get service info                                    | =minikube service $srv_name=                                     |
+| Name                                                | Command                                          |
+|-----------------------------------------------------+--------------------------------------------------|
+| Get minikube version                                | =minikube version=, [[https://github.com/kubernetes/minikube/releases][link: all minikube releases]]  |
+| Start minikube with a specific k8s version          | =minikube start --kubernetes-version v1.10.0=    |
+| Start minikube env with a bigger machine flavor     | =minikube start --memory 5120 --cpus=4=          |
+| Gets all available Kubernetes versions for minikube | =minikube get-k8s-versions=                      |
+| Mount host OS's folder to minikube VM               | =minikube mount /host-mount-path:/vm-mount-path= |
+| Check minikube config in your host OS desktop       | =~/.minikube/machines/minikube/config.json=      |
+| folder of k8s.io/minikube-hostpath provisioner      | =/tmp/hostpath-provisioner=                      |
+| minikube docker-env                                 | =eval $(minikube docker-env)=                    |
+| Get minikube log                                    | =minikube logs=                                  |
+| Get dashboard                                       | =minikube dashboard=                             |
+| SSH to minikube vm                                  | =minikube ssh=                                   |
+| Get ip                                              | =minikube ip=                                    |
+| Get cluster info                                    | =kubectl cluster-info=                           |
+| List addons                                         | =minikube addons list=                           |
+| Get service info                                    | =minikube service $srv_name=                     |
 
 ** Misc scripts
 - Tail pod log by label
@@ -1651,3 +1646,12 @@ time ls -1r */*.yml | grep -v namespace | xargs -I{} kubectl delete -f {}
 #+END_SRC
 * TODO consolidate cheatsheet and send out a PR: https://kubernetes.io/docs/reference/kubectl/cheatsheet/ :noexport:
 * TODO consolidate cheatsheet: https://github.com/LeCoupa/awesome-cheatsheets/blob/master/tools/kubernetes.sh :noexport:
+* TODO minikube crash                                              :noexport:
+pivotal@otis minikube (minikube-integration-test *+) 2 $ make deploy
+bash -e ./test_in_minikube.sh deploy
+E0717 11:51:25.500541   19507 status.go:85] Error cluster status: Error: Unrecognized output from ClusterStatus:
+Start minikube
+Starting local Kubernetes v1.10.0 cluster...
+Starting VM...
+Getting VM IP address...
+Moving files into cluster...
