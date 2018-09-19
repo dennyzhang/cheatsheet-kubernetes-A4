@@ -309,13 +309,13 @@ kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMa
 ** More Resources
  License: Code is licensed under [[https://www.dennyzhang.com/wp-content/mit_license.txt][MIT License]].
 
- - Useful links
-#+BEGIN_EXAMPLE
- - https://kubernetes.io/docs/reference/kubectl/cheatsheet/
- - https://github.com/kubecamp/kubernetes_in_2_days
- - https://marc.xn--wckerlin-0za.ch/computer/kubernetes-on-ubuntu-16-04
- - https://codefresh.io/kubernetes-guides/kubernetes-cheat-sheet/
-#+END_EXAMPLE
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+https://github.com/kubecamp/kubernetes_in_2_days
+
+https://marc.xn--wckerlin-0za.ch/computer/kubernetes-on-ubuntu-16-04
+
+https://codefresh.io/kubernetes-guides/kubernetes-cheat-sheet/
 
 #+BEGIN_HTML
 <a href="https://www.dennyzhang.com"><img align="right" width="201" height="268" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/denny_201706.png"></a>
