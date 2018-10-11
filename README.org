@@ -4,32 +4,43 @@
 :export_file_name: cheatsheet-kubernetes-A4.pdf
 :END:
 
+#+BEGIN_HTML
+<a href="https://github.com/dennyzhang/cheatsheet-kubernetes-A4"><img align="right" width="200" height="183" src="https://www.dennyzhang.com/wp-content/uploads/denny/watermark/github.png" /></a>
+<div id="the whole thing" style="overflow: hidden;">
+<div style="float: left; padding: 5px"> <a href="https://www.linkedin.com/in/dennyzhang001"><img src="https://www.dennyzhang.com/wp-content/uploads/sns/linkedin.png" alt="linkedin" /></a></div>
+<div style="float: left; padding: 5px"><a href="https://github.com/dennyzhang"><img src="https://www.dennyzhang.com/wp-content/uploads/sns/github.png" alt="github" /></a></div>
+<div style="float: left; padding: 5px"><a href="https://www.dennyzhang.com/slack" target="_blank" rel="nofollow"><img src="https://slack.dennyzhang.com/badge.svg" alt="slack"/></a></div>
+</div>
+
+<br/><br/>
+<a href="http://makeapullrequest.com" target="_blank" rel="nofollow"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"/></a>
+#+END_HTML
+
 - PDF Link: [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/cheatsheet-kubernetes-A4.pdf][cheatsheet-kubernetes-A4.pdf]], Category: [[https://cheatsheet.dennyzhang.com/category/kubernetes/][kubernetes]]
 - Blog URL: https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-A4
-
 ** Common Commands
-| Name                                | Command                                                                                                                       |
-|-------------------------------------+-------------------------------------------------------------------------------------------------------------------------------|
-| List everything                     | =kubectl get all --all-namespaces=                                                                                            |
-| Validate yaml file with dry run     | =kubectl create --dry-run --validate -f pod-dummy.yaml=                                                                       |
-| Start a temporary pod for testing   | =kubectl run --rm -i -t --image=alpine test-$RANDOM -- sh=                                                                    |
-| Run wget test temporarily           | =kubectl run --rm mytest --image=busybox -it=                                                                                 |
-| Run curl test temporarily           | =kubectl run --rm mytest --image=yauritux/busybox-curl -it=                                                                   |
-| kubectl run shell command           | =kubectl exec -it mytest -- ls -l /etc/hosts=                                                                                 |
-| Get system conf via configmap       | =kubectl -n kube-system get cm kubeadm-config -o yaml=                                                                        |
-| kubectl run instance with replicas  | =kubectl run my-nginx --image=nginx --replicas=2 --port=80=                                                                   |
-| Explain resource                    | =kubectl explain pods=, =kubectl explain svc=                                                                                 |
-| Get all services                    | =kubectl get service --all-namespaces=                                                                                        |
-| Query healthcheck endpoint          | =curl -L http://127.0.0.1:10250/healthz=                                                                                      |
-| Open a bash terminal in a pod       | =kubectl exec -it storage sh=                                                                                                 |
-| Check pod environment variables     | =kubectl exec redis-master-ft9ex env=                                                                                         |
-| Enable kubectl shell autocompletion | =echo "source <(kubectl completion bash)" >> ~/.bashrc=, then reconnect                                                       |
-| Use minikube dockerd in your laptop | =eval $(minikube docker-env)=, No need to docker push any more                                                                |
-| Get services sorted by name         | kubectl get services --sort-by=.metadata.name                                                                                 |
-| Get pods sorted by restart count    | kubectl get pods --sort-by='.status.containerStatuses[0].restartCount'                                                        |
-| List pods, containers and images    | kubectl get pods -o='custom-columns=PODS:.metadata.name,CONTAINERS:.spec.containers[*].name,Images:.spec.containers[*].image' |
-| Links                               | [[https://cheatsheet.dennyzhang.com/cheatsheet-minikube-A4][minikube cheatsheet]], [[https://cheatsheet.dennyzhang.com/cheatsheet-docker-A4][docker cheatsheet]]                                                                                        |
-
+| Name                                | Command                                                                 |
+|-------------------------------------+-------------------------------------------------------------------------|
+| List everything                     | =kubectl get all --all-namespaces=                                      |
+| List pods with nodes info           | =kubectl get pod -o wide=                                               |
+| Validate yaml file with dry run     | =kubectl create --dry-run --validate -f pod-dummy.yaml=                 |
+| Start a temporary pod for testing   | =kubectl run --rm -i -t --image=alpine test-$RANDOM -- sh=              |
+| Run wget test temporarily           | =kubectl run --rm mytest --image=busybox -it=                           |
+| Run curl test temporarily           | =kubectl run --rm mytest --image=yauritux/busybox-curl -it=             |
+| kubectl run shell command           | =kubectl exec -it mytest -- ls -l /etc/hosts=                           |
+| Get system conf via configmap       | =kubectl -n kube-system get cm kubeadm-config -o yaml=                  |
+| kubectl run instance with replicas  | =kubectl run my-nginx --image=nginx --replicas=2 --port=80=             |
+| Explain resource                    | =kubectl explain pods=, =kubectl explain svc=                           |
+| Get all services                    | =kubectl get service --all-namespaces=                                  |
+| Query healthcheck endpoint          | =curl -L http://127.0.0.1:10250/healthz=                                |
+| Open a bash terminal in a pod       | =kubectl exec -it storage sh=                                           |
+| Check pod environment variables     | =kubectl exec redis-master-ft9ex env=                                   |
+| Enable kubectl shell autocompletion | =echo "source <(kubectl completion bash)" >> ~/.bashrc=, then reconnect |
+| Use minikube dockerd in your laptop | =eval $(minikube docker-env)=, No need to docker push any more          |
+| Get services sorted by name         | kubectl get services --sort-by=.metadata.name                           |
+| Get pods sorted by restart count    | kubectl get pods --sort-by='.status.containerStatuses[0].restartCount'  |
+| Minikube                            | [[https://cheatsheet.dennyzhang.com/cheatsheet-minikube-A4][minikube cheatsheet]]                                                     |
+| Docker                              | [[https://cheatsheet.dennyzhang.com/cheatsheet-docker-A4][docker cheatsheet]]                                                       |
 ** Check Performance
 | Name                                         | Command                                              |
 |----------------------------------------------+------------------------------------------------------|
@@ -37,24 +48,24 @@
 | Get pod resource usage                       | =kubectl top pod=                                    |
 | Get resource usage for a given pod           | =kubectl top <podname> --containers=                 |
 | List resource utilization for all containers | =kubectl top pod --all-namespaces --containers=true= |
-
 ** Resources Deletion
 | Name                               | Command                                                  |
 |------------------------------------+----------------------------------------------------------|
-| Delete pod                         | =kubectl delete pod <pod-name> -n <my-namespace>=        |
+| Delete pod                         | =kubectl delete pod/<pod-name> -n <my-namespace>=        |
 | Delete pods by labels              | =kubectl delete pod -l env=test=                         |
 | Delete deployments by labels       | =kubectl delete deployment -l app=wordpress=             |
 | Delete persist volumes by labels   | =kubectl delete pvc -l app=wordpress=                    |
-| Delete statefulset only (not pods) | =kubectl delete sts <stateful_set_name> --cascade=false= |
-
+| Delete statefulset only (not pods) | =kubectl delete sts/<stateful_set_name> --cascade=false= |
 ** Pod
 | Name                             | Command                                                                                                                       |
 |----------------------------------+-------------------------------------------------------------------------------------------------------------------------------|
 | List all pods                    | =kubectl get pods=                                                                                                            |
+| List pods and containers         | kubectl get pods -o='custom-columns=PODS:.metadata.name,CONTAINERS:.spec.containers[*].name'                                  |
+| List pods, containers and images | kubectl get pods -o='custom-columns=PODS:.metadata.name,CONTAINERS:.spec.containers[*].name,Images:.spec.containers[*].image' |
 | List pods for all namespace      | =kubectl get pods -all-namespaces=                                                                                            |
 | List all critical pods           | =kubectl get -n kube-system pods -a=                                                                                          |
-| List pods with more info         | =kubectl get pod -o wide=, =kubectl get pod -o yaml=                                                                          |
-| Get pod info                     | =kubectl describe pod srv-mysql-server=                                                                                       |
+| List pods with more info         | =kubectl get pod -o wide=, =kubectl get pod/<pod-name> -o yaml=                                                               |
+| Get pod info                     | =kubectl describe pod/srv-mysql-server=                                                                                       |
 | List all pods with labels        | =kubectl get pods --show-labels=                                                                                              |
 | Get Pod initContainer status     | =kubectl get pod --template '{{.status.initContainerStatuses}}' <pod-name>=                                                   |
 | kubectl run command              | kubectl exec -it -n "$ns" "$podname" -- sh -c "echo $msg >>/dev/err.log"                                                      |
@@ -62,7 +73,6 @@
 | List pods and containers         | kubectl get pods -o='custom-columns=PODS:.metadata.name,CONTAINERS:.spec.containers[*].name'                                  |
 | List pods, containers and images | kubectl get pods -o='custom-columns=PODS:.metadata.name,CONTAINERS:.spec.containers[*].name,Images:.spec.containers[*].image' |
 | Kubernetes Yaml Examples         | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]]                                                                                               |
-
 ** Label & Annontation
 | Name                             | Command                                                               |
 |----------------------------------+-----------------------------------------------------------------------|
@@ -70,7 +80,6 @@
 | Manually add label to a pod      | =kubectl label pods dummy-input owner=denny=                          |
 | Remove label                     | =kubectl label pods dummy-input owner-=                               |
 | Manually add annonation to a pod | =kubectl annotate pods dummy-input my-url=https://www.dennyzhang.com= |
-
 ** Deployment & Scale
 | Name                         | Command                                                                  |
 |------------------------------+--------------------------------------------------------------------------|
@@ -83,53 +92,50 @@
 | Pause/Resume                 | =kubectl rollout pause deployment/nginx-deployment=, =resume=            |
 | Rollback to previous version | =kubectl rollout undo deployment/nginx-deployment=                       |
 | Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]], [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][link: Pausing and Resuming a Deployment]] |
+** Quota & Limits & Resource
 
-** Quota & Limits
-
-| Name                     | Command                         |
-|--------------------------+---------------------------------|
-| List Resource Quota      | =kubectl get resourcequota=     |
-| List Limit Range         | =kubectl get limitrange=        |
-| Kubernetes Yaml Examples | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]] |
-
+| Name                          | Command                                                                          |
+|-------------------------------+----------------------------------------------------------------------------------|
+| List Resource Quota           | =kubectl get resourcequota=                                                      |
+| List Limit Range              | =kubectl get limitrange=                                                         |
+| Customize resource definition | =kubectl set resources deployment nginx -c=nginx --limits=cpu=200m,memory=512Mi= |
+| Kubernetes Yaml Examples      | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]]                                                  |
 ** Service
-| Name                     | Command                                                                           |
-|--------------------------+-----------------------------------------------------------------------------------|
-| List all services        | =kubectl get services=                                                            |
-| List service endpoints   | =kubectl get endpoints=                                                           |
-| Get service detail       | =kubectl get service nginx-service -o yaml=                                       |
-| Get service cluster ip   | kubectl get service nginx-service -o go-template='{{.spec.clusterIP}}'            |
-| Get service cluster port | kubectl get service nginx-service -o go-template='{{(index .spec.ports 0).port}}' |
-| Kubernetes Yaml Examples | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]]                                                   |
-
+| Name                            | Command                                                                           |
+|---------------------------------+-----------------------------------------------------------------------------------|
+| List all services               | =kubectl get services=                                                            |
+| List service endpoints          | =kubectl get endpoints=                                                           |
+| Get service detail              | =kubectl get service nginx-service -o yaml=                                       |
+| Get service cluster ip          | kubectl get service nginx-service -o go-template='{{.spec.clusterIP}}'            |
+| Get service cluster port        | kubectl get service nginx-service -o go-template='{{(index .spec.ports 0).port}}' |
+| Expose deployment as lb service | =kubectl expose deployment/my-app --type=LoadBalancer --name=my-service=          |
+| Expose service as lb service    | =kubectl expose service/wordpress-1-svc --type=LoadBalancer --name=wordpress-lb=  |
+| Kubernetes Yaml Examples        | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]]                                                   |
 ** StatefulSet
 | Name                               | Command                                                  |
 |------------------------------------+----------------------------------------------------------|
 | List statefulset                   | =kubectl get sts=                                        |
-| Scale statefulset                  | =kubectl scale sts <stateful_set_name> --replicas=5=     |
-| Delete statefulset only (not pods) | =kubectl delete sts <stateful_set_name> --cascade=false= |
+| Delete statefulset only (not pods) | =kubectl delete sts/<stateful_set_name> --cascade=false= |
+| Scale statefulset                  | =kubectl scale sts/<stateful_set_name> --replicas=5=     |
 | Kubernetes Yaml Examples           | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]]                          |
-
 ** Volumes & Volume Claims
 | Name                      | Command                                            |
 |---------------------------+----------------------------------------------------|
 | Check the mounted volumes | =kubectl exec storage ls /data=                    |
-| Check persist volume      | =kubectl describe pv pv0001=                       |
+| Check persist volume      | =kubectl describe pv/pv0001=                       |
 | List storage class        | =kubectl get storageclass=                         |
 | Copy files                | =kubectl cp /tmp/foo <namespace1>/<pod1>:/tmp/bar= |
 | Kubernetes Yaml Examples  | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]]                    |
-
 ** Security
 | Name                     | Command                         |
 |--------------------------+---------------------------------|
 | List certificates        | =kubectl get csr=               |
 | Kubernetes Yaml Examples | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]] |
-
-** Resources
-| Name                          | Command                                                                          |
-|-------------------------------+----------------------------------------------------------------------------------|
-| Customize resource definition | =kubectl set resources deployment nginx -c=nginx --limits=cpu=200m,memory=512Mi= |
-
+** Extenstions
+| Name           | Summary                |
+|----------------+------------------------|
+| List api group | =kubectl api-versions= |
+| List all CRD   | =kubectl get crd=      |
 ** Components & Services
 - Services on Master Nodes
 | Name                    | Summary                                                                                                |
@@ -170,21 +176,19 @@
 | Controller.log= in master node | =/var.log=/kube-controller-manager.log= |
 | Kubelet.log= in worker node    | =/var.log=/kubelet.log=                 |
 | Kube Proxy.log= in worker node | =/var.log=/kubelet-proxy.log=           |
-
 *** Events & Metrics
 | Name            | Command                               |
 |-----------------+---------------------------------------|
 | View all events | =kubectl get events --all-namespaces= |
-
 *** Namespace & Security
-| Name                        | Command                                     |
-|-----------------------------+---------------------------------------------|
-| List authenticated contexts | =kubectl config get-contexts=               |
-| Switch context              | =kubectl config use-context <cluster-name>= |
-| List all namespaces defined | =kubectl get namespaces=                    |
-| kubectl config file         | =~/.kube/config=                            |
-| Kubernetes Yaml Examples    | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]]             |
-
+| Name                         | Command                                     |
+|------------------------------+---------------------------------------------|
+| List authenticated contexts  | =kubectl config get-contexts=               |
+| Switch context               | =kubectl config use-context <cluster-name>= |
+| Delete the specified context | =kubectl delete use-context <cluster-name>= |
+| List all namespaces defined  | =kubectl get namespaces=                    |
+| kubectl config file          | =~/.kube/config=                            |
+| Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]]             |
 *** Network
 | Name                              | Command                                                  |
 |-----------------------------------+----------------------------------------------------------|
@@ -193,7 +197,6 @@
 | Add port-forwaring for replicaset | =kubectl port-forward rs/redis-master 6379:6379=         |
 | Add port-forwaring for service    | =kubectl port-forward svc/redis-master 6379:6379=        |
 | Get network policy                | =kubectl get NetworkPolicy=                              |
-
 ** Basic
 *** Key Concepts
 | Name | Summary                           |
@@ -202,7 +205,6 @@
 | CRI  | Container Runtime Interface       |
 | CNI  | Container Network Interface       |
 | CSI  | Container Storage Interface       |
-
 *** Kubernets Critical Files
 | Name                      | Comment                                                 |
 |---------------------------+---------------------------------------------------------|
@@ -231,37 +233,15 @@
 | Get kubectl version                | =kubectl version=                          |
 | Get component status               | =kubectl get componentstatus=              |
 | Similar to =docker ps=             | =kubectl get nodes=                        |
-| Similar to =docker inspect=        | =kubectl describe pod nginx-app-413181-cn= |
+| Similar to =docker inspect=        | =kubectl describe pod/nginx-app-413181-cn= |
 | Similar to =docker logs=           | =kubectl logs=                             |
 | Similar to =docker exec=           | =kubectl exec=                             |
 | Get services for current namespace | =kubectl get svc=                          |
-| Get node status                    | =kubectl describe node <node_name>=        |
-
+| Get node status                    | =kubectl describe node/<node_name>=        |
 *** Kubernetes Developer Resources
 | Name            | Summary               |
 |-----------------+-----------------------|
 | API Conventions | [[https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md][link: API Conventions]] |
-
-** Minikube
-| Name                                                | Command                                          |
-|-----------------------------------------------------+--------------------------------------------------|
-| Get minikube version                                | =minikube version=, [[https://github.com/kubernetes/minikube/releases][link: all minikube releases]]  |
-| Start minikube with a specific k8s version          | =minikube start --kubernetes-version v1.10.0=    |
-| Start minikube env with a bigger machine flavor     | =minikube start --memory 5120 --cpus=4=          |
-| Gets all available Kubernetes versions for minikube | =minikube get-k8s-versions=                      |
-| Mount host OS's folder to minikube VM               | =minikube mount /host-mount-path:/vm-mount-path= |
-| Check minikube config in your host OS desktop       | =~/.minikube/machines/minikube/config.json=      |
-| folder of k8s.io/minikube-hostpath provisioner      | =/tmp/hostpath-provisioner=, =/tmp/hostpath_pv=  |
-| Critical minikube folder                            | =/var/lib/localkube=, =/var/lib/docker=, =/data= |
-| minikube docker-env                                 | =eval $(minikube docker-env)=                    |
-| Get minikube log                                    | =minikube logs=                                  |
-| Get dashboard                                       | =minikube dashboard=                             |
-| SSH to minikube vm                                  | =minikube ssh=                                   |
-| Get ip                                              | =minikube ip=                                    |
-| Get cluster info                                    | =kubectl cluster-info=                           |
-| List addons                                         | =minikube addons list=                           |
-| Get service info                                    | =minikube service <srv_name>=                    |
-
 ** Misc scripts
 - Tail pod log by label
 #+BEGIN_SRC sh
@@ -299,18 +279,6 @@ https://marc.xn--wckerlin-0za.ch/computer/kubernetes-on-ubuntu-16-04
 
 https://codefresh.io/kubernetes-guides/kubernetes-cheat-sheet/
 
-#+BEGIN_HTML
-<a href="https://github.com/dennyzhang/cheatsheet-kubernetes-A4"><img align="right" width="200" height="183" src="https://www.dennyzhang.com/wp-content/uploads/denny/watermark/github.png" /></a>
-<div id="the whole thing" style="overflow: hidden;">
-<div style="float: left; padding: 5px"> <a href="https://www.linkedin.com/in/dennyzhang001"><img src="https://www.dennyzhang.com/wp-content/uploads/sns/linkedin.png" alt="linkedin" /></a></div>
-<div style="float: left; padding: 5px"><a href="https://github.com/dennyzhang"><img src="https://www.dennyzhang.com/wp-content/uploads/sns/github.png" alt="github" /></a></div>
-<div style="float: left; padding: 5px"><a href="https://www.dennyzhang.com/slack" target="_blank" rel="nofollow"><img src="https://slack.dennyzhang.com/badge.svg" alt="slack"/></a></div>
-</div>
-
-<br/><br/>
-<a href="http://makeapullrequest.com" target="_blank" rel="nofollow"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"/></a>
-#+END_HTML
-
 File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]] or star [[https://github.com/DennyZhang/cheatsheet-kubernetes-A4][this repo]].
 
 See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
@@ -325,8 +293,8 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 #+END_HTML
 * org-mode configuration                                           :noexport:
 #+STARTUP: overview customtime noalign logdone showall
-#+DESCRIPTION: 
-#+KEYWORDS: 
+#+DESCRIPTION:
+#+KEYWORDS:
 #+LATEX_HEADER: \usepackage[margin=0.6in]{geometry}
 #+LaTeX_CLASS_OPTIONS: [8pt]
 #+LATEX_HEADER: \usepackage[english]{babel}
@@ -346,8 +314,8 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 #+OPTIONS:   TeX:t LaTeX:nil skip:nil d:nil todo:t pri:nil tags:not-in-toc
 #+EXPORT_EXCLUDE_TAGS: exclude noexport
 #+SEQ_TODO: TODO HALF ASSIGN | DONE BYPASS DELEGATE CANCELED DEFERRED
-#+LINK_UP:   
-#+LINK_HOME: 
+#+LINK_UP:
+#+LINK_HOME:
 * #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * [#A] Kubernets                                         :noexport:IMPORTANT:
 https://github.com/dennyzhang/cheatsheet-kubernetes-A4
@@ -919,7 +887,7 @@ bash-3.2$
 #+END_EXAMPLE
 
 #+BEGIN_EXAMPLE
-bash-3.2$ kubectl describe pod my-wordpress-wordpress-df987548d-btvf5
+bash-3.2$ kubectl describe pod/my-wordpress-wordpress-df987548d-btvf5
 Name:           my-wordpress-wordpress-df987548d-btvf5
 Namespace:      default
 Node:           minikube/192.168.99.102
@@ -1013,20 +981,6 @@ https://stackoverflow.com/questions/33415913/whats-the-best-way-to-share-mount-o
 https://www.linkedin.com/feed/update/urn:li:activity:6355445509146107904/
 ** TODO K8S label & Selector
 https://github.com/dennyzhang/dennytest/tree/master/cheatsheet-kubernetes-A4][challenges-leetcode-interesting]]
-* [#A] minikube                                                    :noexport:
-https://github.com/kubernetes/minikube
-https://github.com/dennyzhang/cheatsheet-kubernetes-A4
-** DONE minikube volume local drive
-   CLOSED: [2018-07-15 Sun 22:46]
- https://stackoverflow.com/questions/42456159/minikube-volumes
-
-#+BEGIN_EXAMPLE
- /data
- /var/lib/localkube
- /var/lib/docker
-#+END_EXAMPLE
-
-ls -lth /var/lib/kubelet/pods/f2f8f500-88ba-11e8-89ad-080027cbaea4/volumes/kubernetes.io~empty-dir/varlog/1.log
 * [#A] kubernetes/helm: The Kubernetes Package Manager             :noexport:
 | Name    | Summary                                                                  |
 |---------+--------------------------------------------------------------------------|
@@ -1290,7 +1244,7 @@ kube-system   tiller-deploy-df4fdf55d-zxdq4           0/1       Pending   0     
 ** DONE helm start with env configured: helm install --set Master.ServiceType=NodePort stable/jenkins
    CLOSED: [2018-04-15 Sun 21:50]
 * [#A] k8s metric server                                 :noexport:IMPORTANT:
-Metrics Server is a cluster-wide aggregator of resource usage data. 
+Metrics Server is a cluster-wide aggregator of resource usage data.
 
 Metrics Server registered in the main API server through Kubernetes aggregator.
 
@@ -1309,12 +1263,11 @@ Today (Kubernetes 1.7), there are several sources of metrics within a Kubernetes
 | Heapster       | k8s add-on                                                          |
 | Cadvisor       | a standalone container/node metrics collection and monitoring tool. |
 | Kubernetes API | does not track metrics. But can get real time metrics               |
-
 ** metric server
 Resource Metrics API is an effort to provide a first-class Kubernetes API (stable, versioned, discoverable, available through apiserver and with client support) that serves resource usage metrics for pods and nodes.
 
 - metric server is sort of a stripped-down version of Heapster
-- The metrics-server will collect "Core" metrics from cAdvisor APIs (currently embedded in the kubelet) and store them in memory as opposed to in etcd. 
+- The metrics-server will collect "Core" metrics from cAdvisor APIs (currently embedded in the kubelet) and store them in memory as opposed to in etcd.
 - The metrics-server will provide a supported API for feeding schedulers and horizontal pod auto-scalers
 - All other Kubernetes components will supply their own metrics in a Prometheus format
 ** Cadvisor
@@ -1322,7 +1275,7 @@ Cadvisor monitors node and container core metrics in addition to container event
 It natively provides a Prometheus metrics endpoint
 The Kubernetes kublet has an embedded Cadvisor that only exposes the metrics, not the events.
 ** heapster
-Heapster is an add on to Kubernetes that collects and forwards both node, namespace, pod and container level metrics to one or more "sinks" (e.g. InfluxDB). 
+Heapster is an add on to Kubernetes that collects and forwards both node, namespace, pod and container level metrics to one or more "sinks" (e.g. InfluxDB).
 
 It also provides REST endpoints to gather those metrics. The metrics are constrained to CPU, filesystem, memory, network and uptime.
 
@@ -1352,10 +1305,6 @@ In logging domain, we can say `syslog` is the standard format
 
 In metric domain, maybe we can choose `prometheus` as the standard format.
 #+END_EXAMPLE
-** try metric server in minikube
-https://docs.giantswarm.io/guides/kubernetes-heapster/
-
-http://192.168.99.102:30000/metrics
 ** Metrics Use Cases
 https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/resource-metrics-api.md
 
@@ -1608,12 +1557,11 @@ spec:
 #+END_EXAMPLE
 
 kubectl get pods --selector=name=nginx,type=frontend
-** Containers inside a Pod can communicate with one another using localhost. 
+** Containers inside a Pod can communicate with one another using localhost.
 https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/
 
 Networking
 Each Pod is assigned a unique IP address. Every container in a Pod shares the network namespace, including the IP address and network ports. Containers inside a Pod can communicate with one another using localhost. When containers in a Pod communicate with entities outside the Pod, they must coordinate how they use the shared network resources (such as ports).
-
 ** How to restart a container inside a Pod?
 https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/
 
@@ -1638,7 +1586,7 @@ https://kubernetes-incubator.github.io/kube-aws/advanced-topics/etcd-backup-and-
 ** volume mount current local drive
 * helm                                                             :noexport:
 #+BEGIN_SRC sh
-# Lets create the service account 
+# Lets create the service account
 kubectl create serviceaccount --namespace kube-system tiller
 kubectl create serviceaccount --namespace kubestack etcd-operator
 
@@ -1668,13 +1616,29 @@ time ls -1r */*.yml | grep -v namespace | xargs -I{} kubectl delete -f {}
 #+END_SRC
 * TODO consolidate cheatsheet and send out a PR: https://kubernetes.io/docs/reference/kubectl/cheatsheet/ :noexport:
 * TODO consolidate cheatsheet: https://github.com/LeCoupa/awesome-cheatsheets/blob/master/tools/kubernetes.sh :noexport:
-* TODO minikube crash                                              :noexport:
-pivotal@otis minikube (minikube-integration-test *+) 2 $ make deploy
-bash -e ./test_in_minikube.sh deploy
-E0717 11:51:25.500541   19507 status.go:85] Error cluster status: Error: Unrecognized output from ClusterStatus:
-Start minikube
-Starting local Kubernetes v1.10.0 cluster...
-Starting VM...
-Getting VM IP address...
-Moving files into cluster...
 * devstats: https://k8s.devstats.cncf.io/d/12/dashboards?refresh=15m&orgId=1 :noexport:
+* TODO create a ingress service for clusterip service
+* TODO kubectl -vvv                                                :noexport:
+* TODO kubectl get application --all-namespaces                    :noexport:
+* TODO kubectl delete namespace in GKE is extremely slow           :noexport:
+* TODO try more with ReplicaSet                                    :noexport:
+* TODO try PodDisruptionBudget: https://hackernoon.com/top-10-kubernetes-tips-and-tricks-27528c2d0222 :noexport:
+* #  --8<-------------------------- separator ------------------------>8-- :noexport:
+* TODO [#A] k8s services                                           :noexport:
+https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0
+* [#A] ClusterIP                                                   :noexport:
+** TODO kubernetes clusterip
+** TODO Is k8s ClusterIP SPOF?
+ https://mp.weixin.qq.com/s?__biz=MzIzNjUxMzk2NQ==&mid=2247486025&idx=1&sn=1f95917918a3217bb92b97113c81b6c8&chksm=e8d7f58bdfa07c9dedbfbe4f39687ea5d467ec371ecb2dea5dd13101a46d3bb754d6738e481f&scene=27#wechat_redirect
+** TODO Use ExternalName to avoid ClusterIP SPOF
+* #  --8<-------------------------- separator ------------------------>8-- :noexport:
+* TODO k8s cpu 88m?                                                :noexport:
+#+BEGIN_EXAMPLE
+    Limits:
+      cpu:	48m
+      memory:	104Mi
+    Requests:
+      cpu:		48m
+      memory:		104Mi
+
+#+END_EXAMPLE
