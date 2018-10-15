@@ -22,9 +22,6 @@
 File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]] or star [[https://github.com/DennyZhang/cheatsheet-kubernetes-A4][this repo]].
 
 See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
-
-- Check kubernetes cheatsheet: https://cheatsheet.dennyzhang.com/cheatsheet-minikube-A4
-- Yaml Templates: https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml
 ** Common Commands
 | Name                                | Command                                                                |
 |-------------------------------------+------------------------------------------------------------------------|
@@ -1619,7 +1616,7 @@ time ls -1r */*.yml | grep -v namespace | xargs -I{} kubectl delete -f {}
 * TODO consolidate cheatsheet and send out a PR: https://kubernetes.io/docs/reference/kubectl/cheatsheet/ :noexport:
 * TODO consolidate cheatsheet: https://github.com/LeCoupa/awesome-cheatsheets/blob/master/tools/kubernetes.sh :noexport:
 * devstats: https://k8s.devstats.cncf.io/d/12/dashboards?refresh=15m&orgId=1 :noexport:
-* TODO create a ingress service for clusterip service
+* TODO create a ingress service for clusterip service              :noexport:
 * TODO kubectl -vvv                                                :noexport:
 * TODO kubectl get application --all-namespaces                    :noexport:
 * TODO kubectl delete namespace in GKE is extremely slow           :noexport:
