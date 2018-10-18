@@ -1641,3 +1641,7 @@ https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-w
       memory:		104Mi
 
 #+END_EXAMPLE
+* TODO autoscaling pod: try auto scaling                           :noexport:
+* #  --8<-------------------------- separator ------------------------>8-- :noexport:
+* TODO k8s volume: readwriteonce, readwritemany?                   :noexport:
+* TODO Vanilla CNCF Certified Kubernetes                           :noexport:
