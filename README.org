@@ -25,17 +25,19 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 ** Common Commands
 | Name                                | Command                                                                |
 |-------------------------------------+------------------------------------------------------------------------|
+| Run curl test temporarily           | =kubectl run --rm mytest --image=yauritux/busybox-curl -it=            |
+| Run wget test temporarily           | =kubectl run --rm mytest --image=busybox -it=                          |
 | List everything                     | =kubectl get all --all-namespaces=                                     |
 | List pods with nodes info           | =kubectl get pod -o wide=                                              |
+| Show nodes with labels              | =kubectl get nodes --show-labels=                                      |
 | Validate yaml file with dry run     | =kubectl create --dry-run --validate -f pod-dummy.yaml=                |
 | Start a temporary pod for testing   | =kubectl run --rm -i -t --image=alpine test-$RANDOM -- sh=             |
-| Run wget test temporarily           | =kubectl run --rm mytest --image=busybox -it=                          |
-| Run curl test temporarily           | =kubectl run --rm mytest --image=yauritux/busybox-curl -it=            |
 | kubectl run shell command           | =kubectl exec -it mytest -- ls -l /etc/hosts=                          |
 | Get system conf via configmap       | =kubectl -n kube-system get cm kubeadm-config -o yaml=                 |
 | kubectl run instance with replicas  | =kubectl run my-nginx --image=nginx --replicas=2 --port=80=            |
 | Explain resource                    | =kubectl explain pods=, =kubectl explain svc=                          |
 | Get all services                    | =kubectl get service --all-namespaces=                                 |
+| Watch pods                          | =kubectl get pods  -n wordpress --watch=                               |
 | Query healthcheck endpoint          | =curl -L http://127.0.0.1:10250/healthz=                               |
 | Open a bash terminal in a pod       | =kubectl exec -it storage sh=                                          |
 | Check pod environment variables     | =kubectl exec redis-master-ft9ex env=                                  |
@@ -43,8 +45,7 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Use minikube dockerd in your laptop | =eval $(minikube docker-env)=, No need to push docker hub any more     |
 | Get services sorted by name         | kubectl get services --sort-by=.metadata.name                          |
 | Get pods sorted by restart count    | kubectl get pods --sort-by='.status.containerStatuses[0].restartCount' |
-| Minikube                            | [[https://cheatsheet.dennyzhang.com/cheatsheet-minikube-A4][minikube cheatsheet]]                                                    |
-| Docker                              | [[https://cheatsheet.dennyzhang.com/cheatsheet-docker-A4][docker cheatsheet]]                                                      |
+| Reference                           | [[https://cheatsheet.dennyzhang.com/cheatsheet-minikube-A4][minikube cheatsheet]], [[https://cheatsheet.dennyzhang.com/cheatsheet-docker-A4][docker cheatsheet]]                                 |
 ** Check Performance
 | Name                                         | Command                                              |
 |----------------------------------------------+------------------------------------------------------|
@@ -73,10 +74,11 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | List all pods with labels    | =kubectl get pods --show-labels=                                                                          |
 | Get Pod initContainer status | =kubectl get pod --template '{{.status.initContainerStatuses}}' <pod-name>=                               |
 | kubectl run command          | kubectl exec -it -n "$ns" "$podname" -- sh -c "echo $msg >>/dev/err.log"                                  |
-| Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]]                                                                           |
+| Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]]                                                                           |
 ** Pod Advanced
 | Name                             | Command                                                                                                                       |
 |----------------------------------+-------------------------------------------------------------------------------------------------------------------------------|
+| Watch pods                       | =kubectl get pods  -n wordpress --watch=                                                                                      |
 | Get pod by selector              | podname=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')                     |
 | List pods and containers         | kubectl get pods -o='custom-columns=PODS:.metadata.name,CONTAINERS:.spec.containers[*].name'                                  |
 | List pods, containers and images | kubectl get pods -o='custom-columns=PODS:.metadata.name,CONTAINERS:.spec.containers[*].name,Images:.spec.containers[*].image' |
@@ -98,14 +100,14 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Check update history         | =kubectl rollout history deployment/nginx-app=                           |
 | Pause/Resume                 | =kubectl rollout pause deployment/nginx-deployment=, =resume=            |
 | Rollback to previous version | =kubectl rollout undo deployment/nginx-deployment=                       |
-| Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]], [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][link: Pausing and Resuming a Deployment]] |
+| Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]], [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][Link: Pausing and Resuming a Deployment]] |
 ** Quota & Limits & Resource
 | Name                          | Command                                                                          |
 |-------------------------------+----------------------------------------------------------------------------------|
 | List Resource Quota           | =kubectl get resourcequota=                                                      |
 | List Limit Range              | =kubectl get limitrange=                                                         |
 | Customize resource definition | =kubectl set resources deployment nginx -c=nginx --limits=cpu=200m,memory=512Mi= |
-| Kubernetes Yaml Examples      | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]]                                                  |
+| Kubernetes Yaml Examples      | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]]                                                  |
 ** Service
 | Name                            | Command                                                                           |
 |---------------------------------+-----------------------------------------------------------------------------------|
@@ -116,14 +118,18 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Get service cluster port        | kubectl get service nginx-service -o go-template='{{(index .spec.ports 0).port}}' |
 | Expose deployment as lb service | =kubectl expose deployment/my-app --type=LoadBalancer --name=my-service=          |
 | Expose service as lb service    | =kubectl expose service/wordpress-1-svc --type=LoadBalancer --name=wordpress-lb=  |
-| Kubernetes Yaml Examples        | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]]                                                   |
+| Kubernetes Yaml Examples        | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]]                                                   |
 ** StatefulSet
 | Name                               | Command                                                  |
 |------------------------------------+----------------------------------------------------------|
 | List statefulset                   | =kubectl get sts=                                        |
 | Delete statefulset only (not pods) | =kubectl delete sts/<stateful_set_name> --cascade=false= |
 | Scale statefulset                  | =kubectl scale sts/<stateful_set_name> --replicas=5=     |
-| Kubernetes Yaml Examples           | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]]                          |
+| Kubernetes Yaml Examples           | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]]                          |
+** Patch
+| Name                          | Command                                                                                  |
+|-------------------------------+------------------------------------------------------------------------------------------|
+|  Patch service to loadbalancer | =kubectl patch svc "$APP_INSTANCE_NAME-grafana" -p '{"spec": {"type": "LoadBalancer"}}'= |
 ** Volumes & Volume Claims
 | Name                      | Command                                            |
 |---------------------------+----------------------------------------------------|
@@ -131,12 +137,12 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Check persist volume      | =kubectl describe pv/pv0001=                       |
 | List storage class        | =kubectl get storageclass=                         |
 | Copy files                | =kubectl cp /tmp/foo <namespace1>/<pod1>:/tmp/bar= |
-| Kubernetes Yaml Examples  | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]]                    |
+| Kubernetes Yaml Examples  | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]]                    |
 ** Security
 | Name                     | Command                         |
 |--------------------------+---------------------------------|
 | List certificates        | =kubectl get csr=               |
-| Kubernetes Yaml Examples | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]] |
+| Kubernetes Yaml Examples | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]] |
 ** Extenstions
 | Name           | Summary                |
 |----------------+------------------------|
@@ -172,7 +178,7 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kubectl][kubectl]]               | the command line util to talk to k8s cluster                |
 | [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kubeadm][kubeadm]]               | the command to bootstrap the cluster                        |
 | [[https://kubernetes.io/docs/reference/setup-tools/kubefed/kubefed/][kubefed]]               | the command line to control a Kubernetes Cluster Federation |
-| Kubernetes Components | [[https://kubernetes.io/docs/concepts/overview/components/][link: Kubernetes Components]]                                 |
+| Kubernetes Components | [[https://kubernetes.io/docs/concepts/overview/components/][Link: Kubernetes Components]]                                 |
 ** Other Components
 *** Log files
 | Name                           | Command                                 |
@@ -194,7 +200,7 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | Delete the specified context | =kubectl config delete-context <cluster-name>= |
 | List all namespaces defined  | =kubectl get namespaces=                       |
 | kubectl config file          | =~/.kube/config=                               |
-| Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]]                |
+| Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]]                |
 *** Network
 | Name                              | Command                                                  |
 |-----------------------------------+----------------------------------------------------------|
@@ -247,7 +253,7 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 *** Kubernetes Developer Resources
 | Name            | Summary               |
 |-----------------+-----------------------|
-| API Conventions | [[https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md][link: API Conventions]] |
+| API Conventions | [[https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md][Link: API Conventions]] |
 ** Misc scripts
 - Tail pod log by label
 #+BEGIN_SRC sh
@@ -1581,9 +1587,7 @@ https://www.youtube.com/watch?v=_WfJz5VS_cU&list=PLj6h78yzYM2NGwRwkBPxigKio2r0XH
 ** TODO export k8s dashboard: kube proxy VS ingress
 ** TODO how to back and restore etcd
 https://kubernetes-incubator.github.io/kube-aws/advanced-topics/etcd-backup-and-restore.html
-* TODO problems                                                    :noexport:
-** volume mount current local drive
-* helm                                                             :noexport:
+* TODO helm                                                        :noexport:
 #+BEGIN_SRC sh
 # Lets create the service account
 kubectl create serviceaccount --namespace kube-system tiller
@@ -1604,8 +1608,7 @@ tiller-deploy -p \
 '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}' \
 -n kube-system
 #+END_SRC
-* #  --8<-------------------------- separator ------------------------>8-- :noexport:
-* Apply yamls file recursively                                     :noexport:
+* TODO Apply yamls file recursively                                :noexport:
 #+BEGIN_SRC sh
 # create
 time ls -1 */*.yml | grep -v namespace | xargs -I{} kubectl apply -f {}
@@ -1622,7 +1625,6 @@ time ls -1r */*.yml | grep -v namespace | xargs -I{} kubectl delete -f {}
 * TODO kubectl delete namespace in GKE is extremely slow           :noexport:
 * TODO try more with ReplicaSet                                    :noexport:
 * TODO try PodDisruptionBudget: https://hackernoon.com/top-10-kubernetes-tips-and-tricks-27528c2d0222 :noexport:
-* #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * TODO [#A] k8s services                                           :noexport:
 https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0
 * [#A] ClusterIP                                                   :noexport:
@@ -1630,7 +1632,6 @@ https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-w
 ** TODO Is k8s ClusterIP SPOF?
  https://mp.weixin.qq.com/s?__biz=MzIzNjUxMzk2NQ==&mid=2247486025&idx=1&sn=1f95917918a3217bb92b97113c81b6c8&chksm=e8d7f58bdfa07c9dedbfbe4f39687ea5d467ec371ecb2dea5dd13101a46d3bb754d6738e481f&scene=27#wechat_redirect
 ** TODO Use ExternalName to avoid ClusterIP SPOF
-* #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * TODO k8s cpu 88m?                                                :noexport:
 #+BEGIN_EXAMPLE
     Limits:
@@ -1642,6 +1643,26 @@ https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-w
 
 #+END_EXAMPLE
 * TODO autoscaling pod: try auto scaling                           :noexport:
-* #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * TODO k8s volume: readwriteonce, readwritemany?                   :noexport:
 * TODO Vanilla CNCF Certified Kubernetes                           :noexport:
+* #  --8<-------------------------- separator ------------------------>8-- :noexport:
+* TODO grant more privileges to a given serviceaccount             :noexport:
+kubectl get serviceaccount --all-namespaces
+
+prometheus-1-prometheusserviceaccount-e1fd
+
+system:kubelet-api-admin
+* TODO Question: PodDisruptionBudget: https://docs.pivotal.io/runtimes/pks/1-2/troubleshoot-issues.html#upgrade-drain-hangs :noexport:
+If Kubernetes is unable to unschedule a pod, then the drain hangs indefinitely. 
+
+One reason why Kubernetes may be unable to unschedule the node is if
+the PodDisruptionBudget object has been configured in a way that
+allows 0 disruptions and only a single instance of the pod has been
+scheduled.
+* #  --8<-------------------------- separator ------------------------>8-- :noexport:
+* TODO k8s events                                                  :noexport:
+https://solinea.com/blog/tapping-kubernetes-events
+* TODO kubectl from worker vm, I don't seem to need a kubeconfig   :noexport:
+* TODO kubectl apply -f -                                          :noexport:
+* TODO How does "kubectl delete - f -" works?                      :noexport:
+* TODO k8s pod template                                            :noexport:
