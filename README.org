@@ -193,14 +193,15 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 |-----------------+---------------------------------------|
 | View all events | =kubectl get events --all-namespaces= |
 *** Namespace & Security
-| Name                         | Command                                        |
-|------------------------------+------------------------------------------------|
-| List authenticated contexts  | =kubectl config get-contexts=                  |
-| Switch context               | =kubectl config use-context <cluster-name>=    |
-| Delete the specified context | =kubectl config delete-context <cluster-name>= |
-| List all namespaces defined  | =kubectl get namespaces=                       |
-| kubectl config file          | =~/.kube/config=                               |
-| Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]]                |
+| Name                          | Command                                        |
+|-------------------------------+------------------------------------------------|
+| List authenticated contexts   | =kubectl config get-contexts=                  |
+| Load context from config file | =kubectl get cs --kubeconfig kube_config.yml=  |
+| Switch context                | =kubectl config use-context <cluster-name>=    |
+| Delete the specified context  | =kubectl config delete-context <cluster-name>= |
+| List all namespaces defined   | =kubectl get namespaces=                       |
+| kubectl config file           | =~/.kube/config=                               |
+| Kubernetes Yaml Examples      | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]]                |
 *** Network
 | Name                              | Command                                                  |
 |-----------------------------------+----------------------------------------------------------|
