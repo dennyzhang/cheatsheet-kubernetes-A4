@@ -233,13 +233,13 @@ See more CheatSheets from Denny: [[https://github.com/topics/denny-cheatsheets][
 | List pods with docker images | kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}:{.spec.containers[0].name}{"\t"}{.spec.containers[0].image}{"\n"}{end}' |
 | Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]]                                                                                                         |
 
-** Label & Annontation
+** Label & Annotation
 | Name                             | Command                                                               |
 |----------------------------------+-----------------------------------------------------------------------|
 | Filter pods by label             | =kubectl get pods -l owner=denny=                                     |
 | Manually add label to a pod      | =kubectl label pods dummy-input owner=denny=                          |
 | Remove label                     | =kubectl label pods dummy-input owner-=                               |
-| Manually add annonation to a pod | =kubectl annotate pods dummy-input my-url=https://www.dennyzhang.com= |
+| Manually add annotation to a pod | =kubectl annotate pods dummy-input my-url=https://www.dennyzhang.com= |
 
 ** Deployment & Scale
 [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][link: Pausing and Resuming a Deployment]]
