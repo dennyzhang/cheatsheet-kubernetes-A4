@@ -18,7 +18,7 @@
 
 - PDF Link: [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/cheatsheet-kubernetes-A4.pdf][cheatsheet-kubernetes-A4.pdf]], Category: [[https://cheatsheet.dennyzhang.com/category/kubernetes/][kubernetes]]
 - Blog URL: https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-A4
-- Related posts: [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Kubernetes Yaml]], [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
+- Related posts: [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Kubernetes Yaml]], [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
 
 File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]] or star [[https://github.com/DennyZhang/cheatsheet-kubernetes-A4][this repo]].
 ** Common Commands
@@ -73,7 +73,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | List all pods with labels    | =kubectl get pods --show-labels=                                                                          |
 | Get Pod initContainer status | =kubectl get pod --template '{{.status.initContainerStatuses}}' <pod-name>=                               |
 | kubectl run command          | kubectl exec -it -n "$ns" "$podname" -- sh -c "echo $msg >>/dev/err.log"                                  |
-| Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]]                                                                           |
+| Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                                           |
 ** Pod Advanced
 | Name                             | Command                                                                                                                       |
 |----------------------------------+-------------------------------------------------------------------------------------------------------------------------------|
@@ -88,6 +88,9 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Manually add label to a pod      | =kubectl label pods dummy-input owner=denny=                          |
 | Remove label                     | =kubectl label pods dummy-input owner-=                               |
 | Manually add annonation to a pod | =kubectl annotate pods dummy-input my-url=https://www.dennyzhang.com= |
+#+BEGIN_HTML
+<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+#+END_HTML
 ** Deployment & Scale
 | Name                         | Command                                                                  |
 |------------------------------+--------------------------------------------------------------------------|
@@ -99,7 +102,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Check update history         | =kubectl rollout history deployment/nginx-app=                           |
 | Pause/Resume                 | =kubectl rollout pause deployment/nginx-deployment=, =resume=            |
 | Rollback to previous version | =kubectl rollout undo deployment/nginx-deployment=                       |
-| Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]], [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][Link: Pausing and Resuming a Deployment]] |
+| Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]], [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][Link: Pausing and Resuming a Deployment]] |
 ** Quota & Limits & Resource
 | Name                          | Command                                                                          |
 |-------------------------------+----------------------------------------------------------------------------------|
@@ -107,7 +110,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | List Resource Quota           | =kubectl get resourcequota=                                                      |
 | List Limit Range              | =kubectl get limitrange=                                                         |
 | Customize resource definition | =kubectl set resources deployment nginx -c=nginx --limits=cpu=200m,memory=512Mi= |
-| Kubernetes Yaml Examples      | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]]                                                  |
+| Kubernetes Yaml Examples      | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                  |
 ** Service
 | Name                            | Command                                                                           |
 |---------------------------------+-----------------------------------------------------------------------------------|
@@ -118,14 +121,14 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Get service cluster port        | kubectl get service nginx-service -o go-template='{{(index .spec.ports 0).port}}' |
 | Expose deployment as lb service | =kubectl expose deployment/my-app --type=LoadBalancer --name=my-service=          |
 | Expose service as lb service    | =kubectl expose service/wordpress-1-svc --type=LoadBalancer --name=wordpress-lb=  |
-| Kubernetes Yaml Examples        | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]]                                                   |
+| Kubernetes Yaml Examples        | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                   |
 ** StatefulSet
 | Name                               | Command                                                  |
 |------------------------------------+----------------------------------------------------------|
 | List statefulset                   | =kubectl get sts=                                        |
 | Delete statefulset only (not pods) | =kubectl delete sts/<stateful_set_name> --cascade=false= |
 | Scale statefulset                  | =kubectl scale sts/<stateful_set_name> --replicas=5=     |
-| Kubernetes Yaml Examples           | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]]                          |
+| Kubernetes Yaml Examples           | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                          |
 ** Patch
 | Name                          | Command                                                                                  |
 |-------------------------------+------------------------------------------------------------------------------------------|
@@ -137,12 +140,12 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Check persist volume      | =kubectl describe pv/pv0001=                       |
 | List storage class        | =kubectl get storageclass=                         |
 | Copy files                | =kubectl cp /tmp/foo <namespace1>/<pod1>:/tmp/bar= |
-| Kubernetes Yaml Examples  | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]]                    |
+| Kubernetes Yaml Examples  | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                    |
 ** Security
 | Name                     | Command                         |
 |--------------------------+---------------------------------|
 | List certificates        | =kubectl get csr=               |
-| Kubernetes Yaml Examples | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][Link: kubernetes yaml templates]] |
+| Kubernetes Yaml Examples | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]] |
 ** Extenstions
 | Name              | Summary                    |
 |-------------------+----------------------------|
@@ -229,7 +232,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Delete the specified context  | =kubectl config delete-context <cluster-name>= |
 | List all namespaces defined   | =kubectl get namespaces=                       |
 | kubectl config file           | =~/.kube/config=                               |
-| Kubernetes Yaml Examples      | [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-yaml][link: kubernetes yaml templates]]                |
+| Kubernetes Yaml Examples      | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][link: kubernetes yaml templates]]                |
 *** Network
 | Name                              | Command                                                  |
 |-----------------------------------+----------------------------------------------------------|
@@ -1663,3 +1666,5 @@ kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
 #+BEGIN_EXAMPLE
 kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMap
 #+END_EXAMPLE
+* TODO github improvememnt: update k8s cheatsheet: https://blog.billyc.io/notes/kubectl-notes/ :noexport:
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
