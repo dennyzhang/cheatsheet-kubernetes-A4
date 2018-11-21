@@ -285,6 +285,35 @@ https://github.com/kubernetes/community/blob/master/contributors/devel/api-conve
 #+LINK_UP:
 #+LINK_HOME:
 * #  --8<-------------------------- separator ------------------------>8-- :noexport:
+* DONE Misc scripts                                                :noexport:
+  CLOSED: [2018-11-17 Sat 12:23]
+- Tail pod log by label
+#+BEGIN_SRC sh
+namespace="mynamespace"
+mylabel="app=mylabel"
+kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
+    | awk -F' ' '{print $1}' | xargs -I{} \
+      kubectl logs -n "$namespace" -f {}
+#+END_SRC
+
+- Get node hardware resource utilization
+#+BEGIN_SRC sh
+kubectl get nodes --no-headers \
+     | awk '{print $1}' | xargs -I {} \
+     sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5'
+
+kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
+    sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5 \
+     | grep -ve Event -ve Allocated -ve percent -ve -- ; echo'
+#+END_SRC
+
+- Apply the configuration in manifest.yaml and delete all the other configmaps that are not in the file.
+
+#+BEGIN_EXAMPLE
+kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMap
+#+END_EXAMPLE
+
+* #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * [#A] Kubernets                                         :noexport:IMPORTANT:
 https://github.com/dennyzhang/cheatsheet-kubernetes-A4
 
@@ -302,11 +331,6 @@ apiserver-kubelet-client.crt, apiserver-kubelet-client.key (client certificate f
 sa.pub, sa.key (a private key for signing ServiceAccount )
 front-proxy-ca.crt, front-proxy-ca.key (CA for the front proxy)
 front-proxy-client.crt, front-proxy-client.key (client cert for the front proxy client)
-** DONE [#A] k8s yaml file
-  CLOSED: [2017-12-01 Fri 22:45]
-http://containertutorials.com/get_started_kubernetes/k8s_example.html
-https://www.mirantis.com/blog/introduction-to-yaml-creating-a-kubernetes-deployment/
-https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
 ** TODO update k8s cheatsheet github: https://github.com/alex1x/kubernetes-cheatsheet
 ** TODO Setting up MySQL Replication Clusters in Kubernetes: https://blog.kublr.com/setting-up-mysql-replication-clusters-in-kubernetes-ab7cbac113a5
 ** TODO MySQL on Docker: Running Galera Cluster on Kubernetes
@@ -563,8 +587,6 @@ spec:
       timeoutSeconds: 1
     name: liveness
 #+END_EXAMPLE
-** CANCELED k8s exec try to find bash, but I only have sh
-   CLOSED: [2018-01-08 Mon 08:23]
 ** DONE list all critical pods
   CLOSED: [2018-01-04 Thu 10:10]
 kubectl --namespace kube-system get pods
@@ -1582,7 +1604,7 @@ time ls -1r */*.yml | grep -v namespace | xargs -I{} kubectl delete -f {}
 * TODO consolidate cheatsheet and send out a PR: https://kubernetes.io/docs/reference/kubectl/cheatsheet/ :noexport:
 * TODO consolidate cheatsheet: https://github.com/LeCoupa/awesome-cheatsheets/blob/master/tools/kubernetes.sh :noexport:
 <<<<<<< HEAD
-* devstats: https://k8s.devstats.cncf.io/d/12/dashboards?refresh=15m&orgId=1 :noexport:
+* TODO devstats: https://k8s.devstats.cncf.io/d/12/dashboards?refresh=15m&orgId=1 :noexport:
 * TODO create a ingress service for clusterip service              :noexport:
 * TODO kubectl -vvv                                                :noexport:
 * TODO kubectl get application --all-namespaces                    :noexport:
@@ -1640,31 +1662,54 @@ https://kubernetes.io/docs/concepts/configuration/secret/
 kubectl get secret mysecret -o yaml
 
 echo XXX | base64 --decode
-* Misc scripts                                                     :noexport:
-- Tail pod log by label
-#+BEGIN_SRC sh
-namespace="mynamespace"
-mylabel="app=mylabel"
-kubectl get pod -l "$mylabel" -n "$namespace" | tail -n1 \
-    | awk -F' ' '{print $1}' | xargs -I{} \
-      kubectl logs -n "$namespace" -f {}
-#+END_SRC
-
-- Get node hardware resource utilization
-#+BEGIN_SRC sh
-kubectl get nodes --no-headers \
-     | awk '{print $1}' | xargs -I {} \
-     sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5'
-
-kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
-    sh -c 'echo {}; kubectl describe node {} | grep Allocated -A 5 \
-     | grep -ve Event -ve Allocated -ve percent -ve -- ; echo'
-#+END_SRC
-
-- Apply the configuration in manifest.yaml and delete all the other configmaps that are not in the file.
-
-#+BEGIN_EXAMPLE
-kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMap
-#+END_EXAMPLE
 * TODO github improvememnt: update k8s cheatsheet: https://blog.billyc.io/notes/kubectl-notes/ :noexport:
 https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+* #  --8<-------------------------- separator ------------------------>8-- :noexport:
+* TODO [#A] Run a task on every node in a cluster                  :noexport:
+* TODO kubectl get all won't get psp                               :noexport:
+#+BEGIN_EXAMPLE
+root@009069ee-95d5-49a2-6b82-67aff8eb6737:/tmp/build/4ecf0f02# kubectl get all --all-namespaces
+NAMESPACE                   NAME                                        READY     STATUS    RESTARTS   AGE
+kube-system                 pod/heapster-6d5f964dbd-2xxcm               1/1       Running   0          1d
+kube-system                 pod/kube-dns-6b697fcdbd-c4rmm               3/3       Running   0          1d
+kube-system                 pod/kubernetes-dashboard-785584f46b-9wmqj   1/1       Running   0          1d
+kube-system                 pod/metrics-server-6bbb689cf9-swtxc         1/1       Running   0          1d
+kube-system                 pod/monitoring-influxdb-76fd8dcff6-qws9m    1/1       Running   0          1d
+kube-system                 pod/wavefront-proxy-8498d5bbf4-gl6sw        4/4       Running   0          4m
+test-afjogacpjsqfetejycxx   pod/busybox-io-ftpz8                        1/1       Running   0          1d
+
+NAMESPACE                   NAME                               DESIRED   CURRENT   READY     AGE
+test-afjogacpjsqfetejycxx   replicationcontroller/busybox-io   1         1         1         1d
+
+NAMESPACE     NAME                           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)         AGE
+default       service/kubernetes             ClusterIP   10.100.200.1     <none>        443/TCP         1d
+kube-system   service/heapster               ClusterIP   10.100.200.123   <none>        8443/TCP        1d
+kube-system   service/kube-dns               ClusterIP   10.100.200.10    <none>        53/UDP,53/TCP   1d
+kube-system   service/kubernetes-dashboard   NodePort    10.100.200.8     <none>        443:32433/TCP   1d
+kube-system   service/metrics-server         ClusterIP   10.100.200.102   <none>        443/TCP         1d
+kube-system   service/monitoring-influxdb    ClusterIP   10.100.200.89    <none>        8086/TCP        1d
+
+NAMESPACE     NAME                                   DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+kube-system   deployment.apps/heapster               1         1         1            1           1d
+kube-system   deployment.apps/kube-dns               1         1         1            1           1d
+kube-system   deployment.apps/kubernetes-dashboard   1         1         1            1           1d
+kube-system   deployment.apps/metrics-server         1         1         1            1           1d
+kube-system   deployment.apps/monitoring-influxdb    1         1         1            1           1d
+kube-system   deployment.apps/wavefront-proxy        1         1         1            1           4m
+
+NAMESPACE     NAME                                              DESIRED   CURRENT   READY     AGE
+kube-system   replicaset.apps/heapster-6d5f964dbd               1         1         1         1d
+kube-system   replicaset.apps/kube-dns-6b697fcdbd               1         1         1         1d
+kube-system   replicaset.apps/kubernetes-dashboard-785584f46b   1         1         1         1d
+kube-system   replicaset.apps/metrics-server-6bbb689cf9         1         1         1         1d
+kube-system   replicaset.apps/monitoring-influxdb-76fd8dcff6    1         1         1         1d
+kube-system   replicaset.apps/wavefront-proxy-8498d5bbf4        1         1         1         4m
+root@009069ee-95d5-49a2-6b82-67aff8eb6737:/tmp/build/4ecf0f02# kubectl get psp
+NAME              PRIV      CAPS      SELINUX    RUNASUSER   FSGROUP    SUPGROUP   READONLYROOTFS   VOLUMES
+kube-system-psp   false     *         RunAsAny   RunAsAny    RunAsAny   RunAsAny   false            configMap,emptyDir,projected,secret,downwardAPI
+root@009069ee-95d5-49a2-6b82-67aff8eb6737:/tmp/build/4ecf0f02# kubectl get all --all-namespaces | grep kube-system-psp
+#+END_EXAMPLE
+* TODO where is k8s job log?                                       :noexport:
+http://kubernetesbyexample.com/jobs/
+* #  --8<-------------------------- separator ------------------------>8-- :noexport:
+* TODO absord: http://kubernetesbyexample.com/                     :noexport:
