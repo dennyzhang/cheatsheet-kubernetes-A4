@@ -56,6 +56,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Name                                    | Command                                                  |
 |-----------------------------------------+----------------------------------------------------------|
 | Delete pod                              | =kubectl delete pod/<pod-name> -n <my-namespace>=        |
+| Delete pod by force                     | =kubectl delete pod/<pod-name> --grace-period=0 --force= |
 | Delete pods by labels                   | =kubectl delete pod -l env=test=                         |
 | Delete deployments by labels            | =kubectl delete deployment -l app=wordpress=             |
 | Delete all resources filtered by labels | =kubectl delete pods,services -l name=myLabel=           |
@@ -141,6 +142,15 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | List storage class        | =kubectl get storageclass=                         |
 | Copy files                | =kubectl cp /tmp/foo <namespace1>/<pod1>:/tmp/bar= |
 | Kubernetes Yaml Examples  | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                    |
+#+BEGIN_HTML
+<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+#+END_HTML
+** Node Maintenance
+| Name                                      | Command                       |
+|-------------------------------------------+-------------------------------|
+| Mark node as unschedulable                | =kubectl cordon $NDOE_NAME=   |
+| Mark node as schedulable                  | =kubectl uncordon $NDOE_NAME= |
+| Drain node in preparation for maintenance | =kubectl drain $NODE_NAME=    |
 ** Security
 | Name                     | Command                         |
 |--------------------------+---------------------------------|
@@ -1664,6 +1674,196 @@ kubectl get secret mysecret -o yaml
 echo XXX | base64 --decode
 * TODO github improvememnt: update k8s cheatsheet: https://blog.billyc.io/notes/kubectl-notes/ :noexport:
 https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+* [#A] Google Kubernetes                                 :noexport:IMPORTANT:
+No.2 Kubernetes
+
+Kubernetes是一个编排（orchestration）工具,类似运行于Apache Mesos之上的Marathon,但是它是专门为Docker容器而创建的.
+
+Kubernetes is an open-source platform for automating deployment, scaling, and operations of application containers across clusters of hosts, providing container-centric infrastructure
+
+Kubernetes来自Google,除了能在他们自己的Google Container Engine上工作之外,还支持VMware vSphere, Mesos, or Mesosphere DCOS,以及很多公有云,包括Amazon Web Services等.
+
+Kubernetes 具备完善的集群管理能力,包括多层次的安全防护和准入机制`多租户应用支撑能力`透明的服务注册和服务发现机制`内建负载均衡器`故障发现和自我修复能力`服务滚动升级和在线扩容`可扩展的资源自动调度机制`多粒度的资源配额管理能力.
+
+Kubernetes 还提供完善的管理工具,涵盖开发`部署测试`运维监控等各个环节.
+
+每个API对象都有3大类属性:元数据metadata`规范spec和状态status
+
+- Concepts: Pod, Service, Labels和单Pod单IP
+** Installing and Setting Up kubectl
+https://kubernetes.io/docs/tasks/tools/install-kubectl/
+
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+** kubectl --help
+kubectl controls the Kubernetes cluster manager.
+
+Find more information at https://github.com/kubernetes/kubernetes.
+
+Basic Commands (Beginner):
+  create         Create a resource by filename or stdin
+  expose         Take a replication controller, service, deployment or pod and expose it as a new Kubernetes Service
+  run            Run a particular image on the cluster
+  set            Set specific features on objects
+
+Basic Commands (Intermediate):
+  get            Display one or many resources
+  explain        Documentation of resources
+  edit           Edit a resource on the server
+  delete         Delete resources by filenames, stdin, resources and names, or by resources and label selector
+
+Deploy Commands:
+  rollout        Manage a deployment rollout
+  rolling-update Perform a rolling update of the given ReplicationController
+  scale          Set a new size for a Deployment, ReplicaSet, Replication Controller, or Job
+  autoscale      Auto-scale a Deployment, ReplicaSet, or ReplicationController
+
+Cluster Management Commands:
+  certificate    Modify certificate resources.
+  cluster-info   Display cluster info
+  top            Display Resource (CPU/Memory/Storage) usage.
+  cordon         Mark node as unschedulable
+  uncordon       Mark node as schedulable
+  drain          Drain node in preparation for maintenance
+  taint          Update the taints on one or more nodes
+
+Troubleshooting and Debugging Commands:
+  describe       Show details of a specific resource or group of resources
+  logs           Print the logs for a container in a pod
+  attach         Attach to a running container
+  exec           Execute a command in a container
+  port-forward   Forward one or more local ports to a pod
+  proxy          Run a proxy to the Kubernetes API server
+  cp             Copy files and directories to and from containers.
+  auth           Inspect authorization
+Advanced Commands:
+  apply          Apply a configuration to a resource by filename or stdin
+  patch          Update field(s) of a resource using strategic merge patch
+  replace        Replace a resource by filename or stdin
+  convert        Convert config files between different API versions
+
+Settings Commands:
+  label          Update the labels on a resource
+  annotate       Update the annotations on a resource
+  completion     Output shell completion code for the specified shell (bash or zsh)
+
+Other Commands:
+  api-versions   Print the supported API versions on the server, in the form of "group/version"
+  config         Modify kubeconfig files
+  help           Help about any command
+  version        Print the client and server version information
+
+Use "kubectl <command> --help" for more information about a given command.
+Use "kubectl options" for a list of global command-line options (applies to all commands).
+** kubernetes: The connection to the server localhost:8080 was refused - did you specify the right host or port?
+https://github.com/kubernetes/kubernetes/issues/23092
+** Layers
+- Nucleus: API And Execution
+- Application layer: deployment and running
+- Govermance layer: automation and policy enforcement
+- Interface layer: client libraries and tools
+- Ecosystem
+** healthcheck: LivenessProbe, ReadinessProbe
+** 核心组件
+Kubernetes主要由以下几个核心组件组成:
+- etcd保存了整个集群的状态;
+- apiserver提供了资源操作的唯一入口,并提供认证`授权`访问控制`API注册和发现等机制;
+- controller manager负责维护集群的状态,比如故障检测`自动扩展`滚动更新等;
+- scheduler负责资源的调度,按照预定的调度策略将Pod调度到相应的机器上;
+- kubelet负责维护容器的生命周期,同时也负责Volume（CVI）和网络（CNI）的管理;
+- Container runtime负责镜像管理以及Pod和容器的真正运行（CRI）;
+- kube-proxy负责为Service提供cluster内部的服务发现和负载均衡
+** helloworld
+https://kubernetes.io/docs/tutorials/stateless-application/hello-minikube/
+** useful link
+https://kubernetes.io
+https://www.reddit.com/r/devops/comments/51ra9q/moving_from_docker_to_rkt/
+http://blog.dataman-inc.com/67/
+http://jpadilla.com/post/161144157937/update-kubernetes-deployment-after-pushing-image
+
+http://www.oschina.net/news/70140/infoworlds-2016-technology-of-the-year-award-winners?p=3#comments
+** DONE Principle: API的操作复杂度不能超过O(N)
+   CLOSED: [2017-06-10 Sat 15:24]
+https://kubernetes.feisky.xyz/architecture/concepts.html
+API操作复杂度与对象数量成正比.这一条主要是从系统性能角度考虑,要保证整个系统随着系统规模的扩大,性能不会迅速变慢到无法使用,那么最低的限定就是API的操作复杂度不能超过O(N),N是对象的数量,否则系统就不具备水平伸缩性了.
+** Principle: API对象状态不能依赖于网络连接状态
+https://kubernetes.feisky.xyz/architecture/concepts.html
+** #  --8<-------------------------- separator ------------------------>8--
+** TODO [#A] fail to start minikube: "VBoxManage not found. Make sure VirtualBox is installed and VBoxManage is in the path".
+root@totvsjenkins:/tmp# minikube start
+Starting local Kubernetes v1.6.4 cluster...
+Starting VM...
+E0610 20:14:57.518198   27907 start.go:127] Error starting host: Error creating host: Error with pre-create check: "VBoxManage not found. Make sure VirtualBox is installed and VBoxManage is in the path".
+
+ Retrying.
+E0610 20:14:57.519201   27907 start.go:133] Error starting host:  Error creating host: Error with pre-create check: "VBoxManage not found. Make sure VirtualBox is installed and VBoxManage is in the path"
+** TODO how kubernetes use etcd
+** TODO how healthcheck is implemented
+** TODO What about alerting and reporting
+** TODO what's fluentd
+** #  --8<-------------------------- separator ------------------------>8--
+** TODO [#A] k8s support rolling deployment                       :IMPORTANT:
+https://www.youtube.com/watch?v=7TOWLerX0Ps
+Kubernetes: zero downtime update at 1 million requests per second
+https://www.youtube.com/watch?v=9C6YeyyUUmI
+Kubernetes: zero downtime update at 10 million QPS
+** TODO [#A] How to scale Pods with volumes configured            :IMPORTANT:
+** What is Kubernetes
+https://www.youtube.com/watch?v=R-3dfURb2hA
+What is Kubernetes
+
+Deployment, Scaling, Monitoring
+** DONE Kubernetes hellworld
+  CLOSED: [2017-07-11 Tue 08:42]
+https://kubernetes.io/docs/tutorials/stateless-application/hello-minikube/#create-a-minikube-cluster
+
+# build image
+docker build -t hello-node:v1 .
+
+# create deployment
+kubectl run hello-node --image=hello-node:v1 --port=8080
+
+# View the Deployment
+kubectl get deployments
+
+# Create service
+kubectl expose deployment hello-node --type=LoadBalancer
+** TODO [#A] Install minikube in headless Ubuntu server           :IMPORTANT:
+| Name            | Summary |
+|-----------------+---------|
+| minikube status |         |
+** DONE [#A] Ubuntu install kubernetes for all-in-one POC: minikube
+  CLOSED: [2017-07-11 Tue 08:43]
+https://blog.jetstack.io/blog/k8s-getting-started-part2/
+https://github.com/kubernetes/minikube
+https://stackoverflow.com/questions/38528762/kubernetes-on-ubuntu-16-04
+https://hxquangnhat.com/2016/12/21/tutorial-deploy-a-kubernetes-cluster-on-ubuntu-16-04/
+*** TODO minikube fail to start
+#+BEGIN_EXAMPLE
+root@totvsjenkins:/home/denny/minikube# ./minikube start --vm-driver=none --use-vendored-driver
+Starting local Kubernetes v1.6.4 cluster...
+Starting VM...
+Moving files into cluster...
+
+Setting up certs...
+Starting cluster components...
+Connecting to cluster...
+Setting up kubeconfig...
+Kubectl is now configured to use the cluster.
+===================
+WARNING: IT IS RECOMMENDED NOT TO RUN THE NONE DRIVER ON PERSONAL WORKSTATIONS
+        The 'none' driver will run an insecure kubernetes apiserver as root that may leave the host vulnerable to CSRF attacks
+#+END_EXAMPLE
+*** useful link
+https://www.youtube.com/watch?v=PH-2FfFD2PU
+Kubernetes in 5 mins
+https://www.youtube.com/watch?v=DC7NECq3Ghs
+Setting up and using a single node Kubernetes cluster.
+https://www.youtube.com/watch?v=BDrcUjOczsE
+Kubernetes - Local Testing
+
+https://www.youtube.com/watch?v=R-3dfURb2hA
+The Illustrated Children's Guide to Kubernetes
+
 * #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * TODO [#A] Run a task on every node in a cluster                  :noexport:
 * TODO kubectl get all won't get psp                               :noexport:
@@ -1713,3 +1913,6 @@ root@009069ee-95d5-49a2-6b82-67aff8eb6737:/tmp/build/4ecf0f02# kubectl get all -
 http://kubernetesbyexample.com/jobs/
 * #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * TODO absord: http://kubernetesbyexample.com/                     :noexport:
+* TODO cheatsheet https://jimmysong.io/cheatsheets/kubernetes-tricks :noexport:
+* TODO kubectl logs --previous nginx-app-zibvs                     :noexport:
+https://jimmysong.io/cheatsheets/kubernetes-kubectl
