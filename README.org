@@ -1,4 +1,4 @@
-* Kubernets CheatSheet                                           :Kubernetes:
+* Kubernetes CheatSheet                                           :Kubernetes:
 :PROPERTIES:
 :type:     kubernetes
 :export_file_name: cheatsheet-kubernetes-A4.pdf
