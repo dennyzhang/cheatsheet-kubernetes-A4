@@ -260,9 +260,19 @@ https://github.com/kubecamp/kubernetes_in_2_days
 
 https://marc.xn--wckerlin-0za.ch/computer/kubernetes-on-ubuntu-16-04
 
+<<<<<<< HEAD
 https://codefresh.io/kubernetes-guides/kubernetes-cheat-sheet/
 
 https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md
+=======
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+https://github.com/kubecamp/kubernetes_in_2_days
+
+https://marc.xn--wckerlin-0za.ch/computer/kubernetes-on-ubuntu-16-04
+
+https://codefresh.io/kubernetes-guides/kubernetes-cheat-sheet/
+>>>>>>> 062c9950c8d92ec35383b3d6d33e211d3f136294
 
 #+BEGIN_HTML
 <a href="https://www.dennyzhang.com"><img align="right" width="201" height="268" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/denny_201706.png"></a>
