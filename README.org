@@ -1506,7 +1506,6 @@ If y'all run into the following error: `is forbidden: attempt to grant extra pri
 
 ```kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value account)```
 #+END_EXAMPLE
-* #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * Blog: How Enterprise Do XXX in Container world?                  :noexport:
 * TODO [#A] Blog: interview candidates for k8s experience          :noexport:
 ** Explain concepts
@@ -1640,7 +1639,6 @@ https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-w
 #+END_EXAMPLE
 * TODO autoscaling pod: try auto scaling                           :noexport:
 * TODO k8s volume: readwriteonce, readwritemany?                   :noexport:
-* TODO Vanilla CNCF Certified Kubernetes                           :noexport:
 * #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * TODO grant more privileges to a given serviceaccount             :noexport:
 kubectl get serviceaccount --all-namespaces
@@ -1655,7 +1653,6 @@ One reason why Kubernetes may be unable to unschedule the node is if
 the PodDisruptionBudget object has been configured in a way that
 allows 0 disruptions and only a single instance of the pod has been
 scheduled.
-* #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * TODO k8s events                                                  :noexport:
 https://solinea.com/blog/tapping-kubernetes-events
 * TODO kubectl from worker vm, I don't seem to need a kubeconfig   :noexport:
@@ -1916,3 +1913,6 @@ http://kubernetesbyexample.com/jobs/
 * TODO cheatsheet https://jimmysong.io/cheatsheets/kubernetes-tricks :noexport:
 * TODO kubectl logs --previous nginx-app-zibvs                     :noexport:
 https://jimmysong.io/cheatsheets/kubernetes-kubectl
+* #  --8<-------------------------- separator ------------------------>8-- :noexport:
+* TODO [#A] play with k8s ingress service                          :noexport:
+* TODO Vanilla CNCF Certified Kubernetes                           :noexport:
