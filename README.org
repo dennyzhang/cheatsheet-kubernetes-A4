@@ -4,18 +4,6 @@
 :export_file_name: cheatsheet-kubernetes-A4.pdf
 :END:
 
-#+BEGIN_HTML
-<a href="https://github.com/dennyzhang/cheatsheet-kubernetes-A4"><img align="right" width="200" height="183" src="https://www.dennyzhang.com/wp-content/uploads/denny/watermark/github.png" /></a>
-<div id="the whole thing" style="overflow: hidden;">
-<div style="float: left; padding: 5px"> <a href="https://www.linkedin.com/in/dennyzhang001"><img src="https://www.dennyzhang.com/wp-content/uploads/sns/linkedin.png" alt="linkedin" /></a></div>
-<div style="float: left; padding: 5px"><a href="https://github.com/dennyzhang"><img src="https://www.dennyzhang.com/wp-content/uploads/sns/github.png" alt="github" /></a></div>
-<div style="float: left; padding: 5px"><a href="https://www.dennyzhang.com/slack" target="_blank" rel="nofollow"><img src="https://slack.dennyzhang.com/badge.svg" alt="slack"/></a></div>
-</div>
-
-<br/><br/>
-<a href="http://makeapullrequest.com" target="_blank" rel="nofollow"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"/></a>
-#+END_HTML
-
 - PDF Link: [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/cheatsheet-kubernetes-A4.pdf][cheatsheet-kubernetes-A4.pdf]], Category: [[https://cheatsheet.dennyzhang.com/category/kubernetes/][kubernetes]]
 - Blog URL: https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-A4
 - Related posts: [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Kubernetes Yaml]], [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
@@ -63,25 +51,41 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Delete resources under a namespace      | =kubectl -n my-ns delete po,svc --all=                   |
 | Delete persist volumes by labels        | =kubectl delete pvc -l app=wordpress=                    |
 | Delete statefulset only (not pods)      | =kubectl delete sts/<stateful_set_name> --cascade=false= |
+#+BEGIN_HTML
+<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+#+END_HTML
+** Log & Conf Files
+| Name                      | Comment                                                                            |
+|---------------------------+------------------------------------------------------------------------------------|
+| Config folder             | =/etc/kubernetes/=                                                                 |
+| Certificate files         | =/etc/kubernetes/pki/=                                                             |
+| Credentials to API server | =/etc/kubernetes/kubelet.conf=                                                     |
+| Superuser credentials     | =/etc/kubernetes/admin.conf=                                                       |
+| Kubernets working dir     | =/var/lib/kubelet/=                                                                |
+| Docker working dir        | =/var/lib/docker/=, =/var/log/containers/=                                                                |
+| Etcd working dir          | =/var/lib/etcd/=                                                                   |
+| Network cni               | =/etc/cni/net.d/=                                                                  |
+| Log files                 | =/var/log/pods/=                                                                   |
+| Env                       | =/etc/systemd/system/kubelet.service.d/10-kubeadm.conf=                            |
+| Env                       | export KUBECONFIG=/etc/kubernetes/admin.conf                                       |
+| log in master node        | =/var/log/kube-apiserver.log=, =kube-scheduler.log=, =kube-controller-manager.log= |
+| log in worker node        | =/var/log/kubelet.log=, =kubelet-proxy.log=                                        |
 ** Pod
-| Name                         | Command                                                                                                   |
-|------------------------------+-----------------------------------------------------------------------------------------------------------|
-| List all pods                | =kubectl get pods=                                                                                        |
-| List pods for all namespace  | =kubectl get pods -all-namespaces=                                                                        |
-| List all critical pods       | =kubectl get -n kube-system pods -a=                                                                      |
-| List pods with more info     | =kubectl get pod -o wide=, =kubectl get pod/<pod-name> -o yaml=                                           |
-| Get pod info                 | =kubectl describe pod/srv-mysql-server=                                                                   |
-| List all pods with labels    | =kubectl get pods --show-labels=                                                                          |
-| Get Pod initContainer status | =kubectl get pod --template '{{.status.initContainerStatuses}}' <pod-name>=                               |
-| kubectl run command          | kubectl exec -it -n "$ns" "$podname" -- sh -c "echo $msg >>/dev/err.log"                                  |
-| Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                                           |
-** Pod Advanced
 | Name                             | Command                                                                                                                       |
 |----------------------------------+-------------------------------------------------------------------------------------------------------------------------------|
+| List all pods                    | =kubectl get pods=                                                                                                            |
+| List pods for all namespace      | =kubectl get pods -all-namespaces=                                                                                            |
+| List all critical pods           | =kubectl get -n kube-system pods -a=                                                                                          |
+| List pods with more info         | =kubectl get pod -o wide=, =kubectl get pod/<pod-name> -o yaml=                                                               |
+| Get pod info                     | =kubectl describe pod/srv-mysql-server=                                                                                       |
+| List all pods with labels        | =kubectl get pods --show-labels=                                                                                              |
+| Get Pod initContainer status     | =kubectl get pod --template '{{.status.initContainerStatuses}}' <pod-name>=                                                   |
+| kubectl run command              | kubectl exec -it -n "$ns" "$podname" -- sh -c "echo $msg >>/dev/err.log"                                                      |
 | Watch pods                       | =kubectl get pods  -n wordpress --watch=                                                                                      |
 | Get pod by selector              | podname=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')                     |
 | List pods and containers         | kubectl get pods -o='custom-columns=PODS:.metadata.name,CONTAINERS:.spec.containers[*].name'                                  |
 | List pods, containers and images | kubectl get pods -o='custom-columns=PODS:.metadata.name,CONTAINERS:.spec.containers[*].name,Images:.spec.containers[*].image' |
+| Kubernetes Yaml Examples         | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                                                               |
 ** Label & Annontation
 | Name                             | Command                                                               |
 |----------------------------------+-----------------------------------------------------------------------|
@@ -89,9 +93,6 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Manually add label to a pod      | =kubectl label pods dummy-input owner=denny=                          |
 | Remove label                     | =kubectl label pods dummy-input owner-=                               |
 | Manually add annonation to a pod | =kubectl annotate pods dummy-input my-url=https://www.dennyzhang.com= |
-#+BEGIN_HTML
-<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
-#+END_HTML
 ** Deployment & Scale
 | Name                         | Command                                                                  |
 |------------------------------+--------------------------------------------------------------------------|
@@ -104,6 +105,9 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Pause/Resume                 | =kubectl rollout pause deployment/nginx-deployment=, =resume=            |
 | Rollback to previous version | =kubectl rollout undo deployment/nginx-deployment=                       |
 | Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]], [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][Link: Pausing and Resuming a Deployment]] |
+#+BEGIN_HTML
+<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+#+END_HTML
 ** Quota & Limits & Resource
 | Name                          | Command                                                                          |
 |-------------------------------+----------------------------------------------------------------------------------|
@@ -130,10 +134,6 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Delete statefulset only (not pods) | =kubectl delete sts/<stateful_set_name> --cascade=false= |
 | Scale statefulset                  | =kubectl scale sts/<stateful_set_name> --replicas=5=     |
 | Kubernetes Yaml Examples           | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                          |
-** Patch
-| Name                          | Command                                                                                  |
-|-------------------------------+------------------------------------------------------------------------------------------|
-|  Patch service to loadbalancer | =kubectl patch svc "$APP_INSTANCE_NAME-grafana" -p '{"spec": {"type": "LoadBalancer"}}'= |
 ** Volumes & Volume Claims
 | Name                      | Command                                            |
 |---------------------------+----------------------------------------------------|
@@ -142,35 +142,45 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | List storage class        | =kubectl get storageclass=                         |
 | Copy files                | =kubectl cp /tmp/foo <namespace1>/<pod1>:/tmp/bar= |
 | Kubernetes Yaml Examples  | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                    |
-#+BEGIN_HTML
-<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
-#+END_HTML
+** Events & Metrics
+| Name            | Command                               |
+|-----------------+---------------------------------------|
+| View all events | =kubectl get events --all-namespaces= |
 ** Node Maintenance
 | Name                                      | Command                       |
 |-------------------------------------------+-------------------------------|
 | Mark node as unschedulable                | =kubectl cordon $NDOE_NAME=   |
 | Mark node as schedulable                  | =kubectl uncordon $NDOE_NAME= |
 | Drain node in preparation for maintenance | =kubectl drain $NODE_NAME=    |
-** Security
-| Name                     | Command                         |
-|--------------------------+---------------------------------|
-| List certificates        | =kubectl get csr=               |
-| Kubernetes Yaml Examples | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]] |
+** Namespace & Security
+| Name                          | Command                                        |
+|-------------------------------+------------------------------------------------|
+| List authenticated contexts   | =kubectl config get-contexts=                  |
+| Load context from config file | =kubectl get cs --kubeconfig kube_config.yml=  |
+| Switch context                | =kubectl config use-context <cluster-name>=    |
+| Delete the specified context  | =kubectl config delete-context <cluster-name>= |
+| List all namespaces defined   | =kubectl get namespaces=                       |
+| kubectl config file           | =~/.kube/config=                               |
+| List certificates             | =kubectl get csr=                              |
+| Kubernetes Yaml Examples      | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                |
+** Network
+| Name                              | Command                                                  |
+|-----------------------------------+----------------------------------------------------------|
+| Temporarily add a port-forwarding | =kubectl port-forward redis-izl09 6379=                  |
+| Add port-forwaring for deployment | =kubectl port-forward deployment/redis-master 6379:6379= |
+| Add port-forwaring for replicaset | =kubectl port-forward rs/redis-master 6379:6379=         |
+| Add port-forwaring for service    | =kubectl port-forward svc/redis-master 6379:6379=        |
+| Get network policy                | =kubectl get NetworkPolicy=                              |
 ** Extenstions
 | Name              | Summary                    |
 |-------------------+----------------------------|
 | List api group    | =kubectl api-versions=     |
 | List all CRD      | =kubectl get crd=          |
 | List storageclass | =kubectl get storageclass= |
+#+BEGIN_HTML
+<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+#+END_HTML
 ** Components & Services
-*** Key Concepts
-| Name | Summary                           |
-|------+-----------------------------------|
-| [[https://www.cncf.io/][CNCF]] | Cloud Native Computing Foundation |
-| CRI  | Container Runtime Interface       |
-| CNI  | Container Network Interface       |
-| CSI  | Container Storage Interface       |
-
 *** Services on Master Nodes
 | Name                    | Summary                                                                                                |
 |-------------------------+--------------------------------------------------------------------------------------------------------|
@@ -178,7 +188,6 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | [[https://coreos.com/etcd/][etcd]]                    | reliable data store for all k8s cluster data                                                           |
 | [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-scheduler][kube-scheduler]]          | schedule pods to run on selected nodes                                                                 |
 | [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-controller-manager][kube-controller-manager]] | node controller, replication controller, endpoints controller, and service account & token controllers |
-
 *** Services on Worker Nodes
 | Name              | Summary                                                                                   |
 |-------------------+-------------------------------------------------------------------------------------------|
@@ -201,84 +210,12 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kubeadm][kubeadm]]               | the command to bootstrap the cluster                        |
 | [[https://kubernetes.io/docs/reference/setup-tools/kubefed/kubefed/][kubefed]]               | the command line to control a Kubernetes Cluster Federation |
 | Kubernetes Components | [[https://kubernetes.io/docs/concepts/overview/components/][Link: Kubernetes Components]]                                 |
-*** Kubernets Critical Files
-| Name                      | Comment                                                 |
-|---------------------------+---------------------------------------------------------|
-| Config folder             | =/etc/kubernetes/=                                      |
-| Certificate files         | =/etc/kubernetes/pki/=                                  |
-| Credentials to API server | =/etc/kubernetes/kubelet.conf=                          |
-| Superuser credentials     | =/etc/kubernetes/admin.conf=                            |
-| Kubernets working dir     | =/var/lib/kubelet/=                                     |
-| Docker working dir        | =/var/lib/docker/=                                      |
-| Etcd working dir          | =/var/lib/etcd/=                                        |
-| Network cni               | =/etc/cni/net.d/=                                       |
-| Docker container log      | =/var/log/containers/=                                  |
-| Log files                 | =/var/log/pods/=                                        |
-| Env                       | =export KUBECONFIG=/etc/kubernetes/admin.conf=          |
-| Env                       | =/etc/systemd/system/kubelet.service.d/10-kubeadm.conf= |
-#+BEGIN_HTML
-<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
-#+END_HTML
-
-** Other Components
-*** Log files
-| Name                           | Command                                 |
-|--------------------------------+-----------------------------------------|
-| API Server.log= in master node | =/var.log=/kube-apiserver.log=          |
-| Scheduler.log= in master node  | =/var.log=/kube-scheduler.log=          |
-| Controller.log= in master node | =/var.log=/kube-controller-manager.log= |
-| Kubelet.log= in worker node    | =/var.log=/kubelet.log=                 |
-| Kube Proxy.log= in worker node | =/var.log=/kubelet-proxy.log=           |
-*** Events & Metrics
-| Name            | Command                               |
-|-----------------+---------------------------------------|
-| View all events | =kubectl get events --all-namespaces= |
-*** Namespace & Security
-| Name                          | Command                                        |
-|-------------------------------+------------------------------------------------|
-| List authenticated contexts   | =kubectl config get-contexts=                  |
-| Load context from config file | =kubectl get cs --kubeconfig kube_config.yml=  |
-| Switch context                | =kubectl config use-context <cluster-name>=    |
-| Delete the specified context  | =kubectl config delete-context <cluster-name>= |
-| List all namespaces defined   | =kubectl get namespaces=                       |
-| kubectl config file           | =~/.kube/config=                               |
-| Kubernetes Yaml Examples      | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][link: kubernetes yaml templates]]                |
-*** Network
-| Name                              | Command                                                  |
-|-----------------------------------+----------------------------------------------------------|
-| Temporarily add a port-forwarding | =kubectl port-forward redis-izl09 6379=                  |
-| Add port-forwaring for deployment | =kubectl port-forward deployment/redis-master 6379:6379= |
-| Add port-forwaring for replicaset | =kubectl port-forward rs/redis-master 6379:6379=         |
-| Add port-forwaring for service    | =kubectl port-forward svc/redis-master 6379:6379=        |
-| Get network policy                | =kubectl get NetworkPolicy=                              |
 ** More Resources
- License: Code is licensed under [[https://www.dennyzhang.com/wp-content/mit_license.txt][MIT License]].
+License: Code is licensed under [[https://www.dennyzhang.com/wp-content/mit_license.txt][MIT License]].
 
 https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 
-https://github.com/kubecamp/kubernetes_in_2_days
-
-https://marc.xn--wckerlin-0za.ch/computer/kubernetes-on-ubuntu-16-04
-
-<<<<<<< HEAD
 https://codefresh.io/kubernetes-guides/kubernetes-cheat-sheet/
-
-https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md
-=======
-https://kubernetes.io/docs/reference/kubectl/cheatsheet/
-
-https://github.com/kubecamp/kubernetes_in_2_days
-
-https://marc.xn--wckerlin-0za.ch/computer/kubernetes-on-ubuntu-16-04
-
-https://codefresh.io/kubernetes-guides/kubernetes-cheat-sheet/
->>>>>>> 062c9950c8d92ec35383b3d6d33e211d3f136294
-
-#+BEGIN_HTML
-<a href="https://www.dennyzhang.com"><img align="right" width="201" height="268" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/denny_201706.png"></a>
-
-<a href="https://www.dennyzhang.com"><img align="right" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
-#+END_HTML
 * org-mode configuration                                           :noexport:
 #+STARTUP: overview customtime noalign logdone showall
 #+DESCRIPTION:
@@ -1926,3 +1863,9 @@ https://jimmysong.io/cheatsheets/kubernetes-kubectl
 * #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * TODO [#A] play with k8s ingress service                          :noexport:
 * TODO Vanilla CNCF Certified Kubernetes                           :noexport:
+* DONE [#A] Patch                                                  :noexport:
+  CLOSED: [2018-11-29 Thu 07:06]
+| Name                          | Command                                                                                  |
+|-------------------------------+------------------------------------------------------------------------------------------|
+| Patch service to loadbalancer | =kubectl patch svc "$APP_INSTANCE_NAME-grafana" -p '{"spec": {"type": "LoadBalancer"}}'= |
+
