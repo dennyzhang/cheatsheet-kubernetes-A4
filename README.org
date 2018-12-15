@@ -9,7 +9,7 @@
 <div id="the whole thing" style="overflow: hidden;">
 <div style="float: left; padding: 5px"> <a href="https://www.linkedin.com/in/dennyzhang001"><img src="https://www.dennyzhang.com/wp-content/uploads/sns/linkedin.png" alt="linkedin" /></a></div>
 <div style="float: left; padding: 5px"><a href="https://github.com/dennyzhang"><img src="https://www.dennyzhang.com/wp-content/uploads/sns/github.png" alt="github" /></a></div>
-<div style="float: left; padding: 5px"><a href="https://www.dennyzhang.com/slack" target="_blank" rel="nofollow"><img src="https://slack.dennyzhang.com/badge.svg" alt="slack"/></a></div>
+<div style="float: left; padding: 5px"><a href="https://www.dennyzhang.com/slack" target="_blank" rel="nofollow"><img src="https://www.dennyzhang.com/wp-content/uploads/sns/slack.png" alt="slack"/></a></div>
 </div>
 
 <br/><br/>
@@ -238,7 +238,7 @@ https://codefresh.io/kubernetes-guides/kubernetes-cheat-sheet/
 
 <a href="https://www.linkedin.com/in/dennyzhang001"><img align="bottom" src="https://www.dennyzhang.com/wp-content/uploads/sns/linkedin.png" alt="linkedin" /></a>
 <a href="https://github.com/dennyzhang"><img align="bottom"src="https://www.dennyzhang.com/wp-content/uploads/sns/github.png" alt="github" /></a>
-<a href="https://www.dennyzhang.com/slack" target="_blank" rel="nofollow"><img align="bottom" src="https://slack.dennyzhang.com/badge.svg" alt="slack"/></a>
+<a href="https://www.dennyzhang.com/slack" target="_blank" rel="nofollow"><img align="bottom" src="https://www.dennyzhang.com/wp-content/uploads/sns/slack.png" alt="slack"/></a>
 #+END_HTML
 * org-mode configuration                                           :noexport:
 #+STARTUP: overview customtime noalign logdone showall
@@ -952,268 +952,6 @@ https://stackoverflow.com/questions/33415913/whats-the-best-way-to-share-mount-o
 https://www.linkedin.com/feed/update/urn:li:activity:6355445509146107904/
 ** TODO K8S label & Selector
 https://github.com/dennyzhang/dennytest/tree/master/cheatsheet-kubernetes-A4][challenges-leetcode-interesting]]
-* [#A] kubernetes/helm: The Kubernetes Package Manager             :noexport:
-| Name    | Summary                                                                  |
-|---------+--------------------------------------------------------------------------|
-| Helm    | a chart manager.                                                         |
-| Charts  | packages of pre-configured Kubernetes resources.                         |
-| Release | a collection of Kubernetes resources deployed to the cluster using Helm. |
-| tiller  | helm server manages releases (installations) of your charts.             |
-
-| Name                                           | Summary |
-|------------------------------------------------+---------|
-| helm init                                      |         |
-| helm list                                      |         |
-| helm list -a                                   |         |
-| helm repo update                               |         |
-| helm install stable/mysql                      |         |
-| helm install --name mysql-release stable/mysql |         |
-| helm inspect stable/mysql                      |         |
-| helm status $helm_name                         |         |
-| helm delete $helm_name                         |         |
-| helm delete --purge $helm_name                 |         |
-|------------------------------------------------+---------|
-| ~/.helm/cache/archive                          |         |
-
-Release, list, inspect, delete, rollback, purge
-** useful link
-https://github.com/kubernetes/helm
-https://hub.kubeapps.com/
-https://daemonza.github.io/2017/02/20/using-helm-to-deploy-to-kubernetes/
-https://www.mirantis.com/blog/install-kubernetes-apps-helm/
-** DONE Use helm to install mysql
-   CLOSED: [2018-01-05 Fri 13:09]
-https://github.com/kubernetes/charts/tree/master/cheatsheet-kubernetes-A4][challenges-leetcode-interesting]]
-*** helm inspect stable/mysql
-#+BEGIN_EXAMPLE
-ubuntu@k8s1:~$ helm inspect stable/mysql
-description: Fast, reliable, scalable, and easy to use open-source relational database
-  system.
-engine: gotpl
-home: https://www.mysql.com/
-icon: https://www.mysql.com/common/logos/logo-mysql-170x115.png
-keywords:
-- mysql
-- database
-- sql
-maintainers:
-- email: viglesias@google.com
-  name: Vic Iglesias
-name: mysql
-sources:
-- https://github.com/kubernetes/charts
-- https://github.com/docker-library/mysql
-version: 0.3.2
-
----
-## mysql image version
-## ref: https://hub.docker.com/r/library/mysql/tags/
-##
-image: "mysql"
-imageTag: "5.7.14"
-
-## Specify password for root user
-##
-## Default: random 10 character string
-# mysqlRootPassword: testing
-
-## Create a database user
-##
-# mysqlUser:
-# mysqlPassword:
-
-## Allow unauthenticated access, uncomment to enable
-##
-# mysqlAllowEmptyPassword: true
-
-## Create a database
-##
-# mysqlDatabase:
-
-## Specify an imagePullPolicy (Required)
-## It's recommended to change this to 'Always' if the image tag is 'latest'
-## ref: http://kubernetes.io/docs/user-guide/images/#updating-images
-##
-imagePullPolicy: IfNotPresent
-
-livenessProbe:
-  initialDelaySeconds: 30
-  periodSeconds: 10
-  timeoutSeconds: 5
-  successThreshold: 1
-  failureThreshold: 3
-
-readinessProbe:
-  initialDelaySeconds: 5
-  periodSeconds: 10
-  timeoutSeconds: 1
-  successThreshold: 1
-  failureThreshold: 3
-
-## Persist data to a persistent volume
-persistence:
-  enabled: true
-  ## database data Persistent Volume Storage Class
-  ## If defined, storageClassName: <storageClass>
-  ## If set to "-", storageClassName: "", which disables dynamic provisioning
-  ## If undefined (the default) or set to null, no storageClassName spec is
-  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-  ##   GKE, AWS & OpenStack)
-  ##
-  # storageClass: "-"
-  accessMode: ReadWriteOnce
-  size: 8Gi
-
-## Configure resource requests and limits
-## ref: http://kubernetes.io/docs/user-guide/compute-resources/
-##
-resources:
-  requests:
-    memory: 256Mi
-    cpu: 100m
-
-# Custom mysql configuration files used to override default mysql settings
-configurationFiles:
-#  mysql.cnf: |-
-#    [mysqld]
-#    skip-name-resolve
-#+END_EXAMPLE
-*** helm install stable/mysql
-#+BEGIN_EXAMPLE
-ubuntu@k8s1:~$ helm install stable/mysql
-NAME:   joyous-grizzly
-LAST DEPLOYED: Sun Dec 31 14:28:07 2017
-NAMESPACE: default
-STATUS: DEPLOYED
-
-RESOURCES:
-==> v1/Secret
-NAME                  TYPE    DATA  AGE
-joyous-grizzly-mysql  Opaque  2     0s
-
-==> v1/PersistentVolumeClaim
-NAME                  STATUS   VOLUME  CAPACITY  ACCESS MODES  STORAGECLASS  AGE
-joyous-grizzly-mysql  Pending  0s
-
-==> v1/Service
-NAME                  TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)   AGE
-joyous-grizzly-mysql  ClusterIP  10.100.217.119  <none>       3306/TCP  0s
-
-==> v1beta1/Deployment
-NAME                  DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
-joyous-grizzly-mysql  1        1        1           0          0s
-
-==> v1/Pod(related)
-NAME                                  READY  STATUS   RESTARTS  AGE
-joyous-grizzly-mysql-8bb45c5bf-b4kqv  0/1    Pending  0         0s
-
-
-NOTES:
-MySQL can be accessed via port 3306 on the following DNS name from within your cluster:
-joyous-grizzly-mysql.default.svc.cluster.local
-
-To get your root password run:
-
-    kubectl get secret --namespace default joyous-grizzly-mysql -o jsonpath="{.data.mysql-root-password}" | base64 --decode; echo
-
-To connect to your database:
-
-1. Run an Ubuntu pod that you can use as a client:
-
-    kubectl run -i --tty ubuntu --image=ubuntu:16.04 --restart=Never -- bash -il
-
-2. Install the mysql client:
-
-    $ apt-get update && apt-get install mysql-client -y
-
-3. Connect using the mysql cli, then provide your password:
-    $ mysql -h joyous-grizzly-mysql -p
-#+END_EXAMPLE
-*** DONE no available release name found
-   CLOSED: [2017-12-31 Sun 08:50]
-https://github.com/kubernetes/helm/issues/3055
-** BYPASS [#A] helm install Error: no available release name found
-   CLOSED: [2018-01-05 Fri 13:09]
-https://github.com/kubernetes/helm/issues/3055
-https://stackoverflow.com/questions/43499971/helm-error-no-available-release-name-found
-https://github.com/kubernetes/helm/issues/2224
-
-disable RBAC, then it works
-
-kubectl create clusterrolebinding permissive-binding --clusterrole=cluster-admin --user=admin --user=kubelet --group=system:serviceaccounts
-
-#+BEGIN_EXAMPLE
-ubuntu@k8s1:~$ helm install stable/mysql
-Error: no available release name found
-#+END_EXAMPLE
-** DONE Create persisitvolume first, before trying helm
-   CLOSED: [2017-12-31 Sun 11:14]
-sudo mkdir -p /data
-sudo chmod 777 /data
-
-cat > pv.yaml <<EOF
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: mydata
-  labels:
-    type: local
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/data/mydata"
-EOF
-
-kubectl apply -f ./pv.yaml
-** #  --8<-------------------------- separator ------------------------>8-- :noexport:
-** HALF ubuntu install helm
-https://github.com/kubernetes/helm/releases/tag/v2.9.1
-https://docs.helm.sh/using_helm/#quickstart-guide
-
-- Download binary
-- helm init
-** HALF helm list: Error: could not find a ready tiller pod: kubectl get pods --all-namespaces
-#+BEGIN_EXAMPLE
-denny@mdm-k8s-node2:/root$ kubectl get pods --all-namespaces
-NAMESPACE     NAME                                    READY     STATUS    RESTARTS   AGE
-kube-system   etcd-mdm-k8s-node2                      1/1       Running   0          3m
-kube-system   kube-apiserver-mdm-k8s-node2            1/1       Running   0          3m
-kube-system   kube-controller-manager-mdm-k8s-node2   1/1       Running   0          3m
-kube-system   kube-dns-86f4d74b45-rf5rj               0/3       Pending   0          4m
-kube-system   kube-proxy-czcs5                        1/1       Running   0          4m
-kube-system   kube-scheduler-mdm-k8s-node2            1/1       Running   0          3m
-kube-system   tiller-deploy-df4fdf55d-zxdq4           0/1       Pending   0          1m
-#+END_EXAMPLE
-** DONE helm: Error: could not find a ready tiller pod
-   CLOSED: [2018-04-15 Sun 21:50]
- https://github.com/kubernetes/helm/issues/2064
- kubectl -n kube-system get po
-
- kubectl --namespace kube-system describe pod tiller-deploy-6d5c5f8457-6w22m
-** DONE helm list error
-   CLOSED: [2018-04-15 Sun 21:50]
- https://github.com/kubernetes/helm/issues/2464
-
- I meet the same problem, it was due to KUBECONFIG is not default. so you shoud specify KUBECONFIG env to the right position.
-
- Denny-Laptop:~ DennyZhang$ helm list
- Error: Get http://localhost:8080/api/v1/namespaces/kube-system/configmaps?labelSelector=OWNER%!D(MISSING)TILLER: dial tcp 127.0.0.1:8080: connect: connection refused
-
-#+BEGIN_EXAMPLE
- @mattus Thanks a lot, i was stuck for ~ 3 days with this at work trying to deploy a k8s cluster. This should really be documented somewhere.
- What i did to solve the issue was:
-
- kubectl --namespace=kube-system edit deployment/tiller-deploy and changed automountServiceAccountToken to true.
- Then 'helm list' was giving me:
- Error: configmaps is forbidden: User "system:serviceaccount:kube-system:default" cannot list configmaps in the namespace "kube-system"
- That was fixed with solution from #2687:
- kubectl --namespace=kube-system create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:default
-#+END_EXAMPLE
-** DONE helm start with env configured: helm install --set Master.ServiceType=NodePort stable/jenkins
-   CLOSED: [2018-04-15 Sun 21:50]
 * [#A] k8s metric server                                 :noexport:IMPORTANT:
 Metrics Server is a cluster-wide aggregator of resource usage data.
 
@@ -1552,27 +1290,6 @@ https://www.youtube.com/watch?v=_WfJz5VS_cU&list=PLj6h78yzYM2NGwRwkBPxigKio2r0XH
 ** TODO export k8s dashboard: kube proxy VS ingress
 ** TODO how to back and restore etcd
 https://kubernetes-incubator.github.io/kube-aws/advanced-topics/etcd-backup-and-restore.html
-* TODO helm                                                        :noexport:
-#+BEGIN_SRC sh
-# Lets create the service account
-kubectl create serviceaccount --namespace kube-system tiller
-kubectl create serviceaccount --namespace kubestack etcd-operator
-
-# Bind the serviceaccount to the admin role called cluster-admin inside the kube-system namespace.
- kubectl create clusterrolebinding \
-tiller-cluster-rule \
---clusterrole=cluster-admin \
---serviceaccount=kube-system:tiller
-
-# Lets now initialize helm
-helm init
-
-# Update the tiller-deploy deployment to have the service account.
- kubectl patch deployment \
-tiller-deploy -p \
-'{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}' \
--n kube-system
-#+END_SRC
 * TODO Apply yamls file recursively                                :noexport:
 #+BEGIN_SRC sh
 # create
@@ -1894,3 +1611,5 @@ https://jimmysong.io/cheatsheets/kubernetes-kubectl
 | Patch service to loadbalancer | =kubectl patch svc "$APP_INSTANCE_NAME-grafana" -p '{"spec": {"type": "LoadBalancer"}}'= |
 * #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * TODO [#A] try admission controller                               :noexport:
+* HALF Accessing Kubernetes API from pods                          :noexport:
+ curl -k -v --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" https://<mycluster>
