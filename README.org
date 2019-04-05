@@ -18,7 +18,7 @@
 
 - PDF Link: [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/cheatsheet-kubernetes-A4.pdf][cheatsheet-kubernetes-A4.pdf]], Category: [[https://cheatsheet.dennyzhang.com/category/cloud/][Cloud]]
 - Blog URL: https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-A4
-- Related posts: [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Kubernetes Yaml]], [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
+- Related posts: [[https://cheatsheet.dennyzhang.com/cheatsheet-kubernetes-A4][Kubectl CheatSheet]], [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Kubernetes Yaml]], [[https://github.com/topics/denny-cheatsheets][#denny-cheatsheets]]
 
 File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]] or star [[https://github.com/DennyZhang/cheatsheet-kubernetes-A4][this repo]].
 ** Common Commands
@@ -48,6 +48,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Get services sorted by name          | kubectl get services --sort-by=.metadata.name                                    |
 | Get pods sorted by restart count     | kubectl get pods --sort-by='.status.containerStatuses[0].restartCount'           |
 | List all container images            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/list-all-images.sh#L14-L17][list-all-images.sh]]                                                               |
+| kubeconfig skip tls verification     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/skip-tls-verify.md][skip-tls-verify.md]]                                                               |
 | Reference                            | [[https://github.com/kubernetes/kubernetes/tags][GitHub: kubernetes releases]]                                                      |
 | Reference                            | [[https://cheatsheet.dennyzhang.com/cheatsheet-minikube-A4][minikube cheatsheet]], [[https://cheatsheet.dennyzhang.com/cheatsheet-docker-A4][docker cheatsheet]], [[https://cheatsheet.dennyzhang.com/cheatsheet-openshift-A4][OpenShift CheatSheet]]                     |
 ** Check Performance
@@ -69,7 +70,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Delete persist volumes by labels        | =kubectl delete pvc -l app=wordpress=                    |
 | Delete statefulset only (not pods)      | =kubectl delete sts/<stateful_set_name> --cascade=false= |
 #+BEGIN_HTML
-<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+<a href="https://cheatsheet.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/dennyzhang/cheatsheet.dennyzhang.com/master/images/cheatsheet_dns.png"></a>
 #+END_HTML
 ** Log & Conf Files
 | Name                      | Comment                                                                            |
@@ -104,7 +105,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Get pod by selector              | podname=$(kubectl get pods -n $namespace --selector="app=syslog" -o jsonpath='{.items[*].metadata.name}')                     |
 | List pods and containers         | kubectl get pods -o='custom-columns=PODS:.metadata.name,CONTAINERS:.spec.containers[*].name'                                  |
 | List pods, containers and images | kubectl get pods -o='custom-columns=PODS:.metadata.name,CONTAINERS:.spec.containers[*].name,Images:.spec.containers[*].image' |
-| Kubernetes Yaml Examples         | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                                                               |
+| Reference         | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                                                               |
 ** Label & Annontation
 | Name                             | Command                                                           |
 |----------------------------------+-------------------------------------------------------------------|
@@ -123,9 +124,9 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Check update history         | =kubectl rollout history deployment/nginx-app=                           |
 | Pause/Resume                 | =kubectl rollout pause deployment/nginx-deployment=, =resume=            |
 | Rollback to previous version | =kubectl rollout undo deployment/nginx-deployment=                       |
-| Kubernetes Yaml Examples     | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]], [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][Link: Pausing and Resuming a Deployment]] |
+| Reference     | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]], [[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-deployment][Link: Pausing and Resuming a Deployment]] |
 #+BEGIN_HTML
-<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+<a href="https://cheatsheet.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/dennyzhang/cheatsheet.dennyzhang.com/master/images/cheatsheet_dns.png"></a>
 #+END_HTML
 ** Quota & Limits & Resource
 | Name                          | Command                                                                          |
@@ -134,7 +135,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | List Resource Quota           | =kubectl get resourcequota=                                                      |
 | List Limit Range              | =kubectl get limitrange=                                                         |
 | Customize resource definition | =kubectl set resources deployment nginx -c=nginx --limits=cpu=200m,memory=512Mi= |
-| Kubernetes Yaml Examples      | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                  |
+| Reference      | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                  |
 ** Service
 | Name                            | Command                                                                           |
 |---------------------------------+-----------------------------------------------------------------------------------|
@@ -145,21 +146,21 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Get service cluster port        | kubectl get service nginx-service -o go-template='{{(index .spec.ports 0).port}}' |
 | Expose deployment as lb service | =kubectl expose deployment/my-app --type=LoadBalancer --name=my-service=          |
 | Expose service as lb service    | =kubectl expose service/wordpress-1-svc --type=LoadBalancer --name=wordpress-lb=  |
-| Kubernetes Yaml Examples        | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                   |
+| Reference        | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                   |
 ** Secrets
 | Name                        | Command                                                                 |
 |-----------------------------+-------------------------------------------------------------------------|
 | List secrets                | =kubectl get secrets --all-namespaces=                                  |
 | Create secret from cfg file | =kubectl create secret generic db-user-pass --from-file=./username.txt= |
 | Generate secret             | =echo -n 'mypasswd'=, then redirect to =base64 -decode=                 |
-| Kubernetes Yaml Examples    | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                         |
+| Reference                   | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]], [[https://kubernetes.io/docs/concepts/configuration/secret/][Link: Secrets]]                          |
 ** StatefulSet
 | Name                               | Command                                                  |
 |------------------------------------+----------------------------------------------------------|
 | List statefulset                   | =kubectl get sts=                                        |
 | Delete statefulset only (not pods) | =kubectl delete sts/<stateful_set_name> --cascade=false= |
 | Scale statefulset                  | =kubectl scale sts/<stateful_set_name> --replicas=5=     |
-| Kubernetes Yaml Examples           | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                          |
+| Reference           | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                          |
 ** Volumes & Volume Claims
 | Name                      | Command                                                      |
 |---------------------------+--------------------------------------------------------------|
@@ -168,7 +169,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Check persist volume      | =kubectl describe pv/pv0001=                                 |
 | Copy local file to pod    | =kubectl cp /tmp/my <some-namespace>/<some-pod>:/tmp/server= |
 | Copy pod file to local    | =kubectl cp <some-namespace>/<some-pod>:/tmp/server /tmp/my= |
-| Kubernetes Yaml Examples  | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                              |
+| Reference  | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                              |
 ** Events & Metrics
 | Name                            | Command                                                    |
 |---------------------------------+------------------------------------------------------------|
@@ -181,16 +182,16 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Mark node as schedulable                  | =kubectl uncordon $NDOE_NAME= |
 | Drain node in preparation for maintenance | =kubectl drain $NODE_NAME=    |
 ** Namespace & Security
-| Name                          | Command                                                                         |
-|-------------------------------+---------------------------------------------------------------------------------|
-| List authenticated contexts   | =kubectl config get-contexts=, =~/.kube/config=                                 |
-| Load context from config file | =kubectl get cs --kubeconfig kube_config.yml=                                   |
-| Switch context                | =kubectl config use-context <cluster-name>=                                     |
-| Delete the specified context  | =kubectl config delete-context <cluster-name>=                                  |
-| List all namespaces defined   | =kubectl get namespaces=                                                        |
+| Name                          | Command                                                                          |
+|-------------------------------+----------------------------------------------------------------------------------|
+| List authenticated contexts   | =kubectl config get-contexts=, =~/.kube/config=                                  |
+| Load context from config file | =kubectl get cs --kubeconfig kube_config.yml=                                    |
+| Switch context                | =kubectl config use-context <cluster-name>=                                      |
+| Delete the specified context  | =kubectl config delete-context <cluster-name>=                                   |
+| List all namespaces defined   | =kubectl get namespaces=                                                         |
 | Set namespace preference      | =kubectl config set-context $(kubectl config current-context) --namespace=<ns1>= |
-| List certificates             | =kubectl get csr=                                                               |
-| Kubernetes Yaml Examples      | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                 |
+| List certificates             | =kubectl get csr=                                                                |
+| Reference                     | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                  |
 ** Network
 | Name                              | Command                                                  |
 |-----------------------------------+----------------------------------------------------------|
@@ -200,9 +201,9 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Add port-forwaring for service    | =kubectl port-forward svc/redis-master 6379:6379=        |
 | Get network policy                | =kubectl get NetworkPolicy=                              |
 ** Patch
-| Name                          | Summary                                                                                  |
-|-------------------------------+------------------------------------------------------------------------------------------|
-| Patch service to loadbalancer | =kubectl patch svc "$APP_INSTANCE_NAME-grafana" -p '{"spec": {"type": "LoadBalancer"}}'= |
+| Name                          | Summary                                                                                |
+|-------------------------------+----------------------------------------------------------------------------------------|
+| Patch service to loadbalancer | kubectl patch svc "$APP_INSTANCE_NAME-grafana" -p '{"spec": {"type": "LoadBalancer"}}' |
 ** Extenstions
 | Name                         | Summary                    |
 |------------------------------+----------------------------|
@@ -211,7 +212,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | List storageclass            | =kubectl get storageclass= |
 | List all supported resources | =kubectl api-resources=    |
 #+BEGIN_HTML
-<a href="https://www.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+<a href="https://cheatsheet.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/dennyzhang/cheatsheet.dennyzhang.com/master/images/cheatsheet_dns.png"></a>
 #+END_HTML
 ** Components & Services
 *** Services on Master Nodes
@@ -251,8 +252,8 @@ https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 https://codefresh.io/kubernetes-guides/kubernetes-cheat-sheet/
 
 #+BEGIN_HTML
-<a href="https://www.dennyzhang.com"><img align="right" width="201" height="268" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/denny_201706.png"></a>
-<a href="https://www.dennyzhang.com"><img align="right" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/dns_small.png"></a>
+<a href="https://cheatsheet.dennyzhang.com"><img align="right" width="201" height="268" src="https://raw.githubusercontent.com/USDevOps/mywechat-slack-group/master/images/denny_201706.png"></a>
+<a href="https://cheatsheet.dennyzhang.com"><img align="right" src="https://raw.githubusercontent.com/dennyzhang/cheatsheet.dennyzhang.com/master/images/cheatsheet_dns.png"></a>
 
 <a href="https://www.linkedin.com/in/dennyzhang001"><img align="bottom" src="https://www.dennyzhang.com/wp-content/uploads/sns/linkedin.png" alt="linkedin" /></a>
 <a href="https://github.com/dennyzhang"><img align="bottom"src="https://www.dennyzhang.com/wp-content/uploads/sns/github.png" alt="github" /></a>
@@ -1660,3 +1661,49 @@ https://jimmysong.io/cheatsheets/kubernetes-kubectl
 * HALF use kubectl to pull docker images, instead of ssh to vm     :noexport:
 * HALF use kubectl to cleanup docker images, instead of ssh to vm  :noexport:
 https://github.com/onfido/k8s-cleanup/blob/master/docker-clean.yml
+* #  --8<-------------------------- separator ------------------------>8-- :noexport:
+* TODO pv termination hangs there forever                          :noexport:
+#+BEGIN_EXAMPLE
+   /Users/zdenny/git_code/codecommit/devops_blog/k8s  kubectl get pv                                                                                                                                                  master ✘ ✹  ✔ 0
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS        CLAIM                           STORAGECLASS   REASON    AGE
+db-pv-volume                               400Gi      RWO            Retain           Available                                                              12h
+pvc-bbddb940-5f43-11e9-ba3c-42010a800085   1Gi        RWO            Delete           Bound         denny-websites/cdn-pv-claim     standard                 12h
+website-pv-volume                          10Gi       RWO            Retain           Terminating   denny-websites/mysql-pv-claim   standard                 12h
+#+END_EXAMPLE
+* TODO k8s configmap can't be changed                              :noexport:
+#+BEGIN_EXAMPLE
+   /Users/zdenny/git_code/codecommit/devops_blog/k8s  kubectl logs -n denny-websites pod/nginx-b88c67f77-dkw64                                                                                                    master ✘ ✖ ✹ ✭  ✔ 0
+Update /etc/nginx/conf.d/default.conf
++ echo 'Update /etc/nginx/conf.d/default.conf'
++ sed -i s/http_port_here/80/g /etc/nginx/conf.d/default.conf
+sed: cannot rename /etc/nginx/conf.d/sedz2uuPB: Device or resource busy
+#+END_EXAMPLE
+* TODO [#A] k8s mount configmap file, then edit it when process boostrap :noexport:
+* TODO gce disk: how and when the filesystem formating happens?    :noexport:
+* #  --8<-------------------------- separator ------------------------>8-- :noexport:
+* TODO k8s pod share volume within containers                      :noexport:
+* TODO gce use one disk in a small chunks                          :noexport:
+* TODO k8s mount jenkins home volume, then dockerfile copy/jenkins groovy. How to align? :noexport:
+COPY resources/jobs/ /usr/share/jenkins/ref/jobs/
+* #  --8<-------------------------- separator ------------------------>8-- :noexport:
+* TODO k8s: when jenkins pod gets recreated, jenkins secret parameters need to be reconfigured :noexport:
+* TODO k8s: instruct application to run a clean shutdown or a safe restart :noexport:
+https://support.cloudbees.com/hc/en-us/articles/115003926511-Best-Practices-for-Jenkins-Updates-Patches-and-Maintenance
+* #  --8<-------------------------- separator ------------------------>8-- :noexport:
+* HALF doc: configmap cannot be mounted as a file                  :noexport:
+https://stackoverflow.com/questions/44325048/kubernetes-configmap-only-one-file
+
+ConfigMaps must be mounted as directories
+
+https://github.com/kubernetes/kubernetes/issues/45000
+https://stackoverflow.com/questions/44325048/kubernetes-configmap-only-one-file
+* HALF doc: mount configmap as a seperate file                     :noexport:
+* TODO How to pass credentials to yaml in a secured way?           :noexport:
+* DONE k8s pod dns
+  CLOSED: [2019-05-25 Sat 08:21]
+https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/
+
+_my-port-name._my-port-protocol.my-svc.my-namespace.svc.cluster.local
+
+curl -I http://jenkins-lb.my-testbed.svc.cluster.local
+
