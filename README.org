@@ -160,7 +160,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | List statefulset                   | =kubectl get sts=                                        |
 | Delete statefulset only (not pods) | =kubectl delete sts/<stateful_set_name> --cascade=false= |
 | Scale statefulset                  | =kubectl scale sts/<stateful_set_name> --replicas=5=     |
-| Reference           | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                          |
+| Reference                          | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                          |
 ** Volumes & Volume Claims
 | Name                      | Command                                                      |
 |---------------------------+--------------------------------------------------------------|
