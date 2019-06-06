@@ -85,7 +85,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Etcd working dir          | =/var/lib/etcd/=                                                          |
 | Network cni               | =/etc/cni/net.d/=                                                         |
 | Log files                 | =/var/log/pods/=                                                          |
-| log in worker node        | =/var/log/kubelet.log=, =kubelet-proxy.log=                               |
+| log in worker node        | =/var/log/kubelet.log=, =/var/log/kube-proxy.log=                               |
 | log in master node        | =kube-apiserver.log=, =kube-scheduler.log=, =kube-controller-manager.log= |
 | Env                       | =/etc/systemd/system/kubelet.service.d/10-kubeadm.conf=                   |
 | Env                       | export KUBECONFIG=/etc/kubernetes/admin.conf                              |
