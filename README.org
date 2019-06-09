@@ -27,6 +27,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Run curl test temporarily            | =kubectl run --rm mytest --image=yauritux/busybox-curl -it=            |
 | Run wget test temporarily            | =kubectl run --rm mytest --image=busybox -it=                          |
 | Run nginx deployment with 2 replicas | =kubectl run my-nginx --image=nginx --replicas=2 --port=80=            |
+| Run nginx pod | =kubectl run my-nginx  --restart=Never --image=nginx =            |
 | Run nginx pod and expose it  | =kubectl run my-nginx  --restart=Never --image=nginx --port=80 --expose=            |
 | Run nginx deployment and expose it  | =kubectl run my-nginx --image=nginx --port=80 --expose=            |
 | Set namespace preference             | =kubectl config set-context <context_name> --namespace=<ns_name>=      |
