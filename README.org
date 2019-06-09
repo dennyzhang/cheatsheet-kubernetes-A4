@@ -49,6 +49,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Get pods sorted by restart count     | kubectl get pods --sort-by='.status.containerStatuses[0].restartCount' |
 | List all container images            | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/list-all-images.sh#L14-L17][list-all-images.sh]]                                                     |
 | kubeconfig skip tls verification     | [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/blob/master/skip-tls-verify.md][skip-tls-verify.md]]                                                     |
+| [[https://kubernetes.io/docs/tasks/tools/install-kubectl/][Ubuntu install kubectl]]               | ="deb https://apt.kubernetes.io/ kubernetes-xenial main"=              |
 | Reference                            | [[https://github.com/kubernetes/kubernetes/tags][GitHub: kubernetes releases]]                                            |
 | Reference                            | [[https://cheatsheet.dennyzhang.com/cheatsheet-minikube-A4][minikube cheatsheet]], [[https://cheatsheet.dennyzhang.com/cheatsheet-docker-A4][docker cheatsheet]], [[https://cheatsheet.dennyzhang.com/cheatsheet-openshift-A4][OpenShift CheatSheet]]           |
 ** Check Performance
