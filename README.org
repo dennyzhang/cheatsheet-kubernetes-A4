@@ -83,7 +83,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Credentials to API server | =/etc/kubernetes/kubelet.conf=                                            |
 | Superuser credentials     | =/etc/kubernetes/admin.conf=                                              |
 | kubectl config file       | =~/.kube/config=                                                          |
-| Kubernets working dir     | =/var/lib/kubelet/=                                                       |
+| Kubernetes working dir     | =/var/lib/kubelet/=                                                       |
 | Docker working dir        | =/var/lib/docker/=, =/var/log/containers/=                                |
 | Etcd working dir          | =/var/lib/etcd/=                                                          |
 | Network cni               | =/etc/cni/net.d/=                                                         |
