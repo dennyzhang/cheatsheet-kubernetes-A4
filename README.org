@@ -181,8 +181,8 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 ** Node Maintenance
 | Name                                      | Command                       |
 |-------------------------------------------+-------------------------------|
-| Mark node as unschedulable                | =kubectl cordon $NDOE_NAME=   |
-| Mark node as schedulable                  | =kubectl uncordon $NDOE_NAME= |
+| Mark node as unschedulable                | =kubectl cordon $NODE_NAME=   |
+| Mark node as schedulable                  | =kubectl uncordon $NODE_NAME= |
 | Drain node in preparation for maintenance | =kubectl drain $NODE_NAME=    |
 ** Namespace & Security
 | Name                          | Command                                                           |
