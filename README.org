@@ -96,7 +96,7 @@ File me [[https://github.com/dennyzhang/cheatsheet-kubernetes-A4/issues][Issues]
 | Name                         | Command                                                                                   |
 |------------------------------+-------------------------------------------------------------------------------------------|
 | List all pods                | =kubectl get pods=                                                                        |
-| List pods for all namespace  | =kubectl get pods -all-namespaces=                                                        |
+| List pods for all namespace  | =kubectl get pods --all-namespaces=                                                        |
 | List all critical pods       | =kubectl get -n kube-system pods -a=                                                      |
 | List pods with more info     | =kubectl get pod -o wide=, =kubectl get pod/<pod-name> -o yaml=                           |
 | Get pod info                 | =kubectl describe pod/srv-mysql-server=                                                   |
