@@ -152,12 +152,14 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | Expose service as lb service    | =kubectl expose service/wordpress-1-svc --type=LoadBalancer --name=ns1=           |
 | Reference                       | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                   |
 ** Secrets
-| Name                        | Command                                                               |
-|-----------------------------+-----------------------------------------------------------------------|
-| List secrets                | =kubectl get secrets --all-namespaces=                                |
-| Generate secret             | =echo -n 'mypasswd'=, then redirect to =base64 --decode=              |
-| Create secret from cfg file | kubectl create secret generic db-user-pass --from-file=./username.txt |
-| Reference                   | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]], [[https://kubernetes.io/docs/concepts/configuration/secret/][Link: Secrets]]                        |
+| Name                             | Command                                                                 |
+|----------------------------------+-------------------------------------------------------------------------|
+| List secrets                     | =kubectl get secrets --all-namespaces=                                  |
+| Generate secret                  | =echo -n 'mypasswd'=, then redirect to =base64 --decode=                |
+| Get secret                       | =kubectl get secret denny-cluster-kubeconfig=                           |
+| Get a specific field of a secret | kubectl get secret denny-cluster-kubeconfig -o jsonpath="{.data.value}" |
+| Create secret from cfg file      | kubectl create secret generic db-user-pass --from-file=./username.txt   |
+| Reference                        | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]], [[https://kubernetes.io/docs/concepts/configuration/secret/][Link: Secrets]]                          |
 ** StatefulSet
 | Name                               | Command                                                  |
 |------------------------------------+----------------------------------------------------------|
@@ -199,7 +201,7 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 ** Network
 | Name                              | Command                                                  |
 |-----------------------------------+----------------------------------------------------------|
-| Temporarily add a port-forwarding | =kubectl port-forward redis-izl09 6379=                  |
+| Temporarily add a port-forwarding  | =kubectl port-forward redis-134 6379:6379=               |
 | Add port-forwaring for deployment | =kubectl port-forward deployment/redis-master 6379:6379= |
 | Add port-forwaring for replicaset | =kubectl port-forward rs/redis-master 6379:6379=         |
 | Add port-forwaring for service    | =kubectl port-forward svc/redis-master 6379:6379=        |
@@ -1710,3 +1712,10 @@ https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/
 _my-port-name._my-port-protocol.my-svc.my-namespace.svc.cluster.local
 
 curl -I http://jenkins-lb.my-testbed.svc.cluster.local
+* DONE why one pod has two docker images                           :noexport:
+  CLOSED: [2019-08-01 Thu 14:31]
+One pod with two containers
+#+BEGIN_EXAMPLE
+root@422e158feb46fff15217b24e4f8ad20b [ ~ ]# kubectl get pods -o='custom-columns=PODS:.metadata.name,Images:.spec.containers[*].image' --all-namespaces | grep sche
+kube-scheduler-422e158feb46fff15217b24e4f8ad20b            my/kube-scheduler:v1.13.1,my/wcp-schedext:0.0.1.26323453
+#+END_EXAMPLE
