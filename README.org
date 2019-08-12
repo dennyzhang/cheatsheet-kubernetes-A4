@@ -33,7 +33,9 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | List pods with nodes info            | =kubectl get pod -o wide=                                                                 |
 | List everything                      | =kubectl get all --all-namespaces=                                                        |
 | Get all services                     | =kubectl get service --all-namespaces=                                                    |
+| Get all deployments                  | =kubectl get deployments --all-namespaces=                                                |
 | Show nodes with labels               | =kubectl get nodes --show-labels=                                                         |
+| Get resources with json output       | =kubectl get pods --all-namespaces -o json=                                               |
 | Validate yaml file with dry run      | =kubectl create --dry-run --validate -f pod-dummy.yaml=                                   |
 | Start a temporary pod for testing    | =kubectl run --rm -i -t --image=alpine test-$RANDOM -- sh=                                |
 | kubectl run shell command            | =kubectl exec -it mytest -- ls -l /etc/hosts=                                             |
@@ -72,7 +74,7 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | Delete all resources filtered by labels | =kubectl delete pods,services -l name=myLabel=           |
 | Delete resources under a namespace      | =kubectl -n my-ns delete po,svc --all=                   |
 | Delete persist volumes by labels        | =kubectl delete pvc -l app=wordpress=                    |
-| Delete statefulset only (not pods)      | =kubectl delete sts/<stateful_set_name> --cascade=false= |
+| Delete state fulset only (not pods)     | =kubectl delete sts/<stateful_set_name> --cascade=false= |
 #+BEGIN_HTML
 <a href="https://cheatsheet.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/dennyzhang/cheatsheet.dennyzhang.com/master/images/cheatsheet_dns.png"></a>
 #+END_HTML
@@ -89,7 +91,7 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | Etcd working dir          | =/var/lib/etcd/=                                                          |
 | Network cni               | =/etc/cni/net.d/=                                                         |
 | Log files                 | =/var/log/pods/=                                                          |
-| log in worker node        | =/var/log/kubelet.log=, =/var/log/kube-proxy.log=                               |
+| log in worker node        | =/var/log/kubelet.log=, =/var/log/kube-proxy.log=                         |
 | log in master node        | =kube-apiserver.log=, =kube-scheduler.log=, =kube-controller-manager.log= |
 | Env                       | =/etc/systemd/system/kubelet.service.d/10-kubeadm.conf=                   |
 | Env                       | export KUBECONFIG=/etc/kubernetes/admin.conf                              |
@@ -102,6 +104,7 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | List pods with more info     | =kubectl get pod -o wide=, =kubectl get pod/<pod-name> -o yaml=                           |
 | Get pod info                 | =kubectl describe pod/srv-mysql-server=                                                   |
 | List all pods with labels    | =kubectl get pods --show-labels=                                                          |
+| [[https://github.com/kubernetes/kubernetes/issues/49387][List all unhealthy pods]]      | kubectl get pods --field-selector=status.phase!=Running --all-namespaces                  |
 | List running pods            | kubectl get pods --field-selector=status.phase=Running                                    |
 | Get Pod initContainer status | =kubectl get pod --template '{{.status.initContainerStatuses}}' <pod-name>=               |
 | kubectl run command          | kubectl exec -it -n "$ns" "$podname" -- sh -c "echo $msg >>/dev/err.log"                  |
@@ -188,16 +191,18 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | Mark node as schedulable                  | =kubectl uncordon $NDOE_NAME= |
 | Drain node in preparation for maintenance | =kubectl drain $NODE_NAME=    |
 ** Namespace & Security
-| Name                          | Command                                                           |
-|-------------------------------+-------------------------------------------------------------------|
-| List authenticated contexts   | =kubectl config get-contexts=, =~/.kube/config=                   |
-| Set namespace preference      | =kubectl config set-context <context_name> --namespace=<ns_name>= |
-| Load context from config file | =kubectl get cs --kubeconfig kube_config.yml=                     |
-| Switch context                | =kubectl config use-context <cluster-name>=                       |
-| Delete the specified context  | =kubectl config delete-context <cluster-name>=                    |
-| List all namespaces defined   | =kubectl get namespaces=                                          |
-| List certificates             | =kubectl get csr=                                                 |
-| Reference                     | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                   |
+| Name                          | Command                                                                                             |
+|-------------------------------+-----------------------------------------------------------------------------------------------------|
+| List authenticated contexts   | =kubectl config get-contexts=, =~/.kube/config=                                                     |
+| Set namespace preference      | =kubectl config set-context <context_name> --namespace=<ns_name>=                                   |
+| Load context from config file | =kubectl get cs --kubeconfig kube_config.yml=                                                       |
+| Switch context                | =kubectl config use-context <cluster-name>=                                                         |
+| Delete the specified context  | =kubectl config delete-context <cluster-name>=                                                      |
+| List all namespaces defined   | =kubectl get namespaces=                                                                            |
+| List certificates             | =kubectl get csr=                                                                                   |
+| [[https://kubernetes.io/docs/concepts/policy/pod-security-policy/][Check user privilege]]          | kubectl --as=system:serviceaccount:ns-denny:test-privileged-sa -n ns-denny auth can-i use pods/list |
+| [[https://kubernetes.io/docs/concepts/policy/pod-security-policy/][Check user privilege]]          | =kubectl auth can-i use pods/list=                                                                  |
+| Reference                     | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                                     |
 ** Network
 | Name                              | Command                                                  |
 |-----------------------------------+----------------------------------------------------------|
@@ -211,12 +216,12 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 |-------------------------------+-----------------------------------------------------------------------|
 | Patch service to loadbalancer | =kubectl patch svc $svc_name -p '{"spec": {"type": "LoadBalancer"}}'= |
 ** Extenstions
-| Name                         | Summary                    |
-|------------------------------+----------------------------|
-| List api group               | =kubectl api-versions=     |
-| List all CRD                 | =kubectl get crd=          |
-| List storageclass            | =kubectl get storageclass= |
-| List all supported resources | =kubectl api-resources=    |
+| Name                                    | Summary                    |
+|-----------------------------------------+----------------------------|
+| Enumerates the resource types available | =kubectl api-resources=    |
+| List api group                          | =kubectl api-versions=     |
+| List all CRD                            | =kubectl get crd=          |
+| List storageclass                       | =kubectl get storageclass= |
 #+BEGIN_HTML
 <a href="https://cheatsheet.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/dennyzhang/cheatsheet.dennyzhang.com/master/images/cheatsheet_dns.png"></a>
 #+END_HTML
@@ -537,7 +542,7 @@ k8s2      NotReady   <none>    17m       v1.9.0
    CLOSED: [2017-12-04 Mon 15:49]
 *** CANCELED k8s hardway: etcdctl: Error:  context deadline exceeded
   CLOSED: [2017-12-04 Mon 17:54]
-https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/e8d728d0162ebcdf951464caa8be3a5b156eb463/docs/07-bootstrapping-etcd.md
+https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/e8d728d0162ebcdf951464caa8be3a5b156eb463/docs/07-bootstrapping -etcd.md
 #+BEGIN_EXAMPLE
 mac@controller-0:~$ ETCDCTL_API=3 etcdctl member list
 Error:  context deadline exceeded
@@ -1643,13 +1648,10 @@ root@009069ee-95d5-49a2-6b82-67aff8eb6737:/tmp/build/4ecf0f02# kubectl get all -
 #+END_EXAMPLE
 * TODO where is k8s job log?                                       :noexport:
 http://kubernetesbyexample.com/jobs/
-* #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * TODO kubectl logs --previous nginx-app-zibvs                     :noexport:
 https://jimmysong.io/cheatsheets/kubernetes-kubectl
-* #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * TODO [#A] play with k8s ingress service                          :noexport:
 * TODO Vanilla CNCF Certified Kubernetes                           :noexport:
-* #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * TODO [#A] try admission controller                               :noexport:
 * HALF Accessing Kubernetes API from pods                          :noexport:
  curl -k -v --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" https://<mycluster>
@@ -1719,3 +1721,4 @@ One pod with two containers
 root@422e158feb46fff15217b24e4f8ad20b [ ~ ]# kubectl get pods -o='custom-columns=PODS:.metadata.name,Images:.spec.containers[*].image' --all-namespaces | grep sche
 kube-scheduler-422e158feb46fff15217b24e4f8ad20b            my/kube-scheduler:v1.13.1,my/wcp-schedext:0.0.1.26323453
 #+END_EXAMPLE
+* TODO kubectl cluster-info only get recent information            :noexport:
