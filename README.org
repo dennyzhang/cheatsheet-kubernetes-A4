@@ -33,6 +33,7 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | List pods with nodes info            | =kubectl get pod -o wide=                                                                 |
 | List everything                      | =kubectl get all --all-namespaces=                                                        |
 | Get all services                     | =kubectl get service --all-namespaces=                                                    |
+| Get all deployments                  | =kubectl get deployments --all-namespaces=                                                |
 | Show nodes with labels               | =kubectl get nodes --show-labels=                                                         |
 | Validate yaml file with dry run      | =kubectl create --dry-run --validate -f pod-dummy.yaml=                                   |
 | Start a temporary pod for testing    | =kubectl run --rm -i -t --image=alpine test-$RANDOM -- sh=                                |
