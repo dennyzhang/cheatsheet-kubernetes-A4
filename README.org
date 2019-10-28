@@ -113,13 +113,13 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | List pods and images         | kubectl get pods -o='custom-columns=PODS:.metadata.name,Images:.spec.containers[*].image' |
 | List pods and containers     | -o='custom-columns=PODS:.metadata.name,CONTAINERS:.spec.containers[*].name'               |
 | Reference                    | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                           |
-** Label & Annontation
+** Label & Annotation
 | Name                             | Command                                                           |
 |----------------------------------+-------------------------------------------------------------------|
 | Filter pods by label             | =kubectl get pods -l owner=denny=                                 |
 | Manually add label to a pod      | =kubectl label pods dummy-input owner=denny=                      |
 | Remove label                     | =kubectl label pods dummy-input owner-=                           |
-| Manually add annonation to a pod | =kubectl annotate pods dummy-input my-url=https://dennyzhang.com= |
+| Manually add annoation to a pod | =kubectl annotate pods dummy-input my-url=https://dennyzhang.com= |
 ** Deployment & Scale
 | Name                         | Command                                                                  |
 |------------------------------+--------------------------------------------------------------------------|
@@ -204,13 +204,13 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | [[https://kubernetes.io/docs/concepts/policy/pod-security-policy/][Check user privilege]]          | =kubectl auth can-i use pods/list=                                                                  |
 | Reference                     | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                                     |
 ** Network
-| Name                              | Command                                                  |
-|-----------------------------------+----------------------------------------------------------|
+| Name                               | Command                                                  |
+|------------------------------------+----------------------------------------------------------|
 | Temporarily add a port-forwarding  | =kubectl port-forward redis-134 6379:6379=               |
-| Add port-forwaring for deployment | =kubectl port-forward deployment/redis-master 6379:6379= |
-| Add port-forwaring for replicaset | =kubectl port-forward rs/redis-master 6379:6379=         |
-| Add port-forwaring for service    | =kubectl port-forward svc/redis-master 6379:6379=        |
-| Get network policy                | =kubectl get NetworkPolicy=                              |
+| Add port-forwarding for deployment | =kubectl port-forward deployment/redis-master 6379:6379= |
+| Add port-forwarding for replicaset | =kubectl port-forward rs/redis-master 6379:6379=         |
+| Add port-forwarding for service    | =kubectl port-forward svc/redis-master 6379:6379=        |
+| Get network policy                 | =kubectl get NetworkPolicy=                              |
 ** Patch
 | Name                          | Summary                                                               |
 |-------------------------------+-----------------------------------------------------------------------|
@@ -321,9 +321,9 @@ kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
 - Apply the configuration in manifest.yaml and delete all the other configmaps that are not in the file.
 
 #+BEGIN_EXAMPLE
-kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMap
+kubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMap
 #+END_EXAMPLE
-* [#A] Kubernets                                         :noexport:IMPORTANT:
+* [#A] Kubernetes                                         :noexport:IMPORTANT:
 https://github.com/dennyzhang/cheatsheet-kubernetes-A4
 
 k8s provides declarative primitives for the "desired state"
@@ -372,7 +372,7 @@ Denny Zhang (Github . Blogger)
 :thumbsup:
 
 Will update per your suggestions tomorrow, Aaron
-** TODO k8s add DNS chanllenges
+** TODO k8s add DNS challenges
 Gui [4:01 PM]
 Getting familiar with the concepts like pod, service, RC, deployment, etc.
 
@@ -771,7 +771,7 @@ source /Users/mac/Downloads/google-cloud-sdk/path.bash.inc
      emptyDir: {}
 #+END_EXAMPLE
 ** TODO [#A] k8s debug why termination takes time
-** TODO Kubernets availablity
+** TODO Kubernetes availability
 *** TODO Building High-Availability Clusters: https://kubernetes.io/docs/admin/high-availability/
 ** TODO [#A] Blog: Kubernetes Service Type: NodePort, ClusterIP and Loadbalancer?
 #+BEGIN_EXAMPLE
@@ -1029,7 +1029,7 @@ The metrics-server will provide a much needed official API for the internal comp
 ** #  --8<-------------------------- separator ------------------------>8-- :noexport:
 ** TODO why from heapster to k8s metric server?
 ** TODO kube-aggregator
-** TODO what is promethues format?
+** TODO what is prometheus format?
 #+BEGIN_EXAMPLE
 Denny Zhang [12:34 AM]
 An easy introduction about k8s metric server. (It will replace heapster)
@@ -1233,7 +1233,7 @@ spec:
 #+END_EXAMPLE
 * HPA: Horizontal Pod Autoscaler                                   :noexport:
 * Uncertainty & Uncomfortable things with K8S                      :noexport:
-** Destroy namepsace takes more than 15 minutes, with nowhere to check
+** Destroy namespace takes more than 15 minutes, with nowhere to check
 Testing in minikube
 ** Pod stucks in containercreating for a long time
 * HALF kubectl apply to a list of folder: kubectl apply -R -f namespace-drain-manifests/manifests :noexport:
@@ -1251,7 +1251,7 @@ If y'all run into the following error: `is forbidden: attempt to grant extra pri
 *** Network policy
 ** Comparision
 *** configmap vs secrets
-*** labels vs anonations
+*** labels vs annotations
 What are k8s Annotations? What differences it is compared with labels:
 
 - Like labels, annotations are key/value pairs. Where labels have length limits, annotations can be quite large.
@@ -1497,7 +1497,7 @@ https://github.com/kubernetes/kubernetes/issues/23092
 ** Layers
 - Nucleus: API And Execution
 - Application layer: deployment and running
-- Govermance layer: automation and policy enforcement
+- Governance layer: automation and policy enforcement
 - Interface layer: client libraries and tools
 - Ecosystem
 ** healthcheck: LivenessProbe, ReadinessProbe
@@ -1655,7 +1655,7 @@ https://jimmysong.io/cheatsheets/kubernetes-kubectl
 * TODO [#A] try admission controller                               :noexport:
 * HALF Accessing Kubernetes API from pods                          :noexport:
  curl -k -v --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" https://<mycluster>
-* TODO k8s trainning course from linux foundation: https://training.linuxfoundation.org/training/introduction-to-kubernetes/ :noexport:
+* TODO k8s training course from linux foundation: https://training.linuxfoundation.org/training/introduction-to-kubernetes/ :noexport:
 * #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * TODO consolidate: https://codefresh.io/kubernetes-tutorial/page/4/ :noexport:
 * TODO consolidate: https://info.shadow-soft.com/hubfs/Kubernetes-Cheatsheet-Mesosphere.pdf :noexport:
@@ -1686,8 +1686,8 @@ Update /etc/nginx/conf.d/default.conf
 + sed -i s/http_port_here/80/g /etc/nginx/conf.d/default.conf
 sed: cannot rename /etc/nginx/conf.d/sedz2uuPB: Device or resource busy
 #+END_EXAMPLE
-* TODO [#A] k8s mount configmap file, then edit it when process boostrap :noexport:
-* TODO gce disk: how and when the filesystem formating happens?    :noexport:
+* TODO [#A] k8s mount configmap file, then edit it when process bootstrap :noexport:
+* TODO gce disk: how and when the filesystem formatting happens?    :noexport:
 * #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * TODO k8s pod share volume within containers                      :noexport:
 * TODO gce use one disk in a small chunks                          :noexport:
@@ -1705,7 +1705,7 @@ ConfigMaps must be mounted as directories
 
 https://github.com/kubernetes/kubernetes/issues/45000
 https://stackoverflow.com/questions/44325048/kubernetes-configmap-only-one-file
-* HALF doc: mount configmap as a seperate file                     :noexport:
+* HALF doc: mount configmap as a separate file                     :noexport:
 * TODO How to pass credentials to yaml in a secured way?           :noexport:
 * DONE k8s pod dns                                                 :noexport:
   CLOSED: [2019-05-25 Sat 08:21]
