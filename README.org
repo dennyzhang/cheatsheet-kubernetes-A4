@@ -74,7 +74,7 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | Delete all resources filtered by labels | =kubectl delete pods,services -l name=myLabel=           |
 | Delete resources under a namespace      | =kubectl -n my-ns delete po,svc --all=                   |
 | Delete persist volumes by labels        | =kubectl delete pvc -l app=wordpress=                    |
-| Delete state fulset only (not pods)     | =kubectl delete sts/<stateful_set_name> --cascade=false= |
+| Delete stateful set only (not pods)     | =kubectl delete sts/<stateful_set_name> --cascade=false= |
 #+BEGIN_HTML
 <a href="https://cheatsheet.dennyzhang.com"><img align="right" width="185" height="37" src="https://raw.githubusercontent.com/dennyzhang/cheatsheet.dennyzhang.com/master/images/cheatsheet_dns.png"></a>
 #+END_HTML
