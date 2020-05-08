@@ -24,8 +24,8 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 ** Common Commands
 | Name                                 | Command                                                                                   |
 |--------------------------------------+-------------------------------------------------------------------------------------------|
-| Run curl test temporarily            | =kubectl run --rm mytest --image=yauritux/busybox-curl -it=                               |
-| Run wget test temporarily            | =kubectl run --rm mytest --image=busybox -it=                                             |
+| Run curl test temporarily            | =kubectl run --generator=run-pod/v1 --rm mytest --image=yauritux/busybox-curl -it=        |
+| Run wget test temporarily            | =kubectl run --generator=run-pod/v1 --rm mytest --image=busybox -it wget=                 |
 | Run nginx deployment with 2 replicas | =kubectl run my-nginx --image=nginx --replicas=2 --port=80=                               |
 | Run nginx pod and expose it          | =kubectl run my-nginx --restart=Never --image=nginx --port=80 --expose=                   |
 | Run nginx deployment and expose it   | =kubectl run my-nginx --image=nginx --port=80 --expose=                                   |
