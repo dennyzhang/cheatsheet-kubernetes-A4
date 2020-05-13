@@ -159,7 +159,7 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | Name                             | Command                                                                 |
 |----------------------------------+-------------------------------------------------------------------------|
 | List secrets                     | =kubectl get secrets --all-namespaces=                                  |
-| Generate secret                  | =echo -n 'mypasswd'=, then redirect to =base64 --decode=                |
+| Generate secret                  | =echo -n 'mypasswd', then redirect to base64 --decode=                  |
 | Get secret                       | =kubectl get secret denny-cluster-kubeconfig=                           |
 | Get a specific field of a secret | kubectl get secret denny-cluster-kubeconfig -o jsonpath="{.data.value}" |
 | Create secret from cfg file      | kubectl create secret generic db-user-pass --from-file=./username.txt   |
@@ -213,9 +213,9 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | Add port-forwaring for service    | =kubectl port-forward svc/redis-master 6379:6379=        |
 | Get network policy                | =kubectl get NetworkPolicy=                              |
 ** Patch
-| Name                          | Summary                                                               |
-|-------------------------------+-----------------------------------------------------------------------|
-| Patch service to loadbalancer | =kubectl patch svc $svc_name -p '{"spec": {"type": "LoadBalancer"}}'= |
+| Name                          | Summary                                                             |
+|-------------------------------+---------------------------------------------------------------------|
+| Patch service to loadbalancer | kubectl patch svc $svc_name -p '{"spec": {"type": "LoadBalancer"}}' |
 ** Extenstions
 | Name                                    | Summary                    |
 |-----------------------------------------+----------------------------|
@@ -1738,7 +1738,7 @@ kubectl get service/wordpress -n blog -o json | jq '.spec.ports[].nodePort'
 * TODO k8s dynamic PV provision vs static PV provision             :noexport:
 * TODO [#A] k8s delete namespace hang                              :noexport:
 Related resources need to be deleted first
-* TODO [#A] k8s debugging loadbalancer service: external ip in <pending> state
+* TODO [#A] k8s debugging loadbalancer service: external ip in <pending> state :noexport:
 #+BEGIN_EXAMPLE
 $ kubectl get svc -n blog
 NAME        TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
