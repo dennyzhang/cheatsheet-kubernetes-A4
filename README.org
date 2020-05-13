@@ -228,18 +228,19 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 #+END_HTML
 ** Components & Services
 *** Services on Master Nodes
-| Name                    | Summary                                                                                                |
-|-------------------------+--------------------------------------------------------------------------------------------------------|
-| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-apiserver][kube-apiserver]]          | exposes the Kubernetes API from master nodes                                                           |
-| [[https://coreos.com/etcd/][etcd]]                    | reliable data store for all k8s cluster data                                                           |
-| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-scheduler][kube-scheduler]]          | schedule pods to run on selected nodes                                                                 |
-| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-controller-manager][kube-controller-manager]] | node controller, replication controller, endpoints controller, and service account & token controllers |
+| Name                     | Summary                                                                                    |
+|--------------------------+--------------------------------------------------------------------------------------------|
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-apiserver][kube-apiserver]]           | API gateway. Exposes the Kubernetes API from master nodes                                  |
+| [[https://coreos.com/etcd/][etcd]]                     | reliable data store for all k8s cluster data                                               |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-scheduler][kube-scheduler]]           | schedule pods to run on selected nodes                                                     |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-controller-manager][kube-controller-manager]]  | Reconcile the states. node/replication/endpoints/token controller and service account, etc |
+| cloud-controller-manager |                                                                                            |
 *** Services on Worker Nodes
-| Name              | Summary                                                                                   |
-|-------------------+-------------------------------------------------------------------------------------------|
-| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kubelet][kubelet]]           | makes sure that containers are running in a pod                                           |
-| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-proxy][kube-proxy]]        | perform connection forwarding                                                             |
-| [[https://github.com/docker/engine][Container Runtime]] | Kubernetes supported runtimes: Docker, rkt, runc and any [[https://github.com/opencontainers/runtime-spec][OCI runtime-spec]] implementation. |
+| Name              | Summary                                                                                      |
+|-------------------+----------------------------------------------------------------------------------------------|
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kubelet][kubelet]]           | A node agent makes sure that containers are running in a pod                                 |
+| [[https://github.com/kubernetes/kubernetes/tree/master/cmd/kube-proxy][kube-proxy]]        | Manage network connectivity to the containers. e.g, iptable, ipvs                            |
+| [[https://github.com/docker/engine][Container Runtime]] | Kubernetes supported runtimes: dockerd, cri-o, runc and any [[https://github.com/opencontainers/runtime-spec][OCI runtime-spec]] implementation. |
 
 *** Addons: pods and services that implement cluster features
 | Name                          | Summary                                                                   |
@@ -1778,3 +1779,22 @@ spec:
   selector:
     app: wordpress
 #+END_EXAMPLE
+* TODO K8s networking                                              :noexport:
+- container-to-container communication
+- pod-to-pod communication
+  K8s itself won't do it for you. And CNI can be used to configure the network of a pod and provide a single IP per pod.
+  CNI doesn't help you with pod-to-pod communication across nodes.
+- external-to-pod communication
+* Questions forked from CKA preparation                            :noexport:
+** TODO how etcd is designed and implemented?
+** TODO [#A] Only one IP address per Pod. How multiple containers talk with each other inside one pod?
+ Two containers share the same network namespace of the thrid container, known as the pause container.
+
+ - The pause container is used to get an IP address, then all containers in the pod will uses its network namespace.
+ - To communicate with each other, containers can use the loopback interface, write to files on a common filesystem, or via IPC
+** TODO Why ipv6 doesn't gain popularity
+ ipv6 not backward compatible
+ NAT
+ ipv4 better management
+** TODO How K8s reconcilation is done?
+** TODO How the feature of cluster ip is implemented?
