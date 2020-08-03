@@ -196,9 +196,9 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 |-------------------------------+-----------------------------------------------------------------------------------------------------|
 | List authenticated contexts   | =kubectl config get-contexts=, =~/.kube/config=                                                     |
 | Set namespace preference      | =kubectl config set-context <context_name> --namespace=<ns_name>=                                   |
-| Switch context                | =kubectl config use-context <cluster-name>=                                                         |
+| Switch context                | =kubectl config use-context <context_name>=                                                         |
 | Load context from config file | =kubectl get cs --kubeconfig kube_config.yml=                                                       |
-| Delete the specified context  | =kubectl config delete-context <cluster-name>=                                                      |
+| Delete the specified context  | =kubectl config delete-context <context_name>=                                                      |
 | List all namespaces defined   | =kubectl get namespaces=                                                                            |
 | List certificates             | =kubectl get csr=                                                                                   |
 | [[https://kubernetes.io/docs/concepts/policy/pod-security-policy/][Check user privilege]]          | kubectl --as=system:serviceaccount:ns-denny:test-privileged-sa -n ns-denny auth can-i use pods/list |
