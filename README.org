@@ -114,13 +114,13 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | List pods and images         | kubectl get pods -o='custom-columns=PODS:.metadata.name,Images:.spec.containers[*].image' |
 | List pods and containers     | -o='custom-columns=PODS:.metadata.name,CONTAINERS:.spec.containers[*].name'               |
 | Reference                    | [[https://cheatsheet.dennyzhang.com/kubernetes-yaml-templates][Link: kubernetes yaml templates]]                                                           |
-** Label & Annontation
+** Label & Annotation
 | Name                             | Command                                                           |
 |----------------------------------+-------------------------------------------------------------------|
 | Filter pods by label             | =kubectl get pods -l owner=denny=                                 |
 | Manually add label to a pod      | =kubectl label pods dummy-input owner=denny=                      |
 | Remove label                     | =kubectl label pods dummy-input owner-=                           |
-| Manually add annonation to a pod | =kubectl annotate pods dummy-input my-url=https://dennyzhang.com= |
+| Manually add annotation to a pod | =kubectl annotate pods dummy-input my-url=https://dennyzhang.com= |
 ** Deployment & Scale
 | Name                         | Command                                                                  |
 |------------------------------+--------------------------------------------------------------------------|
