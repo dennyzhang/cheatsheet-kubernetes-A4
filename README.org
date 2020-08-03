@@ -87,7 +87,7 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | Credentials to API server | =/etc/kubernetes/kubelet.conf=                                            |
 | Superuser credentials     | =/etc/kubernetes/admin.conf=                                              |
 | kubectl config file       | =~/.kube/config=                                                          |
-| Kubernets working dir     | =/var/lib/kubelet/=                                                       |
+| Kubernetes working dir    | =/var/lib/kubelet/=                                                       |
 | Docker working dir        | =/var/lib/docker/=, =/var/log/containers/=                                |
 | Etcd working dir          | =/var/lib/etcd/=                                                          |
 | Network cni               | =/etc/cni/net.d/=                                                         |
@@ -208,9 +208,9 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | Name                              | Command                                                  |
 |-----------------------------------+----------------------------------------------------------|
 | Temporarily add a port-forwarding  | =kubectl port-forward redis-134 6379:6379=               |
-| Add port-forwaring for deployment | =kubectl port-forward deployment/redis-master 6379:6379= |
-| Add port-forwaring for replicaset | =kubectl port-forward rs/redis-master 6379:6379=         |
-| Add port-forwaring for service    | =kubectl port-forward svc/redis-master 6379:6379=        |
+| Add port-forwarding for deployment | =kubectl port-forward deployment/redis-master 6379:6379= |
+| Add port-forwarding for replicaset | =kubectl port-forward rs/redis-master 6379:6379=         |
+| Add port-forwarding for service    | =kubectl port-forward svc/redis-master 6379:6379=        |
 | Get network policy                | =kubectl get NetworkPolicy=                              |
 ** Patch
 | Name                          | Summary                                                             |
@@ -323,9 +323,9 @@ kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} \
 - Apply the configuration in manifest.yaml and delete all the other configmaps that are not in the file.
 
 #+BEGIN_EXAMPLE
-kaubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMap
+kubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMap
 #+END_EXAMPLE
-* [#A] Kubernets                                         :noexport:IMPORTANT:
+* [#A] Kubernetes                                         :noexport:IMPORTANT:
 https://github.com/dennyzhang/cheatsheet-kubernetes-A4
 
 k8s provides declarative primitives for the "desired state"
@@ -374,7 +374,7 @@ Denny Zhang (Github . Blogger)
 :thumbsup:
 
 Will update per your suggestions tomorrow, Aaron
-** TODO k8s add DNS chanllenges
+** TODO k8s add DNS challenges
 Gui [4:01 PM]
 Getting familiar with the concepts like pod, service, RC, deployment, etc.
 
@@ -773,7 +773,7 @@ source /Users/mac/Downloads/google-cloud-sdk/path.bash.inc
      emptyDir: {}
 #+END_EXAMPLE
 ** TODO [#A] k8s debug why termination takes time
-** TODO Kubernets availablity
+** TODO Kubernetes availability
 *** TODO Building High-Availability Clusters: https://kubernetes.io/docs/admin/high-availability/
 ** TODO [#A] Blog: Kubernetes Service Type: NodePort, ClusterIP and Loadbalancer?
 #+BEGIN_EXAMPLE
@@ -1031,7 +1031,7 @@ The metrics-server will provide a much needed official API for the internal comp
 ** #  --8<-------------------------- separator ------------------------>8-- :noexport:
 ** TODO why from heapster to k8s metric server?
 ** TODO kube-aggregator
-** TODO what is promethues format?
+** TODO what is prometheus format?
 #+BEGIN_EXAMPLE
 Denny Zhang [12:34 AM]
 An easy introduction about k8s metric server. (It will replace heapster)
@@ -1235,7 +1235,7 @@ spec:
 #+END_EXAMPLE
 * HPA: Horizontal Pod Autoscaler                                   :noexport:
 * Uncertainty & Uncomfortable things with K8S                      :noexport:
-** Destroy namepsace takes more than 15 minutes, with nowhere to check
+** Destroy namespace takes more than 15 minutes, with nowhere to check
 Testing in minikube
 ** Pod stucks in containercreating for a long time
 * HALF kubectl apply to a list of folder: kubectl apply -R -f namespace-drain-manifests/manifests :noexport:
@@ -1253,7 +1253,7 @@ If y'all run into the following error: `is forbidden: attempt to grant extra pri
 *** Network policy
 ** Comparision
 *** configmap vs secrets
-*** labels vs anonations
+*** labels vs annotations
 What are k8s Annotations? What differences it is compared with labels:
 
 - Like labels, annotations are key/value pairs. Where labels have length limits, annotations can be quite large.
@@ -1499,7 +1499,7 @@ https://github.com/kubernetes/kubernetes/issues/23092
 ** Layers
 - Nucleus: API And Execution
 - Application layer: deployment and running
-- Govermance layer: automation and policy enforcement
+- Governance layer: automation and policy enforcement
 - Interface layer: client libraries and tools
 - Ecosystem
 ** healthcheck: LivenessProbe, ReadinessProbe
@@ -1657,7 +1657,7 @@ https://jimmysong.io/cheatsheets/kubernetes-kubectl
 * TODO [#A] try admission controller                               :noexport:
 * HALF Accessing Kubernetes API from pods                          :noexport:
  curl -k -v --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" https://<mycluster>
-* TODO k8s trainning course from linux foundation: https://training.linuxfoundation.org/training/introduction-to-kubernetes/ :noexport:
+* TODO k8s training course from linux foundation: https://training.linuxfoundation.org/training/introduction-to-kubernetes/ :noexport:
 * #  --8<-------------------------- separator ------------------------>8-- :noexport:
 * TODO consolidate: https://codefresh.io/kubernetes-tutorial/page/4/ :noexport:
 * TODO consolidate: https://info.shadow-soft.com/hubfs/Kubernetes-Cheatsheet-Mesosphere.pdf :noexport:
