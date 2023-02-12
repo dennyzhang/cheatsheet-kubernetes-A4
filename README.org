@@ -100,7 +100,7 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | Name                         | Command                                                                                   |
 |------------------------------+-------------------------------------------------------------------------------------------|
 | List all pods                | =kubectl get pods=                                                                        |
-| List pods for all namespace  | =kubectl get pods -all-namespaces=                                                        |
+| List pods for all namespace  | =kubectl get pods --all-namespaces=                                                        |
 | List all critical pods       | =kubectl get -n kube-system pods -a=                                                      |
 | List pods with more info     | =kubectl get pod -o wide=, =kubectl get pod/<pod-name> -o yaml=                           |
 | Get pod info                 | =kubectl describe pod/srv-mysql-server=                                                   |
@@ -211,7 +211,9 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | Add port-forwarding for deployment | =kubectl port-forward deployment/redis-master 6379:6379= |
 | Add port-forwarding for replicaset | =kubectl port-forward rs/redis-master 6379:6379=         |
 | Add port-forwarding for service    | =kubectl port-forward svc/redis-master 6379:6379=        |
-| Get network policy                | =kubectl get NetworkPolicy=                              |
+| Get network policy                 | =kubectl get NetworkPolicy=                              |
+| Get ingress controller             | =kubectl get ingress=                                     |
+| Get ingress classes                | =kubectl get ingressclasses=                             |  
 ** Patch
 | Name                          | Summary                                                             |
 |-------------------------------+---------------------------------------------------------------------|
