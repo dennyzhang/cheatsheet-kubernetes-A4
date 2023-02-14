@@ -1521,6 +1521,7 @@ https://kubernetes.io
 https://www.reddit.com/r/devops/comments/51ra9q/moving_from_docker_to_rkt/
 http://blog.dataman-inc.com/67/
 http://jpadilla.com/post/161144157937/update-kubernetes-deployment-after-pushing-image
+https://spacelift.io/blog/kubernetes-cheat-sheet
 
 http://www.oschina.net/news/70140/infoworlds-2016-technology-of-the-year-award-winners?p=3#comments
 ** DONE Principle: API的操作复杂度不能超过O(N)
