@@ -37,7 +37,7 @@ File me [[https://github.com/dennyzhang/cheatsheet.dennyzhang.com/issues][Issues
 | Get all deployments                  | =kubectl get deployments --all-namespaces=                                                |
 | Show nodes with labels               | =kubectl get nodes --show-labels=                                                         |
 | Get resources with json output       | =kubectl get pods --all-namespaces -o json=                                               |
-| Validate yaml file with dry run      | =kubectl create --dry-run --validate -f pod-dummy.yaml=                                   |
+| Validate yaml file with dry run      | =kubectl create --dry-run=client --validate -f pod-dummy.yaml=                                   |
 | Start a temporary pod for testing    | =kubectl run --rm -i -t --image=alpine test-$RANDOM -- sh=                                |
 | kubectl run shell command            | =kubectl exec -it mytest -- ls -l /etc/hosts=                                             |
 | Get system conf via configmap        | =kubectl -n kube-system get cm kubeadm-config -o yaml=                                    |
